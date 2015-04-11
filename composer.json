@@ -1,0 +1,27 @@
+{
+    "name": "dlds/yii2-mlm",
+    "description": "Yii2 Multi Level Marketing component",
+    "keywords": ["yii2", "mlm", "component"],
+    "type": "yii2-extension",
+    "license": "BSD",
+    "support": {
+        "issues": "https://github.com/dlds/yii2-mlm/issues",
+        "wiki": "https://github.com/dlds/yii2-mlm/wiki",
+        "source": "https://github.com/dlds/yii2-mlm"
+    },
+    "authors": [
+        {
+            "name": "Jiri Svoboda",
+            "email": "jiri.svoboda@dlds.cz"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "dlds/yii2-nested-sets": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "dlds\\mlm\\": ""
+        }
+    }
+}
