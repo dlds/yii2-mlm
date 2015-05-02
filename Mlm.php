@@ -493,11 +493,11 @@ class Mlm extends \yii\base\Component {
 
             if ($juniorPersonalFee)
             {
-                $profit += $this->getCommissionValue($participant, $level, $juniorPersonalFee);
+                $profit += $this->calculateCommissionValue($juniorPersonalFee, $this->getParticipantTreeCommissionAmount($participant, $level));
             }
             else
             {
-                $profit += $this->getCommissionValue($participant, $level, $defaultFee);
+                $profit += $this->calculateCommissionValue($defaultFee, $this->getParticipantTreeCommissionAmount($participant, $level));
             }
         }
 
