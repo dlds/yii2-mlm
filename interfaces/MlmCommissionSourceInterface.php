@@ -6,9 +6,10 @@ interface MlmCommissionSourceInterface {
 
     /**
      * Retrieves source amount to be spread
+     * @param $incVat indicates if amount with vat will be returned
      * @return float amount to be spread
      */
-    public function getAmount();
+    public function getAmount($incVat = true);
 
     /**
      * Retrieves assigned participant means user model

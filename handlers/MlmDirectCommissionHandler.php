@@ -16,7 +16,7 @@ class MlmDirectCommissionHandler {
     {
         $commissions = [];
 
-        $model->setType(Mlm::COMMISSION_DIRECT);
+        $model->setType(Mlm::COMMISSION_TYPE_DIRECT);
 
         $participants = \Yii::$app->mlm->getDirectCommissionParticipants();
 

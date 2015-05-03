@@ -16,7 +16,7 @@ class MlmTreeCommissionHandler {
     {
         $commissions = [];
 
-        $model->setType(Mlm::COMMISSION_TREE);
+        $model->setType(Mlm::COMMISSION_TYPE_TREE);
 
         $participants = $source->getParticipant()->getQuerySeniors(\Yii::$app->mlm->getTreeCommissionRuleMaxLevel())->all();
 

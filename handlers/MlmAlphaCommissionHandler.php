@@ -20,7 +20,7 @@ class MlmAlphaCommissionHandler extends MlmCommissionHandler {
 
         if ($toSpread)
         {
-            $model->setType(Mlm::COMMISSION_ALPHA);
+            $model->setType(Mlm::COMMISSION_TYPE_ALPHA);
 
             $participants = $source->getParticipant()->getQueryAlphas()->all();
 

@@ -20,7 +20,7 @@ class MlmBetaCommissionHandler extends MlmCommissionHandler {
 
         if ($toSpread)
         {
-            $model->setType(Mlm::COMMISSION_BETA);
+            $model->setType(Mlm::COMMISSION_TYPE_BETA);
 
             $participants = $source->getParticipant()->getQueryBetas()->all();
 

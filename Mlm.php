@@ -21,14 +21,23 @@ class Mlm extends \yii\base\Component {
     /**
      * Commissions types
      */
-    const COMMISSION_DIRECT = 0;
-    const COMMISSION_TREE = 10;
-    const COMMISSION_BETA = 20;
-    const COMMISSION_ALPHA = 30;
-    const COMMISSION_UNDIVIDED = 100;
+    const COMMISSION_TYPE_DIRECT = 0;
+    const COMMISSION_TYPE_TREE = 10;
+    const COMMISSION_TYPE_BETA = 20;
+    const COMMISSION_TYPE_ALPHA = 30;
+    const COMMISSION_TYPE_UNDIVIDED = 100;
 
     /**
-     * Results
+     * Commissions statuses
+     */
+    const COMMISSION_STATUS_PENDING = 0;
+    const COMMISSION_STATUS_APPROVED = 10;
+    const COMMISSION_STATUS_READY_TO_PAY = 15;
+    const COMMISSION_STATUS_REQUESTED = 20;
+    const COMMISSION_STATUS_PAID = 30;
+
+    /**
+     * Generator results
      */
     const RESULT_UNKNOWN = 0;
     const RESULT_SUCCESS = 100;
@@ -85,11 +94,6 @@ class Mlm extends \yii\base\Component {
     public $participantClass;
 
     /**
-     * @var int main participant id (used for unspreaded commissions and to spread investors commissions)
-     */
-    public $mainParticipantId;
-
-    /**
      * @var boolean indicates if generating results will be logged in DB,
      * "logTable" id required for this feature
      */
@@ -117,10 +121,17 @@ class Mlm extends \yii\base\Component {
     protected $commissionsHolder;
 
     /**
+     * @var MlmParticipantInterface main participant (used for unspreaded commissions and to spread investors commissions)
+     */
+    protected $mainParticipant;
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
+        $this->mainParticipant = $this->getMainParticipant();
+
         ksort($this->treeCommissionsRules);
 
         if (!$this->validateTreeTresholdsRules())
@@ -160,16 +171,19 @@ class Mlm extends \yii\base\Component {
      */
     public function getMainParticipant()
     {
-        try
+        if (!$this->mainParticipant)
         {
             $object = \Yii::createObject($this->participantClass);
 
-            return $object->findOne($this->mainParticipantId);
+            if (!$object instanceof MlmParticipantInterface)
+            {
+                throw new \yii\base\Exception('Mlm Participant Class has to implement MlmParticipantInterface');
+            }
+
+            $this->mainParticipant = $object::getMainParticipant();
         }
-        catch (Exception $ex)
-        {
-            return null;
-        }
+
+        return $this->mainParticipant;
     }
 
     /**
@@ -183,7 +197,7 @@ class Mlm extends \yii\base\Component {
         $participant = $source->getParticipant();
 
         // if participant does implements appropriate interface throw exception
-        if (!$participant instanceof interfaces\MlmParticipantInterface)
+        if (!$participant instanceof MlmParticipantInterface)
         {
             throw new Exception('Mlm Participant must be instance of MlmParticipantInterface');
         }
@@ -195,42 +209,43 @@ class Mlm extends \yii\base\Component {
             $this->commissionsHolder = new holders\BasicCommissionsHolder();
 
             // check if given commission type is disabled and should not be generated
-            if (!$this->isCommissionDisabled(self::COMMISSION_DIRECT))
+            if (!$this->isCommissionDisabled(self::COMMISSION_TYPE_DIRECT))
             {
                 // create commissions through appropriate handler and add it to current holder
-                $this->commissionsHolder->addCommissions(handlers\MlmDirectCommissionHandler::create($source, $model), self::COMMISSION_DIRECT);
+                $this->commissionsHolder->addCommissions(handlers\MlmDirectCommissionHandler::create($source, $model), self::COMMISSION_TYPE_DIRECT);
             }
 
             // check if given commission type is disabled and should not be generated
-            if (!$this->isCommissionDisabled(self::COMMISSION_TREE))
+            if (!$this->isCommissionDisabled(self::COMMISSION_TYPE_TREE))
             {
                 // create commissions through appropriate handler and add it to current holder
-                $this->commissionsHolder->addCommissions(handlers\MlmTreeCommissionHandler::create($source, $model), self::COMMISSION_TREE);
+                $this->commissionsHolder->addCommissions(handlers\MlmTreeCommissionHandler::create($source, $model), self::COMMISSION_TYPE_TREE);
             }
 
             // check if given commission type is disabled and should not be generated
-            if (!$this->isCommissionDisabled(self::COMMISSION_BETA))
+            if (!$this->isCommissionDisabled(self::COMMISSION_TYPE_BETA))
             {
                 // create commissions through appropriate handler and add it to current holder
-                $this->commissionsHolder->addCommissions(handlers\MlmBetaCommissionHandler::create($source, $model), self::COMMISSION_BETA);
+                $this->commissionsHolder->addCommissions(handlers\MlmBetaCommissionHandler::create($source, $model), self::COMMISSION_TYPE_BETA);
 
                 // substracts generated betas commissions sum from main participant tree commission
                 $this->substractBetasFromMainParticipant();
             }
 
             // check if given commission type is disabled and should not be generated
-            if (!$this->isCommissionDisabled(self::COMMISSION_ALPHA))
+            if (!$this->isCommissionDisabled(self::COMMISSION_TYPE_ALPHA))
             {
                 // create commissions through appropriate handler and add it to current holder
-                $this->commissionsHolder->addCommissions(handlers\MlmAlphaCommissionHandler::create($source, $model), self::COMMISSION_ALPHA);
+                $this->commissionsHolder->addCommissions(handlers\MlmAlphaCommissionHandler::create($source, $model), self::COMMISSION_TYPE_ALPHA);
             }
 
             // create commissions through appropriate handler and add it to current holder
-            $this->commissionsHolder->addCommissions(handlers\MlmUndividedCommissionHandler::create($source, $model), self::COMMISSION_UNDIVIDED);
+            $this->commissionsHolder->addCommissions(handlers\MlmUndividedCommissionHandler::create($source, $model), self::COMMISSION_TYPE_UNDIVIDED);
 
-
+            // put current commissions holder to be processed by handler - all commissions held in holder will be saved
             handlers\MlmCommissionHandler::process($this->commissionsHolder);
 
+            // clear current commissions holder
             $this->commissionsHolder->clear();
         }
     }
@@ -241,13 +256,17 @@ class Mlm extends \yii\base\Component {
      */
     public function getDirectCommissionsRulesSum()
     {
+        // reset rules sum holder
         $sum = 0;
 
+        // go through all rules
         foreach ($this->directCommissionsRules as $value)
         {
+            // add rule value to sum holder
             $sum += $value;
         }
 
+        // return sum holder value
         return $sum;
     }
 
@@ -257,17 +276,23 @@ class Mlm extends \yii\base\Component {
      */
     public function getTreeCommissionsRulesSum()
     {
+        // reset sum holder and reached level holder
         $reachedLevels = $sum = 0;
 
+        // go through all rules - structured as "maximal level rule will be applied" => "rule value"
         foreach ($this->treeCommissionsRules as $maxLevel => $value)
         {
+            // create multiplier for value based on currently reached level and "rule maximal level"
             $multiplier = $maxLevel - $reachedLevels;
 
+            // multiply "rule value" by created multiplier and add to sum holder
             $sum += ($multiplier * $value);
 
+            // set reached level to current "rule maximal level"
             $reachedLevels = $maxLevel;
         }
 
+        // retun sum holder value
         return $sum;
     }
 
@@ -361,7 +386,7 @@ class Mlm extends \yii\base\Component {
 
         if ($commissions)
         {
-            return ArrayHelper::getValue($commissions, $this->mainParticipantId);
+            return ArrayHelper::getValue($commissions, $this->getMainParticipant()->primaryKey);
         }
 
         return false;
@@ -414,14 +439,13 @@ class Mlm extends \yii\base\Component {
 
     /**
      * Retrieves commission value
-     * @param MlmParticipantInterface $participant given participant
-     * @param int $level given level
-     * @param float $amount given amount
-     * @return int
+     * @param interfaces\MlmCommissionInterface $commission given commission AR
+     * @param boolean $incVat indicates if retrieved commission will be returned with vat
+     * @return float commission value
      */
-    public function getCommissionValue(interfaces\MlmCommissionInterface $commission)
+    public function getCommissionValue(interfaces\MlmCommissionInterface $commission, $incVat = true)
     {
-        return $this->calculateCommissionValue($commission->getSource()->getAmount(), $commission->getAmount());
+        return $this->calculateCommissionValue($commission->getSource()->getAmount($incVat), $commission->getAmount());
     }
 
     /**
@@ -465,43 +489,25 @@ class Mlm extends \yii\base\Component {
     }
 
     /**
-     * Retrieves maximal possible tree commission value
+     * Retrieves participant maximal possible tree commission value
      * @param MlmParticipantInterface $participant
      * @param float $defaultFee default fee
-     * @return float possible commission value sum
+     * @return boolean $incVat indicates if vat will be included
      */
-    public function getParticipantMaxTreeProfit(MlmParticipantInterface $participant, $defaultFee)
+    public function getParticipantMaxTreeProfit(MlmParticipantInterface $participant, $defaultFee, $incVat = true)
     {
-        $profit = 0;
+        return $this->calculateTreeProfit($participant, $defaultFee, $incVat, true);
+    }
 
-        if ($participant->canTakeTreeCommission($this->getTreeCommissionRuleMaxLevel()))
-        {
-            $juniors = $participant->getQueryJuniors($this->getTreeCommissionRuleMaxLevel(), true)->all();
-        }
-        else
-        {
-            $juniors = $participant->getQueryJuniors($this->treeTresholdBasicRule, true)->all();
-        }
-
-        $participantDepth = $participant->getTreeDepth();
-
-        foreach ($juniors as $junior)
-        {
-            $level = $junior->getTreeDepth() - $participantDepth;
-
-            $juniorPersonalFee = $junior->getPersonalFee();
-
-            if ($juniorPersonalFee)
-            {
-                $profit += $this->calculateCommissionValue($juniorPersonalFee, $this->getParticipantTreeCommissionAmount($participant, $level));
-            }
-            else
-            {
-                $profit += $this->calculateCommissionValue($defaultFee, $this->getParticipantTreeCommissionAmount($participant, $level));
-            }
-        }
-
-        return $profit;
+    /**
+     * Retrieves participant available tree commission profit
+     * @param MlmParticipantInterface $participant
+     * @param float $defaultFee default fee
+     * @return boolean $incVat indicates if vat will be included
+     */
+    public function getParticipantAvailableTreeProfit(MlmParticipantInterface $participant, $defaultFee, $incVat = true)
+    {
+        return $this->calculateTreeProfit($participant, $defaultFee, $incVat, false);
     }
 
     /**
@@ -510,7 +516,7 @@ class Mlm extends \yii\base\Component {
      */
     public function getHeldDirectCommissions()
     {
-        return $this->commissionsHolder->getCommissions(self::COMMISSION_DIRECT);
+        return $this->commissionsHolder->getCommissions(self::COMMISSION_TYPE_DIRECT);
     }
 
     /**
@@ -519,7 +525,7 @@ class Mlm extends \yii\base\Component {
      */
     public function getHeldTreeCommissions()
     {
-        return $this->commissionsHolder->getCommissions(self::COMMISSION_TREE);
+        return $this->commissionsHolder->getCommissions(self::COMMISSION_TYPE_TREE);
     }
 
     /**
@@ -528,7 +534,7 @@ class Mlm extends \yii\base\Component {
      */
     public function getHeldAlphaCommissions()
     {
-        return $this->commissionsHolder->getCommissions(self::COMMISSION_ALPHA);
+        return $this->commissionsHolder->getCommissions(self::COMMISSION_TYPE_ALPHA);
     }
 
     /**
@@ -537,7 +543,7 @@ class Mlm extends \yii\base\Component {
      */
     public function getHeldBetaCommissions()
     {
-        return $this->commissionsHolder->getCommissions(self::COMMISSION_BETA);
+        return $this->commissionsHolder->getCommissions(self::COMMISSION_TYPE_BETA);
     }
 
     /**
@@ -571,11 +577,25 @@ class Mlm extends \yii\base\Component {
     public static function getCommissionsTypes()
     {
         return [
-            self::COMMISSION_DIRECT => \Yii::t('dlds/mlm', 'Direct commission'),
-            self::COMMISSION_TREE => \Yii::t('dlds/mlm', 'Tree commission'),
-            self::COMMISSION_BETA => \Yii::t('dlds/mlm', 'Beta commission'),
-            self::COMMISSION_ALPHA => \Yii::t('dlds/mlm', 'Alpha commission'),
-            self::COMMISSION_UNDIVIDED => \Yii::t('dlds/mlm', 'Undivied commission'),
+            self::COMMISSION_TYPE_DIRECT => \Yii::t('dlds/mlm', 'Direct commission'),
+            self::COMMISSION_TYPE_TREE => \Yii::t('dlds/mlm', 'Tree commission'),
+            self::COMMISSION_TYPE_BETA => \Yii::t('dlds/mlm', 'Beta commission'),
+            self::COMMISSION_TYPE_ALPHA => \Yii::t('dlds/mlm', 'Alpha commission'),
+            self::COMMISSION_TYPE_UNDIVIDED => \Yii::t('dlds/mlm', 'Undivied commission'),
+        ];
+    }
+
+    /**
+     * Return all possible commissions types
+     */
+    public static function getCommissionsStatuses()
+    {
+        return [
+            self::COMMISSION_STATUS_PENDING => \Yii::t('dlds/mlm', 'Pending'),
+            self::COMMISSION_STATUS_APPROVED => \Yii::t('dlds/mlm', 'Approved'),
+            self::COMMISSION_STATUS_READY_TO_PAY => \Yii::t('dlds/mlm', 'Ready to pay'),
+            self::COMMISSION_STATUS_REQUESTED => \Yii::t('dlds/mlm', 'Requested'),
+            self::COMMISSION_STATUS_PAID => \Yii::t('dlds/mlm', 'Paid'),
         ];
     }
 
@@ -584,15 +604,15 @@ class Mlm extends \yii\base\Component {
      */
     protected function substractBetasFromMainParticipant()
     {
-        $betas = $this->commissionsHolder->getSum(self::COMMISSION_BETA);
+        $betas = $this->commissionsHolder->getSum(self::COMMISSION_TYPE_BETA);
 
-        $commission = $this->commissionsHolder->getCommission(self::COMMISSION_TREE, $this->mainParticipantId);
+        $commission = $this->commissionsHolder->getCommission(self::COMMISSION_TYPE_TREE, $this->getMainParticipant()->primaryKey);
 
         if ($commission)
         {
             $commission->setAmount($commission->getAmount() - $betas);
 
-            $this->commissionsHolder->updateCommission(self::COMMISSION_TREE, $this->mainParticipantId, $commission);
+            $this->commissionsHolder->updateCommission(self::COMMISSION_TYPE_TREE, $this->getMainParticipant()->primaryKey, $commission);
         }
     }
 
@@ -663,6 +683,52 @@ class Mlm extends \yii\base\Component {
     private function calculateCommissionValue($sourceAmount, $commissionAmount)
     {
         return $this->refineCommissionValue($sourceAmount * $commissionAmount / 100);
+    }
+
+    /**
+     * Retrieves participant tree profit
+     * @param MlmParticipantInterface $participant
+     * @param float $defaultFee default fee
+     * @param boolean $incVat indicates if vat will be included
+     * @param boolean $maxProfit indicates if maximal profit will be calculated
+     * or only currently available profit means unpaid profit
+     * @return float tree profit
+     */
+    private function calculateTreeProfit(MlmParticipantInterface $participant, $defaultFee, $incVat = true, $maxProfit = true)
+    {
+        $profit = 0;
+
+        if ($participant->canTakeTreeCommission($this->getTreeCommissionRuleMaxLevel()))
+        {
+            $juniors = $participant->getQueryJuniors($this->getTreeCommissionRuleMaxLevel(), true)->all();
+        }
+        else
+        {
+            $juniors = $participant->getQueryJuniors($this->treeTresholdBasicRule, true)->all();
+        }
+
+        $participantDepth = $participant->getTreeDepth();
+
+        foreach ($juniors as $junior)
+        {
+            if ($maxProfit || !$junior->hasFeePaid())
+            {
+                $level = $junior->getTreeDepth() - $participantDepth;
+
+                $juniorPersonalFee = $junior->getPersonalFee($incVat);
+
+                if ($juniorPersonalFee)
+                {
+                    $profit += $this->calculateCommissionValue($juniorPersonalFee, $this->getParticipantTreeCommissionAmount($participant, $level));
+                }
+                else
+                {
+                    $profit += $this->calculateCommissionValue($defaultFee, $this->getParticipantTreeCommissionAmount($participant, $level));
+                }
+            }
+        }
+
+        return $profit;
     }
 
     /**
