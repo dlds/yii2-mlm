@@ -11,7 +11,15 @@ interface MlmParticipantInterface {
     public function getTreeDepth();
 
     /**
-     * Retrieves participant jniors query
+     * Retrieves participant commissions query
+     * @param MlmCommissionInterface $model
+     * @param int $status given status commissions will be filtered by
+     * @return \yii\db\ActiveQuery current participant commissions query
+     */
+    public function getQueryCommissions(MlmCommissionInterface $model, $status = false);
+
+    /**
+     * Retrieves participant juniors query
      * @param int $depth maximal depth
      * @param boolean $profitable indicates if only profitables juniors will be retrieved
      * @return \yii\db\ActiveQuery current participant juniors query

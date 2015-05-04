@@ -3,40 +3,98 @@
 namespace dlds\mlm\handlers;
 
 use dlds\mlm\Mlm;
+use dlds\mlm\interfaces\MlmParticipantInterface;
+use dlds\mlm\interfaces\MlmCommissionInterface;
 use dlds\mlm\interfaces\MlmCommissionsHolderInterface;
 use dlds\mlm\handlers\MlmResultHandler;
 
 class MlmCommissionHandler {
 
     /**
-     * Saving results
+     * Enroll results
      */
-    const SAVE_ALL = 10;
-    const SAVE_PARTIAL = 20;
-    const SAVE_NONE = 30;
+    const RESULT_NONE = 0;
+    const RESULT_PARTIAL_DONE = 50;
+    const RESULT_ALL_DONE = 100;
 
     /**
-     * Process commissions save
+     * Tries to request ready commissions
+     * @param MlmParticipantInterface $participant
+     * @param MlmCommissionInterface $commission
+     */
+    public static function request(MlmParticipantInterface $participant, MlmCommissionInterface $model)
+    {
+        $query = $participant->getQueryCommissions($model, Mlm::COMMISSION_STATUS_READY_TO_PAY);
+
+        return self::requestAll($query);
+    }
+
+    /**
+     * Saves all commissions held in given holder
+     * @param MlmCommissionsHolderInterface $holder
+     * @return array first element as boolean - TRUE if all commissions were succesfully saved, FALSE otherwise
+     * second element holds saved commissions
+     */
+    private static function requestAll(\yii\db\ActiveQueryInterface $query)
+    {
+        $allCommissions = $query->all();
+
+        $result = self::RESULT_NONE;
+
+        // go through commissions
+        foreach ($allCommissions as $commission)
+        {
+            if ($commission instanceof MlmCommissionInterface)
+            {
+                // set commissions status to requested
+                $commission->setStatus(Mlm::COMMISSION_STATUS_REQUESTED);
+
+                if ($commission->save())
+                {
+                    // set result to ALL DONE if no commission was saved before
+                    // if there is any commission saved before let result to be unchanged
+                    $result = (self::RESULT_NONE === $result) ? self::RESULT_ALL_DONE : $result;
+                }
+                else
+                {
+                    // set result to PARTIAL DONE if some commission was saved before
+                    // if there is no commissions saved before let result to be NONE
+                    $result = (self::RESULT_NONE !== $result) ? self::RESULT_PARTIAL_DONE : $result;
+                }
+            }
+            else
+            {
+                // set result to PARTIAL DONE if some commission was saved before
+                // if there is no commissions saved before let result to be NONE
+                $result = (self::RESULT_NONE !== $result) ? self::RESULT_PARTIAL_DONE : $result;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Enrolls given commissions to DB
      * @param MlmCommissionsHolderInterface commissions holder
      */
-    public static function process(MlmCommissionsHolderInterface $holder)
+    public static function enroll(MlmCommissionsHolderInterface $holder)
     {
         // check commission sum overflow
         if ($holder->getSum() > Mlm::TOTAL_AMOUNT)
         {
             // set generating error
-            return self::error($holder, Mlm::RESULT_ERROR_OVERFLOW);
+            return self::enrollError($holder, Mlm::RESULT_ERROR_OVERFLOW);
         }
 
         // check undivided commission
         if ($holder->getSum() < Mlm::TOTAL_AMOUNT)
         {
             // set generating success wit result "WARNING UNDIVIDED"
-            return self::success($holder, Mlm::RESULT_WARNING_UNDIVIDED);
+            return self::enrollSuccess($holder, Mlm::RESULT_WARNING_UNDIVIDED);
         }
 
         // set generating success
-        return self::success($holder, Mlm::RESULT_SUCCESS);
+        return self::enrollSuccess($holder, Mlm::RESULT_SUCCESS);
     }
 
     /**
@@ -44,13 +102,13 @@ class MlmCommissionHandler {
      * @param MlmCommissionsHolderInterface $holder
      * @param int $result generator result
      */
-    private static function error(MlmCommissionsHolderInterface $holder, $result)
+    private static function enrollError(MlmCommissionsHolderInterface $holder, $result)
     {
         // get commission overview to be logged
         $overview = $holder->getCommissionsOverview();
 
         // log generating and saving result
-        MlmResultHandler::logResult($result, self::SAVE_NONE, $overview);
+        MlmResultHandler::logResult($result, self::RESULT_NONE, $overview);
 
         // notify developer about error
         MlmResultHandler::notify($result, $overview);
@@ -61,10 +119,10 @@ class MlmCommissionHandler {
      * @param MlmCommissionsHolderInterface $holder
      * @param int $generatingResult generator result
      */
-    private static function success(MlmCommissionsHolderInterface $holder, $generatingResult)
+    private static function enrollSuccess(MlmCommissionsHolderInterface $holder, $generatingResult)
     {
         // try to save all commissions
-        $savingResult = self::save($holder);
+        $savingResult = self::enrollAllHeld($holder);
 
         // get commission overview to be logged
         $overview = $holder->getCommissionsOverview();
@@ -73,7 +131,7 @@ class MlmCommissionHandler {
         MlmResultHandler::logResult($generatingResult, $savingResult, $overview);
 
         // if any of commission was not saved notify developer
-        if (self::SAVE_ALL !== $savingResult)
+        if (self::RESULT_ALL_DONE !== $savingResult)
         {
             MlmResultHandler::notify(Mlm::RESULT_SUCCESS_PARTIAL, $overview);
         }
@@ -85,11 +143,11 @@ class MlmCommissionHandler {
      * @return array first element as boolean - TRUE if all commissions were succesfully saved, FALSE otherwise
      * second element holds saved commissions
      */
-    private static function save(MlmCommissionsHolderInterface $holder)
+    private static function enrollAllHeld(MlmCommissionsHolderInterface $holder)
     {
         $allCommissions = $holder->getCommissions();
 
-        $result = self::SAVE_NONE;
+        $result = self::RESULT_NONE;
 
         // go through all held commissions
         foreach ($allCommissions as $commissions)
@@ -98,21 +156,17 @@ class MlmCommissionHandler {
             foreach ($commissions as $commission)
             {
                 // try to save given commission
-                if (!$commission->save())
+                if ($commission->save())
                 {
-                    // set result to partial success if some commission was saved before
-                    if (self::SAVE_NONE !== $result)
-                    {
-                        $result = self::SAVE_PARTIAL;
-                    }
+                    // set result to ALL DONE if no commission was saved before
+                    // if there is any commission saved before let result to be unchanged
+                    $result = (self::RESULT_NONE === $result) ? self::RESULT_ALL_DONE : $result;
                 }
                 else
                 {
-                    // set result to all saved when there is not any unsuccesfull save
-                    if (self::SAVE_NONE === $result)
-                    {
-                        $result = self::SAVE_ALL;
-                    }
+                    // set result to PARTIAL DONE if some commission was saved before
+                    // if there is no commissions saved before let result to be NONE
+                    $result = (self::RESULT_NONE !== $result) ? self::RESULT_PARTIAL_DONE : $result;
                 }
             }
         }

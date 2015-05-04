@@ -11,6 +11,12 @@ interface MlmCommissionInterface {
     public function setType($type);
 
     /**
+     * Sets commission status
+     * @param int $status given status
+     */
+    public function setStatus($status);
+
+    /**
      * Sets commission amount as percent
      * @param float $amount given percents
      */
@@ -33,6 +39,12 @@ interface MlmCommissionInterface {
      * @return int type
      */
     public function getType();
+
+    /**
+     * Retrieves commission status
+     * @return int status
+     */
+    public function getStatus();
 
     /**
      * Retrieves commission amount as percent
