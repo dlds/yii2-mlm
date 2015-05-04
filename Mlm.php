@@ -9,6 +9,8 @@ namespace dlds\mlm;
 
 use yii\helpers\ArrayHelper;
 use dlds\mlm\interfaces\MlmParticipantInterface;
+use dlds\mlm\interfaces\MlmCommissionInterface;
+use dlds\mlm\interfaces\MlmCommissionSourceInterface;
 
 /**
  * This is the main class of the dlds\mlm component that should be registered as an application component.
@@ -187,11 +189,23 @@ class Mlm extends \yii\base\Component {
     }
 
     /**
+     * Try to set participant's commissions ready to pay
+     * @param MlmParticipantInterface $participant given participant requesting commissions
+     * @param MlmCommissionInterface $commission commission model
+     */
+    public function requestCommissions(MlmParticipantInterface $participant, MlmCommissionInterface $commission)
+    {
+        // put participant & commission model to be processed by handler
+        // request method which tries to set ready commissions as requested
+        return handlers\MlmCommissionHandler::request($participant, $commission);
+    }
+
+    /**
      * Run commissions generator based on module setting
      * @param \dlds\mlm\interfaces\MlmCommissionSourceInterface $source given source commission will be generated from
      * @param \dlds\mlm\interfaces\MlmCommissionInterface $model given commission model which will be populated
      */
-    public function generateCommissions(interfaces\MlmCommissionSourceInterface $source, interfaces\MlmCommissionInterface $model)
+    public function generateCommissions(MlmCommissionSourceInterface $source, MlmCommissionInterface $model)
     {
         // get participant of given source
         $participant = $source->getParticipant();
@@ -243,10 +257,12 @@ class Mlm extends \yii\base\Component {
             $this->commissionsHolder->addCommissions(handlers\MlmUndividedCommissionHandler::create($source, $model), self::COMMISSION_TYPE_UNDIVIDED);
 
             // put current commissions holder to be processed by handler - all commissions held in holder will be saved
-            handlers\MlmCommissionHandler::process($this->commissionsHolder);
+            $result = handlers\MlmCommissionHandler::enroll($this->commissionsHolder);
 
             // clear current commissions holder
             $this->commissionsHolder->clear();
+
+            return $result;
         }
     }
 
