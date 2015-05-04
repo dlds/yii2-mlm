@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
 use dlds\mlm\interfaces\MlmParticipantInterface;
 use dlds\mlm\interfaces\MlmCommissionInterface;
 use dlds\mlm\interfaces\MlmCommissionSourceInterface;
+use dlds\mlm\interfaces\MlmPaymentInterface;
 
 /**
  * This is the main class of the dlds\mlm component that should be registered as an application component.
@@ -123,6 +124,11 @@ class Mlm extends \yii\base\Component {
     protected $commissionsHolder;
 
     /**
+     * @var interfaces\MlmPaymentsHolderInterface current payments holder
+     */
+    protected $paymentsHolder;
+
+    /**
      * @var MlmParticipantInterface main participant (used for unspreaded commissions and to spread investors commissions)
      */
     protected $mainParticipant;
@@ -191,13 +197,41 @@ class Mlm extends \yii\base\Component {
     /**
      * Try to set participant's commissions ready to pay
      * @param MlmParticipantInterface $participant given participant requesting commissions
-     * @param MlmCommissionInterface $commission commission model
+     * @param MlmCommissionInterface $modelCommission commission model
      */
-    public function requestCommissions(MlmParticipantInterface $participant, MlmCommissionInterface $commission)
+    public function requestCommissions(MlmParticipantInterface $participant, MlmCommissionInterface $modelCommission)
     {
         // put participant & commission model to be processed by handler
         // request method which tries to set ready commissions as requested
-        return handlers\MlmCommissionHandler::request($participant, $commission);
+        return handlers\MlmCommissionHandler::request($participant, $modelCommission);
+    }
+
+    /**
+     * Generates payment for available commissions
+     * @param MlmParticipantInterface $participant
+     * @param MlmPaymentInterface $modelPayment
+     */
+    public function generatePayments(MlmCommissionInterface $modelCommission, MlmPaymentInterface $modelPayment)
+    {
+        // create new payments holder which will hold all generated payments
+        $this->paymentsHolder = new holders\BasicPaymentsHolder($modelPayment);
+
+        // find all requested commissions the payments will be generated for
+        $commissions = $modelCommission->getQuery(self::COMMISSION_STATUS_REQUESTED)->all();
+
+        // go through all commissions and create appropriate payments
+        foreach ($commissions as $commission)
+        {
+            $this->paymentsHolder->createPayment($commission);
+        }
+
+        // put current payments holder to appropriate handler
+        $result = handlers\MlmPaymentHandler::enroll($this->paymentsHolder);
+
+        // clear current holder
+        $this->paymentsHolder->clear();
+
+        return $result;
     }
 
     /**
@@ -220,7 +254,7 @@ class Mlm extends \yii\base\Component {
         if ($source->canCreateCommissions())
         {
             // create new commissions holder which will hold all generated commission
-            $this->commissionsHolder = new holders\BasicCommissionsHolder();
+            $this->commissionsHolder = new holders\BasicCommissionsHolder;
 
             // check if given commission type is disabled and should not be generated
             if (!$this->isCommissionDisabled(self::COMMISSION_TYPE_DIRECT))

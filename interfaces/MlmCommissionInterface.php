@@ -5,6 +5,14 @@ namespace dlds\mlm\interfaces;
 interface MlmCommissionInterface {
 
     /**
+     * Retrieves commissions query with specific status or type assigned
+     * @param int $status given status - commissions will be filtered by
+     * @param int $type given type - commissions will be filtered by
+     * @return \yii\db\ActiveQuery commissions query
+     */
+    public function getQuery($status = false, $type = false);
+
+    /**
      * Sets commission type
      * @param int $type given type
      */
@@ -21,6 +29,12 @@ interface MlmCommissionInterface {
      * @param float $amount given percents
      */
     public function setAmount($amount);
+
+    /**
+     * Sets payment to current commission
+     * @param MlmPaymentInterface $payment given payment
+     */
+    public function setPayment(MlmPaymentInterface $payment);
 
     /**
      * Sets commission participant means which user is assigned to take this commission
@@ -51,6 +65,12 @@ interface MlmCommissionInterface {
      * @return float commission percents
      */
     public function getAmount();
+
+    /**
+     * Gets assigned payment
+     * @return MlmPaymentInterface payment
+     */
+    public function getPayment();
 
     /**
      * Gets commission participant means which user is assigned to this commission
