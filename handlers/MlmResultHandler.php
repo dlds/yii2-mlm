@@ -42,8 +42,10 @@ class MlmResultHandler {
         // make notification only if it is enabled
         if (\Yii::$app->mlm->errorsNotifications)
         {
+            $content = var_export($overview, true);
+
             // notify developer by email
-            mail(\Yii::$app->mlm->notifyEmail, \Yii::$app->mlm->getResultMessage($resultGenerating), var_export($overview));
+            mail(\Yii::$app->mlm->notifiedEmail, \Yii::$app->mlm->getResultMessage($resultGenerating), $content);
         }
     }
 }
