@@ -73,6 +73,12 @@ interface MlmParticipantInterface {
     public function hasFeePaid();
 
     /**
+     * Indicates if participant is the main one
+     * @return boolean TRUE if yes, FALSE otherwise
+     */
+    public function isMainParticipant();
+
+    /**
      * Retrieves main participant in MLM structure
      * @return MlmParticipantInterface main participant
      */
