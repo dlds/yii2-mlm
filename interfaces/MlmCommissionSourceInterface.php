@@ -22,4 +22,10 @@ interface MlmCommissionSourceInterface {
      * @return boolean TRUE if could, otherwise FALSE
      */
     public function canCreateCommissions();
+
+    /**
+     * Retrieves rewarded participants query
+     * @return \yii\db\ActiveQuery rewarded participnats
+     */
+    public function queryRewardedParticipants();
 }
