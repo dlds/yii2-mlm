@@ -19,6 +19,12 @@ interface MlmCommissionInterface {
     public function setType($type);
 
     /**
+     * Sets commission tree level
+     * @param int $level given level
+     */
+    public function setLevel($level);
+
+    /**
      * Sets commission status
      * @param int $status given status
      */
@@ -53,6 +59,12 @@ interface MlmCommissionInterface {
      * @return int type
      */
     public function getType();
+
+    /**
+     * Retrieves commission level
+     * @return int level
+     */
+    public function getLevel();
 
     /**
      * Retrieves commission status

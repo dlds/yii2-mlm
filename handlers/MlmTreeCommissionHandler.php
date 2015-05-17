@@ -33,6 +33,7 @@ class MlmTreeCommissionHandler {
                 $clone->setParticipant($participant);
                 $clone->setAmount($amount);
                 $clone->setSource($source);
+                $clone->setLevel($level);
 
                 $commissions[$participant->primaryKey] = $clone;
             }
