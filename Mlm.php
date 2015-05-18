@@ -622,6 +622,17 @@ class Mlm extends \yii\base\Component {
     }
 
     /**
+     * Calculates commission value based on given amounts
+     * @param float $sourceAmount source amount the commission will be calculated from
+     * @param float $commissionAmount percents of commission to be used in calculation
+     * @return float commission value
+     */
+    public function calculateCommissionValue($sourceAmount, $commissionAmount)
+    {
+        return $this->refineCommissionValue($sourceAmount * $commissionAmount / 100);
+    }
+
+    /**
      * Return all possible commissions types
      */
     public static function getCommissionsTypes()
@@ -722,17 +733,6 @@ class Mlm extends \yii\base\Component {
     protected function validateLoggingConfig()
     {
         return !$this->dbLogging || $this->logTable;
-    }
-
-    /**
-     * Calculates commission value based on given amounts
-     * @param float $sourceAmount source amount the commission will be calculated from
-     * @param float $commissionAmount percents of commission to be used in calculation
-     * @return float commission value
-     */
-    private function calculateCommissionValue($sourceAmount, $commissionAmount)
-    {
-        return $this->refineCommissionValue($sourceAmount * $commissionAmount / 100);
     }
 
     /**
