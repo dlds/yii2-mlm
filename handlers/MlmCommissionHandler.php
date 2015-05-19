@@ -112,6 +112,8 @@ class MlmCommissionHandler {
 
         // notify developer about error
         MlmResultHandler::notify($result, $overview);
+
+        return self::RESULT_NONE;
     }
 
     /**
@@ -134,7 +136,11 @@ class MlmCommissionHandler {
         if (self::RESULT_ALL_DONE !== $savingResult)
         {
             MlmResultHandler::notify(Mlm::RESULT_SUCCESS_PARTIAL, $overview);
+
+            return self::RESULT_PARTIAL_DONE;
         }
+
+        return self::RESULT_ALL_DONE;
     }
 
     /**

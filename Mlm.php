@@ -92,6 +92,11 @@ class Mlm extends \yii\base\Component {
     public $commissionPrecisionRule = 3;
 
     /**
+     * @var int max decimal places of commisssoin value
+     */
+    public $keepHistory = false;
+
+    /**
      * @var string main participant
      */
     public $participantClass;
@@ -134,6 +139,11 @@ class Mlm extends \yii\base\Component {
     protected $mainParticipant;
 
     /**
+     * @var components\MlmFormatter current mlm formatter
+     */
+    protected $formatter;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -171,6 +181,20 @@ class Mlm extends \yii\base\Component {
         {
             throw new \yii\base\Exception('Commission precission rule must greater or equals 0');
         }
+    }
+
+    /**
+     * Retrieves MLM formatter instance
+     * @return components\MlmFormatter current formatter
+     */
+    public function getFormatter()
+    {
+        if (!$this->formatter)
+        {
+            $this->formatter = new components\MlmFormatter();
+        }
+
+        return $this->formatter;
     }
 
     /**
@@ -295,6 +319,15 @@ class Mlm extends \yii\base\Component {
 
             // clear current commissions holder
             $this->commissionsHolder->clear();
+
+            // check if given commission type is disabled and should not be generated
+            if ($this->keepHistory && !$this->isCommissionDisabled(self::COMMISSION_TYPE_TREE))
+            {
+                // create commissions through appropriate handler and add it to current holder
+                $this->commissionsHolder->addCommissions(handlers\MlmComissionHistoryHandler::create($source, $source->getHistoryModel()), self::COMMISSION_TYPE_TREE);
+
+                return $result && handlers\MlmCommissionHandler::enroll($this->commissionsHolder);
+            }
 
             return $result;
         }

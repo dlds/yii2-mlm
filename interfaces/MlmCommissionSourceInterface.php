@@ -28,4 +28,10 @@ interface MlmCommissionSourceInterface {
      * @return \yii\db\ActiveQuery rewarded participnats
      */
     public function queryRewardedParticipants();
+
+    /**
+     * Retrieves commission history model
+     * @return dlds\mlm\interfaces\MlmCommissionHistoryInterface $model
+     */
+    public function getHistoryModel();
 }

@@ -76,7 +76,7 @@ class BasicCommissionsHolder implements MlmCommissionsHolderInterface {
                 {
                     $overview[$key][$id] = [
                         self::OVERVIEW_CLASS => get_class($commission),
-                        self::OVERVIEW_PARTICIPANT => $commission->getParticipant()->primaryKey,
+                        self::OVERVIEW_PARTICIPANT => $commission->getParticipant() ? $commission->getParticipant()->primaryKey : null,
                         self::OVERVIEW_SOURCE => $commission->getSource()->primaryKey,
                         self::OVERVIEW_TYPE => $commission->getType(),
                         self::OVERVIEW_AMOUNT => $commission->getAmount(),
