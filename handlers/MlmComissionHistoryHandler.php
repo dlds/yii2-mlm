@@ -19,6 +19,7 @@ class MlmComissionHistoryHandler {
 
         $participants = $source->getParticipant()->getQuerySeniors(\Yii::$app->mlm->getTreeCommissionRuleMaxLevel())->all();
 
+        /* @var $participant \dlds\mlm\interfaces\MlmParticipantInterface */
         foreach ($participants as $participant)
         {
             $level = $source->getParticipant()->getTreeDepth() - $participant->getTreeDepth();
@@ -33,7 +34,15 @@ class MlmComissionHistoryHandler {
                 $clone->setAmount($amount);
                 $clone->setSource($source);
                 $clone->setLevel($level);
-                $clone->setType(Mlm::COMMISSION_TYPE_TREE);
+
+                if ($participant->isMainParticipant())
+                {
+                    $clone->setType(Mlm::COMMISSION_TYPE_BETA);
+                }
+                else
+                {
+                    $clone->setType(Mlm::COMMISSION_TYPE_TREE);
+                }
 
                 $commissions[$level] = $clone;
             }
