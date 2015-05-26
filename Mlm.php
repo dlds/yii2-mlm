@@ -326,6 +326,8 @@ class Mlm extends \yii\base\Component {
                 // create commissions through appropriate handler and add it to current holder
                 $this->commissionsHolder->addCommissions(handlers\MlmComissionHistoryHandler::create($source, $source->getHistoryModel()), self::COMMISSION_TYPE_TREE);
 
+                handlers\MlmComissionHistoryHandler::clear($source);
+
                 return $result && handlers\MlmCommissionHandler::enroll($this->commissionsHolder);
             }
 

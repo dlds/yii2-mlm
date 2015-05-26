@@ -10,7 +10,7 @@ interface MlmCommissionInterface {
      * @param int $type given type - commissions will be filtered by
      * @return \yii\db\ActiveQuery commissions query
      */
-    public function getQuery($status = false, $type = false);
+    public function getQuery($status = false, $type = false, $source = false);
 
     /**
      * Sets commission type

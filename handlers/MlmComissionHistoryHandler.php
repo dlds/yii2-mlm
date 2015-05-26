@@ -65,4 +65,18 @@ class MlmComissionHistoryHandler {
 
         return $commissions;
     }
+
+    /**
+     * Clears history for given source
+     * @param MlmCommissionSourceInterface $source
+     */
+    public static function clear(MlmCommissionSourceInterface $source)
+    {
+        $models = $source->getHistoryModel()->getQuery(false, false, $source->primaryKey)->all();
+
+        foreach ($models as $model)
+        {
+            $model->delete();
+        }
+    }
 }
