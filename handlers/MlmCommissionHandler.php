@@ -18,15 +18,18 @@ class MlmCommissionHandler {
     const RESULT_ALL_DONE = 100;
 
     /**
-     * Tries to request ready commissions
+     * Tries to move all participant commissions with status "statusFrom"
+     * into given status "statusTo"
      * @param MlmParticipantInterface $participant
      * @param MlmCommissionInterface $commission
+     * @param int $statusFrom status of commissions that will be searched
+     * @param int $statusTo status of commissions wich will be used as the new one
      */
-    public static function request(MlmParticipantInterface $participant, MlmCommissionInterface $model)
+    public static function update(MlmParticipantInterface $participant, MlmCommissionInterface $model, $statusFrom, $statusTo)
     {
-        $query = $participant->getQueryCommissions($model, Mlm::COMMISSION_STATUS_READY_TO_PAY);
+        $query = $participant->getQueryCommissions($model, $statusFrom);
 
-        return self::requestAll($query);
+        return self::updateAll($query, $statusTo);
     }
 
     /**
@@ -35,7 +38,7 @@ class MlmCommissionHandler {
      * @return array first element as boolean - TRUE if all commissions were succesfully saved, FALSE otherwise
      * second element holds saved commissions
      */
-    private static function requestAll(\yii\db\ActiveQueryInterface $query)
+    private static function updateAll(\yii\db\ActiveQueryInterface $query, $statusTo)
     {
         $allCommissions = $query->all();
 
@@ -47,7 +50,7 @@ class MlmCommissionHandler {
             if ($commission instanceof MlmCommissionInterface)
             {
                 // set commissions status to requested
-                $commission->setStatus(Mlm::COMMISSION_STATUS_REQUESTED);
+                $commission->setStatus($statusTo);
 
                 if ($commission->save())
                 {

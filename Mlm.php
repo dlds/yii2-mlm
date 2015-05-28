@@ -35,7 +35,7 @@ class Mlm extends \yii\base\Component {
      */
     const COMMISSION_STATUS_PENDING = 0;
     const COMMISSION_STATUS_APPROVED = 10;
-    const COMMISSION_STATUS_READY_TO_PAY = 15;
+    const COMMISSION_STATUS_LOCKED = 15;
     const COMMISSION_STATUS_REQUESTED = 20;
     const COMMISSION_STATUS_PAID = 30;
 
@@ -219,15 +219,39 @@ class Mlm extends \yii\base\Component {
     }
 
     /**
-     * Try to set participant's commissions ready to pay
+     * Try to set participant's locked commissions as unlocked
+     * @param MlmParticipantInterface $participant given participant requesting commissions
+     * @param MlmCommissionInterface $modelCommission commission model
+     */
+    public function unlockCommissions(MlmParticipantInterface $participant, MlmCommissionInterface $modelCommission)
+    {
+        // put participant & commission model to be processed by handler
+        // update method which tries to set locked commissions as unlocked
+        return handlers\MlmCommissionHandler::update($participant, $modelCommission, Mlm::COMMISSION_STATUS_LOCKED, Mlm::COMMISSION_STATUS_APPROVED);
+    }
+
+    /**
+     * Try to set participant's approved commissions as locked
+     * @param MlmParticipantInterface $participant given participant requesting commissions
+     * @param MlmCommissionInterface $modelCommission commission model
+     */
+    public function lockCommissions(MlmParticipantInterface $participant, MlmCommissionInterface $modelCommission)
+    {
+        // put participant & commission model to be processed by handler
+        // update method which tries to set approved commissions as locked
+        return handlers\MlmCommissionHandler::update($participant, $modelCommission, Mlm::COMMISSION_STATUS_APPROVED, Mlm::COMMISSION_STATUS_LOCKED);
+    }
+
+    /**
+     * Try to set participant's locked commissions as requested
      * @param MlmParticipantInterface $participant given participant requesting commissions
      * @param MlmCommissionInterface $modelCommission commission model
      */
     public function requestCommissions(MlmParticipantInterface $participant, MlmCommissionInterface $modelCommission)
     {
         // put participant & commission model to be processed by handler
-        // request method which tries to set ready commissions as requested
-        return handlers\MlmCommissionHandler::request($participant, $modelCommission);
+        // update method which tries to set locked commissions as requested
+        return handlers\MlmCommissionHandler::update($participant, $modelCommission, Mlm::COMMISSION_STATUS_LOCKED, Mlm::COMMISSION_STATUS_REQUESTED);
     }
 
     /**
@@ -689,7 +713,7 @@ class Mlm extends \yii\base\Component {
         return [
             self::COMMISSION_STATUS_PENDING => \Yii::t('dlds/mlm', 'Pending'),
             self::COMMISSION_STATUS_APPROVED => \Yii::t('dlds/mlm', 'Approved'),
-            self::COMMISSION_STATUS_READY_TO_PAY => \Yii::t('dlds/mlm', 'Ready to pay'),
+            self::COMMISSION_STATUS_LOCKED => \Yii::t('dlds/mlm', 'Ready to pay'),
             self::COMMISSION_STATUS_REQUESTED => \Yii::t('dlds/mlm', 'Requested'),
             self::COMMISSION_STATUS_PAID => \Yii::t('dlds/mlm', 'Paid'),
         ];
