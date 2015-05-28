@@ -29,16 +29,17 @@ class MlmCommissionHandler {
     {
         $query = $participant->getQueryCommissions($model, $statusFrom);
 
-        return self::updateAll($query, $statusTo);
+        return self::updateAll($query, $statusTo, $model->getDirtyAttributes());
     }
 
     /**
      * Saves all commissions held in given holder
      * @param MlmCommissionsHolderInterface $holder
-     * @return array first element as boolean - TRUE if all commissions were succesfully saved, FALSE otherwise
-     * second element holds saved commissions
+     * @param int $statusTo status which will be set as the new one
+     * @param array attributes additional attributes that will be set
+     * @return int result code
      */
-    private static function updateAll(\yii\db\ActiveQueryInterface $query, $statusTo)
+    private static function updateAll(\yii\db\ActiveQueryInterface $query, $statusTo, $attributes = [])
     {
         $allCommissions = $query->all();
 
@@ -51,6 +52,11 @@ class MlmCommissionHandler {
             {
                 // set commissions status to requested
                 $commission->setStatus($statusTo);
+
+                if ($attributes)
+                {
+                    $commission->setAttributes($attributes);
+                }
 
                 if ($commission->save())
                 {
