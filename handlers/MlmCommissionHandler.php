@@ -39,7 +39,7 @@ class MlmCommissionHandler {
      * @param array attributes additional attributes that will be set
      * @return int result code
      */
-    private static function updateAll(\yii\db\ActiveQueryInterface $query, $statusTo, $attributes = [])
+    public static function updateAll(\yii\db\ActiveQueryInterface $query, $statusTo, $attributes = [])
     {
         $allCommissions = $query->all();
 

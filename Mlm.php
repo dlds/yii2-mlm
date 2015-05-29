@@ -12,6 +12,7 @@ use dlds\mlm\interfaces\MlmParticipantInterface;
 use dlds\mlm\interfaces\MlmCommissionInterface;
 use dlds\mlm\interfaces\MlmCommissionSourceInterface;
 use dlds\mlm\interfaces\MlmPaymentInterface;
+use dlds\mlm\interfaces\MlmCommissionsQueryInterface;
 
 /**
  * This is the main class of the dlds\mlm component that should be registered as an application component.
@@ -216,6 +217,20 @@ class Mlm extends \yii\base\Component {
         }
 
         return $this->mainParticipant;
+    }
+
+    /**
+     * Try to set participant's locked commissions as approved
+     * @param MlmParticipantInterface $participant given participant requesting commissions
+     * @param MlmCommissionInterface $modelCommission commission model
+     */
+    public function approveCommissions(MlmCommissionsQueryInterface $query)
+    {
+        // find only commisisons with status PENDING
+        $query->hasStatus(Mlm::COMMISSION_STATUS_PENDING);
+
+        // set all found commissions as approved
+        return handlers\MlmCommissionHandler::updateAll($query, Mlm::COMMISSION_STATUS_APPROVED);
     }
 
     /**
