@@ -535,7 +535,7 @@ class Mlm extends \yii\base\Component {
      */
     public function getCommissionValue(interfaces\MlmCommissionInterface $commission, $incVat = true)
     {
-        return $this->calculateCommissionValue($commission->getSource()->getAmount($incVat), $commission->getAmount());
+        return $this->calculateCommissionValue($commission->getSource()->getAmountToSpread($incVat), $commission->getAmount());
     }
 
     /**
