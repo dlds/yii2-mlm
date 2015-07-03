@@ -11,7 +11,6 @@ use yii\helpers\ArrayHelper;
 use dlds\mlm\interfaces\MlmParticipantInterface;
 use dlds\mlm\interfaces\MlmCommissionInterface;
 use dlds\mlm\interfaces\MlmCommissionSourceInterface;
-use dlds\mlm\interfaces\MlmPaymentInterface;
 use dlds\mlm\interfaces\MlmCommissionsQueryInterface;
 
 /**
@@ -128,11 +127,6 @@ class Mlm extends \yii\base\Component {
      * @var interfaces\MlmCommissionsHolderInterface current commissions holder
      */
     protected $commissionsHolder;
-
-    /**
-     * @var interfaces\MlmPaymentsHolderInterface current payments holder
-     */
-    protected $paymentsHolder;
 
     /**
      * @var MlmParticipantInterface main participant (used for unspreaded commissions and to spread investors commissions)
@@ -267,34 +261,6 @@ class Mlm extends \yii\base\Component {
         // put participant & commission model to be processed by handler
         // update method which tries to set locked commissions as requested
         return handlers\MlmCommissionHandler::update($participant, $modelCommission, Mlm::COMMISSION_STATUS_LOCKED, Mlm::COMMISSION_STATUS_REQUESTED);
-    }
-
-    /**
-     * Generates payment for available commissions
-     * @param MlmParticipantInterface $participant
-     * @param MlmPaymentInterface $modelPayment
-     */
-    public function generatePayments(MlmCommissionInterface $modelCommission, MlmPaymentInterface $modelPayment)
-    {
-        // create new payments holder which will hold all generated payments
-        $this->paymentsHolder = new holders\BasicPaymentsHolder($modelPayment);
-
-        // find all requested commissions the payments will be generated for
-        $commissions = $modelCommission->getQuery(self::COMMISSION_STATUS_REQUESTED)->all();
-
-        // go through all commissions and create appropriate payments
-        foreach ($commissions as $commission)
-        {
-            $this->paymentsHolder->createPayment($commission);
-        }
-
-        // put current payments holder to appropriate handler
-        $result = handlers\MlmPaymentHandler::enroll($this->paymentsHolder);
-
-        // clear current holder
-        $this->paymentsHolder->clear();
-
-        return $result;
     }
 
     /**

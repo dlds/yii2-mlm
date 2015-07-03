@@ -37,12 +37,6 @@ interface MlmCommissionInterface {
     public function setAmount($amount);
 
     /**
-     * Sets payment to current commission
-     * @param MlmPaymentInterface $payment given payment
-     */
-    public function setPayment(MlmPaymentInterface $payment);
-
-    /**
      * Sets commission participant means which user is assigned to take this commission
      * @param \dlds\mlm\interfaces\MlmParticipantInterface $participant
      */
@@ -77,12 +71,6 @@ interface MlmCommissionInterface {
      * @return float commission percents
      */
     public function getAmount();
-
-    /**
-     * Gets assigned payment
-     * @return MlmPaymentInterface payment
-     */
-    public function getPayment();
 
     /**
      * Gets commission participant means which user is assigned to this commission
