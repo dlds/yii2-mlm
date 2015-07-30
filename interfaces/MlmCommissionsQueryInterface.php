@@ -22,5 +22,5 @@ interface MlmCommissionsQueryInterface {
     /**
      * Filters by given ticket order
      */
-    public function hasTicketOrder($appTicketOrder);
+    public function hasSource($source);
 }
