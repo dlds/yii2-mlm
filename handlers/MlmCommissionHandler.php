@@ -13,7 +13,8 @@ class MlmCommissionHandler {
     /**
      * Enroll results
      */
-    const RESULT_NONE = 0;
+    const RESULT_FAIL = 0;
+    const RESULT_NONE = 5;
     const RESULT_PARTIAL_DONE = 50;
     const RESULT_ALL_DONE = 100;
 
@@ -66,6 +67,7 @@ class MlmCommissionHandler {
                 }
                 else
                 {
+                    var_dump($commission->getErrors());
                     // set result to PARTIAL DONE if some commission was saved before
                     // if there is no commissions saved before let result to be NONE
                     $result = (self::RESULT_NONE !== $result) ? self::RESULT_PARTIAL_DONE : $result;
