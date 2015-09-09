@@ -67,7 +67,6 @@ class MlmCommissionHandler {
                 }
                 else
                 {
-                    var_dump($commission->getErrors());
                     // set result to PARTIAL DONE if some commission was saved before
                     // if there is no commissions saved before let result to be NONE
                     $result = (self::RESULT_NONE !== $result) ? self::RESULT_PARTIAL_DONE : $result;
