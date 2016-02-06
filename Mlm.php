@@ -25,6 +25,7 @@ class Mlm extends \yii\base\Component {
      * Commissions types
      */
     const COMMISSION_TYPE_DIRECT = 0;
+    const COMMISSION_TYPE_CUSTOM = 5;
     const COMMISSION_TYPE_TREE = 10;
     const COMMISSION_TYPE_BETA = 20;
     const COMMISSION_TYPE_ALPHA = 30;
@@ -286,6 +287,13 @@ class Mlm extends \yii\base\Component {
             $this->commissionsHolder = new holders\BasicCommissionsHolder;
 
             // check if given commission type is disabled and should not be generated
+            if (!$this->isCommissionDisabled(self::COMMISSION_TYPE_CUSTOM))
+            {
+                // create commissions through appropriate handler and add it to current holder
+                $this->commissionsHolder->addCommissions(handlers\MlmCustomCommissionHandler::create($source, $model), self::COMMISSION_TYPE_CUSTOM);
+            }
+
+            // check if given commission type is disabled and should not be generated
             if (!$this->isCommissionDisabled(self::COMMISSION_TYPE_DIRECT))
             {
                 // create commissions through appropriate handler and add it to current holder
@@ -391,20 +399,35 @@ class Mlm extends \yii\base\Component {
      * @param int $level
      * @return float commission percentage
      */
-    public function getTreeCommissionRuleAmount($level)
+    public function getTreeCommissionRuleAmount($level, MlmCommissionSourceInterface $source = null)
     {
+        $amount = 0;
+
         if ($level > 0)
         {
-            foreach ($this->treeCommissionsRules as $maxlevel => $amount)
+            foreach ($this->treeCommissionsRules as $maxlevel => $rule)
             {
                 if ($level <= $maxlevel)
                 {
-                    return $amount;
+                    $amount = $rule;
                 }
             }
         }
 
-        return 0;
+        if ($source)
+        {
+            $customRulesSum = $source->getCustomCommissionsRulesSum();
+
+            // if custom rules are defined
+            if ($customRulesSum)
+            {
+                // remove custom rules amount from TOTAL (100%) amount and calculate direct commission amount of that
+                // exmpl.: total 100% - custom 90% = available 10% => available 10% * (participant rule = 25%) = 2.5%
+                return $this->calculateCommissionValue(self::TOTAL_AMOUNT - $customRulesSum, $amount);
+            }
+        }
+
+        return $amount;
     }
 
     /**
@@ -439,6 +462,27 @@ class Mlm extends \yii\base\Component {
     }
 
     /**
+     * Retrieves custom commission participants based on module config
+     * @return array all direct commission participants in array
+     */
+    public function getCustomCommissionParticipants(MlmCommissionSourceInterface $source = null)
+    {
+        $stack = [];
+
+        foreach ($source->getCustomCommissionsRules() as $uid => $commission)
+        {
+            $participant = \Yii::createObject($this->participantClass)->findOne($uid);
+
+            if ($participant)
+            {
+                $stack[$uid] = $participant;
+            }
+        }
+
+        return $stack;
+    }
+
+    /**
      * Retrieves current undivided commission amount
      * @return float undivided commission amount
      */
@@ -452,9 +496,22 @@ class Mlm extends \yii\base\Component {
      * after substracting tree level commission percents
      * @return type
      */
-    public function getDirectCommissionAvailableToSpread()
+    public function getDirectCommissionAvailableToSpread(MlmCommissionSourceInterface $source = null)
     {
-        return (self::TOTAL_AMOUNT - $this->getTreeCommissionsRulesSum());
+        if ($source)
+        {
+            $customRulesSum = $source->getCustomCommissionsRulesSum();
+
+            // if custom rules are defined
+            if ($customRulesSum)
+            {
+                // remove custom rules amount from TOTAL (100%) amount and calculate direct commission amount of that
+                // exmpl.: total 100% - custom 90% = available 10% => available 10% * (direct rule - tree rules sum = 50%) = 5%
+                return $this->calculateCommissionValue(self::TOTAL_AMOUNT - $customRulesSum, (self::TOTAL_AMOUNT - $this->getTreeCommissionsRulesSum()));
+            }
+        }
+
+        return self::TOTAL_AMOUNT - $this->getTreeCommissionsRulesSum();
     }
 
     /**
@@ -545,11 +602,11 @@ class Mlm extends \yii\base\Component {
      * @param float $amount given amount
      * @return int
      */
-    public function getParticipantTreeCommissionAmount(MlmParticipantInterface $participant, $level)
+    public function getParticipantTreeCommissionAmount(MlmParticipantInterface $participant, $level, MlmCommissionSourceInterface $source = null)
     {
         if ($participant->canTakeTreeCommission($level))
         {
-            return $this->getTreeCommissionRuleAmount($level);
+            return $this->getTreeCommissionRuleAmount($level, $source);
         }
 
         return 0;
@@ -560,11 +617,21 @@ class Mlm extends \yii\base\Component {
      * @param MlmParticipantInterface $participant given participant
      * @return float commission percentage
      */
-    public function getParticipantDirectCommissionAmount(MlmParticipantInterface $participant)
+    public function getParticipantDirectCommissionAmount(MlmParticipantInterface $participant, MlmCommissionSourceInterface $source)
     {
-        $available = $this->getDirectCommissionAvailableToSpread();
+        $available = $this->getDirectCommissionAvailableToSpread($source);
 
         return $this->calculateCommissionValue($available, ArrayHelper::getValue($this->directCommissionsRules, $participant->primaryKey, 0));
+    }
+
+    /**
+     * Retrieves custom commission percentage for given participant based on given source
+     * @param MlmParticipantInterface $participant given participant
+     * @return float commission percentage
+     */
+    public function getParticipantCustomCommissionAmount(MlmParticipantInterface $participant, MlmCommissionSourceInterface $source)
+    {
+        return $source->getCustomCommissionRuleAmount($participant);
     }
 
     /**
@@ -607,6 +674,15 @@ class Mlm extends \yii\base\Component {
     public function getHeldDirectCommissions()
     {
         return $this->commissionsHolder->getCommissions(self::COMMISSION_TYPE_DIRECT);
+    }
+
+    /**
+     * Retrieves currently held custom commissions in commission holder
+     * @return array held direct commissions
+     */
+    public function getHeldCustomCommissions()
+    {
+        return $this->commissionsHolder->getCommissions(self::COMMISSION_TYPE_CUSTOM);
     }
 
     /**
@@ -679,6 +755,7 @@ class Mlm extends \yii\base\Component {
     {
         return [
             self::COMMISSION_TYPE_DIRECT => \Yii::t('dlds/mlm', 'Direct commission'),
+            self::COMMISSION_TYPE_CUSTOM => \Yii::t('dlds/mlm', 'Custom commission'),
             self::COMMISSION_TYPE_TREE => \Yii::t('dlds/mlm', 'Tree commission'),
             self::COMMISSION_TYPE_BETA => \Yii::t('dlds/mlm', 'Beta commission'),
             self::COMMISSION_TYPE_ALPHA => \Yii::t('dlds/mlm', 'Alpha commission'),

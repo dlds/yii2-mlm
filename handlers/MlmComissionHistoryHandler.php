@@ -24,7 +24,7 @@ class MlmComissionHistoryHandler {
         {
             $level = $source->getParticipant()->getTreeDepth() - $participant->getTreeDepth();
 
-            $amount = \Yii::$app->mlm->getParticipantTreeCommissionAmount($participant, $level);
+            $amount = \Yii::$app->mlm->getParticipantTreeCommissionAmount($participant, $level, $source);
 
             if ($amount)
             {

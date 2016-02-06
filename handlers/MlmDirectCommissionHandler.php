@@ -22,7 +22,7 @@ class MlmDirectCommissionHandler {
 
         foreach ($participants as $participant)
         {
-            $amount = \Yii::$app->mlm->getParticipantDirectCommissionAmount($participant);
+            $amount = \Yii::$app->mlm->getParticipantDirectCommissionAmount($participant, $source);
 
             if ($amount)
             {

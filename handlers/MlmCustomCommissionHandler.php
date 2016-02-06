@@ -6,25 +6,23 @@ use dlds\mlm\Mlm;
 use dlds\mlm\interfaces\MlmCommissionSourceInterface;
 use dlds\mlm\interfaces\MlmCommissionInterface;
 
-class MlmTreeCommissionHandler {
+class MlmCustomCommissionHandler {
 
     /**
-     * Created direct commissions based on given commission source
+     * Created custom commissions based on given commission source
      * @param MlmCommissionSourceInterface $source given source that commission will be generated from
      */
     public static function create(MlmCommissionSourceInterface $source, MlmCommissionInterface $model)
     {
         $commissions = [];
 
-        $model->setType(Mlm::COMMISSION_TYPE_TREE);
+        $model->setType(Mlm::COMMISSION_TYPE_CUSTOM);
 
-        $participants = $source->getParticipant()->getQuerySeniors(\Yii::$app->mlm->getTreeCommissionRuleMaxLevel())->all();
+        $participants = \Yii::$app->mlm->getCustomCommissionParticipants($source);
 
         foreach ($participants as $participant)
         {
-            $level = $source->getParticipant()->getTreeDepth() - $participant->getTreeDepth();
-
-            $amount = \Yii::$app->mlm->getParticipantTreeCommissionAmount($participant, $level, $source);
+            $amount = \Yii::$app->mlm->getParticipantCustomCommissionAmount($participant, $source);
 
             if ($amount)
             {
@@ -33,7 +31,6 @@ class MlmTreeCommissionHandler {
                 $clone->setParticipant($participant);
                 $clone->setAmount($amount);
                 $clone->setSource($source);
-                $clone->setLevel($level);
 
                 $commissions[$participant->primaryKey] = $clone;
             }

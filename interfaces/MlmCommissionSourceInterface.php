@@ -18,6 +18,23 @@ interface MlmCommissionSourceInterface {
     public function getParticipant();
 
     /**
+     * Retrieves custom commissions rules for source
+     */
+    public function getCustomCommissionsRules();
+
+    /**
+     * Retrieves custom commissions rules for source
+     */
+    public function getCustomCommissionsRulesSum();
+
+    /**
+     * Retrieves custom commission rule amount
+     * @param MlmParticipantInterface $participant
+     * @return float
+     */
+    public function getCustomCommissionRuleAmount(MlmParticipantInterface $participant);
+
+    /**
      * Indicates if commissions could be created
      * @return boolean TRUE if could, otherwise FALSE
      */
