@@ -407,9 +407,10 @@ class Mlm extends \yii\base\Component {
         {
             foreach ($this->treeCommissionsRules as $maxlevel => $rule)
             {
-                if ($level <= $maxlevel)
+                if ($amount === 0 && $level <= $maxlevel)
                 {
                     $amount = $rule;
+                    break;
                 }
             }
         }
