@@ -37,6 +37,33 @@ class MlmTreeCommissionHandler {
 
                 $commissions[$participant->primaryKey] = $clone;
             }
+            elseif (!\Yii::$app->mlm->keepNotAssignedCommission)
+            {
+                $mainParticipant = \Yii::$app->mlm->getMainParticipant();
+
+                $amount = \Yii::$app->mlm->getParticipantTreeCommissionAmount($mainParticipant, $level, $source);
+
+                if ($amount)
+                {
+                    if (!isset($commissions[$mainParticipant->primaryKey]))
+                    {
+                        $clone = clone $model;
+
+                        $clone->setParticipant($mainParticipant);
+                        $clone->setAmount($amount);
+                        $clone->setSource($source);
+                        $clone->setLevel($level);
+                        $clone->setType(Mlm::COMMISSION_TYPE_TREE_NOT_ASSIGNED);
+
+                        $commissions[$mainParticipant->primaryKey] = $clone;
+                    }
+                    else
+                    {
+                        $currentAmount = $commissions[$mainParticipant->primaryKey]->getAmount();
+                        $commissions[$mainParticipant->primaryKey]->setAmount($currentAmount + $amount);
+                    }
+                }
+            }
         }
 
         return $commissions;

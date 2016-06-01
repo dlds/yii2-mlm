@@ -27,6 +27,7 @@ class Mlm extends \yii\base\Component {
     const COMMISSION_TYPE_DIRECT = 0;
     const COMMISSION_TYPE_CUSTOM = 5;
     const COMMISSION_TYPE_TREE = 10;
+    const COMMISSION_TYPE_TREE_NOT_ASSIGNED = 15;
     const COMMISSION_TYPE_BETA = 20;
     const COMMISSION_TYPE_ALPHA = 30;
     const COMMISSION_TYPE_UNDIVIDED = 100;
@@ -123,6 +124,12 @@ class Mlm extends \yii\base\Component {
      * @var string notified email when error occures
      */
     public $notifiedEmail = false;
+
+    /**
+     * @var boolean indicates if commissions which can't be assigned (user is
+     * not eligible to take it) will be kept or spread to investors
+     */
+    public $keepNotAssignedCommission = false;
 
     /**
      * @var interfaces\MlmCommissionsHolderInterface current commissions holder
