@@ -67,8 +67,8 @@ class Mlm extends \yii\base\Component
     public function init()
     {
         // validates class that earns rewards & class that generates rewards
-        $this->validateClsParticipant();
-        $this->validateClsSubject();
+        //$this->validateClsParticipant();
+        //$this->validateClsSubject();
 
         // validates rewards classes
         $this->validateClsRewardBasic();
@@ -79,7 +79,7 @@ class Mlm extends \yii\base\Component
     }
 
     /**
-     * 
+     *
      */
     public function autorun()
     {
@@ -87,6 +87,17 @@ class Mlm extends \yii\base\Component
         // 2. create investment commissions
         // 3. withdraw locked commisison
         die('MLM autorun done');
+    }
+
+    public function calcReward($amount, $line)
+    {
+        $rule = ArrayHelper::getValue($this->rules, $line, 0);
+
+        if (!$rule) {
+            return 0;
+        }
+
+        return $amount * ($rule / 100);
     }
 
     /**
@@ -103,7 +114,7 @@ class Mlm extends \yii\base\Component
         $object = \Yii::createObject($this->clsParticipant);
 
         if (!$object instanceof MlmParticipantInterface) {
-            throw new \yii\base\Exception('Participant class has to implement %s', StringHelper::basename(MlmParticipantInterface::class));
+            throw new \yii\base\Exception(sprintf('Participant class has to implement %s', StringHelper::basename(MlmParticipantInterface::class)));
         }
     }
 
@@ -121,7 +132,7 @@ class Mlm extends \yii\base\Component
         $object = \Yii::createObject($this->clsRewardBasic);
 
         if (!$object instanceof MlmRewardBasicInterface) {
-            throw new \yii\base\Exception('Reward Basic class has to implement %s', StringHelper::basename(MlmRewardBasicInterface::class));
+            throw new \yii\base\Exception(sprintf('Reward Basic class has to implement %s', StringHelper::basename(MlmRewardBasicInterface::class)));
         }
     }
 
@@ -139,7 +150,7 @@ class Mlm extends \yii\base\Component
         $object = \Yii::createObject($this->clsRewardExtra);
 
         if (!$object instanceof MlmRewardExtraInterface) {
-            throw new \yii\base\Exception('Participant class has to implement %s', StringHelper::basename(MlmRewardExtraInterface::class));
+            throw new \yii\base\Exception(sprintf('Participant class has to implement %s', StringHelper::basename(MlmRewardExtraInterface::class)));
         }
     }
 
@@ -157,7 +168,7 @@ class Mlm extends \yii\base\Component
         $object = \Yii::createObject($this->clsSubject);
 
         if (!$object instanceof MlmSubjectInterface) {
-            throw new \yii\base\Exception('Subject class has to implement %s', StringHelper::basename(MlmSubjectInterface::class));
+            throw new \yii\base\Exception(sprintf('Subject class has to implement %s', StringHelper::basename(MlmSubjectInterface::class)));
         }
     }
 
