@@ -6,6 +6,36 @@ interface MlmRewardInterface
 {
 
     /**
+     * Cretes reward
+     * @return boolean
+     */
+    public function mlmCreate();
+
+    /**
+     * Sets reward owner
+     * @param MlmParticipantInterface $participant
+     */
+    public function mlmSetOwner(MlmParticipantInterface $participant);
+
+    /**
+     * Sets reward subject
+     * @param MlmSubjectInterface $subject
+     */
+    public function mlmSetSubject(MlmSubjectInterface $subject);
+
+    /**
+     * Sets reward value
+     * @param int $value
+     */
+    public function mlmSetValue($value);
+
+    /**
+     * Sets reward level
+     * @param int $lvl
+     */
+    public function mlmSetLevel($lvl);
+
+    /**
      * Retrieves reward entry final percent
      * ---
      * When reward is 5% than 0.05 should be retrieved if $asDecimal is true
