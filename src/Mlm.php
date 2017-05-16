@@ -61,6 +61,11 @@ class Mlm extends \yii\base\Component
     public $clsSubjects = [];
 
     /**
+     * @var bool
+     */
+    public $isActive = true;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -110,6 +115,10 @@ class Mlm extends \yii\base\Component
      */
     public function reward(MlmSubjectInterface $subject)
     {
+        if (!$this->isActive) {
+            return false;
+        }
+
         if ($subject->mlmCanRewardByBasic($subject)) {
             $this->rewardBasic($subject);
         }
