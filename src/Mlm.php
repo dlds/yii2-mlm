@@ -41,6 +41,11 @@ class Mlm extends \yii\base\Component
     public $limitRules = 100;
 
     /**
+     * @var float maximal allowed rules %
+     */
+    public $delayPending = 3600;
+
+    /**
      * @var string participant class
      */
     public $clsParticipant;
@@ -66,6 +71,16 @@ class Mlm extends \yii\base\Component
     public $isActive = true;
 
     /**
+     * @var string
+     */
+    public $useKey;
+
+    /**
+     * @var string
+     */
+    protected static $id = 'mlm';
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -80,6 +95,18 @@ class Mlm extends \yii\base\Component
 
         // validates rewards generation rules
         $this->validateRules();
+
+        if ($this->useKey) {
+            static::$id = $this->useKey;
+        }
+    }
+
+    /**
+     * @return Mlm
+     */
+    public static function instance()
+    {
+        return \Yii::$app->get(static::$id);
     }
 
     /**

@@ -9,6 +9,7 @@
 namespace dlds\mlm\components\helpers;
 
 use dlds\mlm\components\interfaces\MlmParticipantInterface;
+use dlds\mlm\Mlm;
 
 /**
  * This is the main class of the dlds\mlm component that should be registered as an application component.
@@ -25,33 +26,10 @@ class MlmParticipantHelper
      */
     public static function findMain()
     {
-        if (!$this->mainParticipant) {
-            $object = \Yii::createObject($this->participantClass);
+        $class = Mlm::instance()->clsParticipant;
 
-            if (!$object instanceof MlmParticipantInterface) {
-                throw new \yii\base\Exception('Mlm Participant Class has to implement MlmParticipantInterface');
-            }
-
-            $this->mainParticipant = $object::mlmParticipantGeneral();
-        }
-
-        return $this->mainParticipant;
+        return call_user_func_array([$class, 'mlmMainParticipant']);
     }
 
-    /**
-     * Indicates if user is main participant in MLM tree
-     * this means user is the first marketer
-     * @return boolean TRUE if use is actually main praticipant otherwise FALSE
-     */
-    public static function isMain(MlmParticipantInterface $participant)
-    {
-        $main = static::findMain();
-
-        if (!$main) {
-            return false;
-        }
-
-        return static::main();
-    }
 
 }
