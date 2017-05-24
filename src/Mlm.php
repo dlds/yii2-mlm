@@ -41,7 +41,7 @@ class Mlm extends \yii\base\Component
     public $limitRules = 100;
 
     /**
-     * @var float maximal allowed rules %
+     * @var int approce/deny delay in seconds
      */
     public $delayPending = 3600;
 
