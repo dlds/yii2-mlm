@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @author     Jirka Svoboda <code@svobik.com>
+ * @copyright  2017 © svobik.com
+ * @license    https://www.svobik.com/license.md
+ * @timestamp  31/05/2017 12:43
+ */
+
+use yii\helpers\ArrayHelper;
+
+return ArrayHelper::merge(
+    require(__DIR__ . '/main.php'),
+    require(__DIR__ . '/main-local.php'),
+    require(__DIR__ . '/test.php'),
+    [
+        // custom tests configuration goes here
+    ]
+);

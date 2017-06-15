@@ -1,0 +1,37 @@
+@startuml
+
+start
+
+:Invoke basic rewards;
+
+if(is rewarding disabled) then (Yes)
+    stop
+endif
+
+:Load subject owner;
+
+if(is owner empty) then (Yes)
+    stop
+endif;
+
+:Load RULES sum;
+
+while(RULE for LVL is available)
+
+:Load ancestor;
+
+if(ancestor has specific RULE for LVL) then (Yes)
+    :Load specific RULE;
+endif
+
+if(RULE for LVL is valid) then (Yes)
+
+    :Create reward;
+
+endif
+
+endwhile
+
+end
+
+@enduml

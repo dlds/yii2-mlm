@@ -8,11 +8,17 @@
 
 namespace dlds\mlm;
 
+use dlds\mlm\helpers\MlmSubjectFacade;
+use dlds\mlm\helpers\MlmValueHelper;
+use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
+use dlds\mlm\kernel\interfaces\MlmRewardInterface;
+use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
+use dlds\mlm\kernel\MlmPocket;
+use dlds\mlm\kernel\patterns\facades\MlmParticipantFacade;
+use dlds\mlm\kernel\patterns\facades\MlmRewardFacade;
+use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
-use dlds\mlm\components\interfaces\MlmParticipantInterface;
-use dlds\mlm\components\interfaces\MlmSubjectInterface;
-use dlds\mlm\components\interfaces\MlmRewardInterface;
 
 /**
  * This is the main class of the dlds\mlm component that should be registered as an application component.
@@ -31,6 +37,12 @@ class Mlm extends \yii\base\Component
     const RW_STATUS_DENIED = 'denied';
 
     /**
+     * Value rounding
+     */
+    const MLM_ROUND_UP = 'mlm_round_up';
+    const MLM_ROUND_DOWN = 'mlm_round_down';
+
+    /**
      * @var array
      */
     public $rules = [];
@@ -44,6 +56,28 @@ class Mlm extends \yii\base\Component
      * @var int approce/deny delay in seconds
      */
     public $delayPending = 3600;
+
+    /**
+     * @var int decimal numbers rounding precision
+     */
+    public $roundPrecision = 4;
+
+    /**
+     * MLM values rounding mode
+     * ---
+     * Special mode Mlm::MLM_ROUND_DOWN or Mlm::MLM_ROUND_UP can be used
+     * or default php round() method modes.
+     * ---
+     * @see http://php.net/manual/en/function.round.php
+     * ---
+     * @var int decimal numbers rounding mode
+     */
+    public $roundMode = self::MLM_ROUND_DOWN;
+
+    /**
+     * @var bool indicates if rewards with value = 0 should be skipped
+     */
+    public $skipWorthlessRewards = true;
 
     /**
      * @var string participant class
@@ -61,9 +95,20 @@ class Mlm extends \yii\base\Component
     public $clsRewardExtra;
 
     /**
+     * @var string custom reward class
+     */
+    public $clsRewardCustom;
+
+    /**
      * @var array registered rewards sources classes
      */
     public $clsSubjects = [];
+
+    /**
+     * Status aliases
+     * @var array
+     */
+    public $alsStatuses = [];
 
     /**
      * @var bool
@@ -85,6 +130,18 @@ class Mlm extends \yii\base\Component
      */
     public function init()
     {
+        $this->inspect();
+
+        if ($this->useKey) {
+            static::$id = $this->useKey;
+        }
+    }
+
+    /**
+     * Inspects module configuration
+     */
+    public function inspect()
+    {
         // validates class that earns rewards & class that generates rewards
         $this->validateClsParticipant();
         $this->validateClsSubject();
@@ -95,10 +152,6 @@ class Mlm extends \yii\base\Component
 
         // validates rewards generation rules
         $this->validateRules();
-
-        if ($this->useKey) {
-            static::$id = $this->useKey;
-        }
     }
 
     /**
@@ -110,7 +163,7 @@ class Mlm extends \yii\base\Component
     }
 
     /**
-     * Autorun
+     * Automatically runs regularly actions (cron shortcutł)
      */
     public function autorun()
     {
@@ -120,208 +173,242 @@ class Mlm extends \yii\base\Component
         die('MLM autorun done');
     }
 
-    /**
-     * Calculates reward amount based on given source amount and level
-     * @param $source
-     * @param $lvl
-     * @return float
-     */
-    public function calc($source, $lvl)
-    {
-        $rule = ArrayHelper::getValue($this->rules, $lvl, 0);
-
-        if (!$rule) {
-            return 0;
-        }
-
-        return $source * ($rule / 100);
-    }
+    // <editor-fold defaultstate="collapsed" desc="Mlm Reward Methods">
 
     /**
+     * Runs generating of all types of rewards
      * @param MlmSubjectInterface $subject
+     * @return bool
      */
-    public function reward(MlmSubjectInterface $subject)
+    public function createRewards(MlmSubjectInterface $subject)
     {
         if (!$this->isActive) {
             return false;
         }
 
-        if ($subject->mlmCanRewardByBasic($subject)) {
-            $this->rewardBasic($subject);
-        }
-
-        if ($subject->mlmCanRewardByCustom($subject)) {
-            $this->rewardCustom($subject);
-        }
-    }
-
-
-    // <editor-fold defaultstate="collapsed" desc="Mlm Reward Methods">
-    public function rewardBasic(MlmSubjectInterface $subject)
-    {
-        $owner = $subject->mlmSubjectOwner();
-
-        if (!$owner) {
-            return false;
-        }
-
-        $ancestors = $owner->mlmAllAncestors($this->maxRuleLvl());
-
-        $transaction = \Yii::$app->db->beginTransaction();
-
-        foreach ($ancestors as $ansr) {
-
-            $lvl = $owner->mlmLvl() - $ansr->mlmLvl();
-
-            $rwd = new $this->clsRewardBasic;
-
-            $rwd->mlmSetOwner($ansr);
-            $rwd->mlmSetSubject($subject);
-
-            $value = $this->ruleValue($lvl, $ansr->mlmIsMainParticipant());
-
-            $rwd->mlmSetValue($value);
-
-            $rwd->mlmSetLevel($lvl);
-
-            if (!$rwd->mlmCreate()) {
-                $transaction->rollBack();
-                return false;
-            }
-        }
-
-        $transaction->commit();
-        return true;
-    }
-
-    public function rewardCustom()
-    {
-
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Mlm Rules Methods">
-    /**
-     * Retrieves rule value
-     * ---
-     * If all following is true than sum of all following rules until max rule and current rule is retrieved
-     * ---
-     * @param int $lvl
-     * @param boolean $allFollowing
-     * @return float
-     */
-    public function ruleValue($lvl, $allFollowing = false)
-    {
-        if ($allFollowing) {
-
-            $val = 0;
-
-            for ($i = $lvl; $i <= $this->maxRuleLvl(); $i++) {
-                $val += $this->ruleValue($lvl, false);
-            }
-
-            return $val;
-        }
-
-        return ArrayHelper::getValue($this->rules, $lvl, 0);
+        return MlmRewardFacade::generateAll($subject);
     }
 
     /**
-     * Retrieves maximum rule level
-     * @return int
+     * Makes MLM value rounding based on module configuration
+     * @param double $value
+     * @return double
      */
-    public function maxRuleLvl()
+    public static function round($value)
     {
-        return max(array_keys($this->rules));
+        $instance = static::instance();
+
+        if (self::MLM_ROUND_DOWN === $instance->roundMode) {
+
+            return MlmValueHelper::roundDown($value, $instance->roundPrecision);
+        }
+
+        if (self::MLM_ROUND_UP === $instance->roundMode) {
+
+            return MlmValueHelper::roundUp($value, $instance->roundPrecision);
+        }
+
+        return round($value, $instance->roundPrecision, $instance->roundMode);
     }
+
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Mlm Config Valiators">
+    // <editor-fold defaultstate="collapsed" desc="Mlm Proxies">
+    /**
+     * Retrieves mlm rules
+     * @return array
+     */
+    public static function rules()
+    {
+        return static::instance()->rules;
+    }
+
+    /**
+     * Retrieves reward status alias
+     * ---
+     * Given status will be retrieved when status alias is not found.
+     * ---
+     * @param $status
+     * @return mixed
+     */
+    public static function alsStatus($status)
+    {
+        $alias = ArrayHelper::getValue(static::instance()->alsStatuses, $status);
+
+        return $alias ? $alias : $status;
+    }
+
+    /**
+     * Retrieves subject class name
+     * @param string $key
+     * @return string
+     */
+    public static function clsSubject($key)
+    {
+        return ArrayHelper::getValue(static::instance()->clsSubjects, $key);
+    }
+
+    /**
+     * Retrieves basic reward class name
+     * @return string
+     */
+    public static function clsRewardBasic()
+    {
+        return static::instance()->clsRewardBasic;
+    }
+
+    /**
+     * Retrieves extra reward class name
+     * @return string
+     */
+    public static function clsRewardExtra()
+    {
+        return static::instance()->clsRewardExtra;
+    }
+
+    /**
+     * Retrieves custom reward class name
+     * @return string
+     */
+    public static function clsRewardCustom()
+    {
+        return static::instance()->clsRewardCustom;
+    }
+
+    /**
+     * Retrieves MLM module identification
+     * @return string
+     */
+    public static function cfgKey()
+    {
+        return static::$id;
+    }
+
+    /**
+     * Indicates if worthless rewards should be skipped
+     * @return bool
+     */
+    public static function cfgSkipWorthless()
+    {
+        return static::instance()->skipWorthlessRewards;
+    }
+
+    /**
+     * Retrieves mlm root
+     * @return MlmParticipantInterface
+     */
+    public static function root()
+    {
+        return MlmParticipantFacade::findMain();
+    }
+
+    /**
+     * Retrieves mlm participant
+     * @param int $pk primary key
+     * @return MlmParticipantInterface
+     */
+    public static function participant($pk)
+    {
+        return MlmParticipantFacade::findOne($pk);
+    }
+
+    /**
+     * Retreives mlm pocket
+     * @return MlmPocket
+     */
+    public static function pocket()
+    {
+        return MlmPocket::instance();
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Mlm Config Validators">
+
     /**
      * Checks if participant class is set and has propper features
-     * @throws \yii\base\Exception
+     * @throws Exception
      * @return boolean
      */
     protected function validateClsParticipant()
     {
         if (!$this->clsParticipant) {
-            throw new \yii\base\Exception('Participant class must be set.');
+            throw new Exception('Participant class must be set.');
         }
 
-        $object = \Yii::createObject($this->clsParticipant);
+        $rfl = new \ReflectionClass($this->clsParticipant);
 
-        if (!$object instanceof MlmParticipantInterface) {
-            throw new \yii\base\Exception(sprintf('Participant class has to implement %s', StringHelper::basename(MlmParticipantInterface::class)));
+        if (!$rfl->implementsInterface(MlmParticipantInterface::class)) {
+            throw new Exception(sprintf('Participant class has to implement %s', StringHelper::basename(MlmParticipantInterface::class)));
         }
     }
 
     /**
      * Checks if reward basic class is set and has propper features
-     * @throws \yii\base\Exception
+     * @throws Exception
      * @return boolean
      */
     protected function validateClsRewardBasic()
     {
         if (!$this->clsRewardBasic) {
-            throw new \yii\base\Exception('Reward Basic class must be set.');
+            throw new Exception('Reward Basic class must be set.');
         }
 
-        $object = \Yii::createObject($this->clsRewardBasic);
+        $rfl = new \ReflectionClass($this->clsRewardBasic);
 
-        if (!$object instanceof MlmRewardInterface) {
-            throw new \yii\base\Exception(sprintf('Reward Basic class has to implement %s', StringHelper::basename(MlmRewardInterface::class)));
+        if (!$rfl->implementsInterface(MlmRewardInterface::class)) {
+            throw new Exception(sprintf('Reward Basic class has to implement %s', StringHelper::basename(MlmRewardInterface::class)));
         }
     }
 
     /**
      * Checks if reward extra class is set and has propper features
-     * @throws \yii\base\Exception
+     * @throws Exception
      * @return boolean
      */
     protected function validateClsRewardExtra()
     {
         if (!$this->clsRewardExtra) {
-            throw new \yii\base\Exception('Participant class must be set.');
+            throw new Exception('Participant class must be set.');
         }
 
-        $object = \Yii::createObject($this->clsRewardExtra);
+        $rfl = new \ReflectionClass($this->clsRewardExtra);
 
-        if (!$object instanceof MlmRewardInterface) {
-            throw new \yii\base\Exception(sprintf('Participant class has to implement %s', StringHelper::basename(MlmRewardInterface::class)));
+        if (!$rfl->implementsInterface(MlmRewardInterface::class)) {
+            throw new Exception(sprintf('Participant class has to implement %s', StringHelper::basename(MlmRewardInterface::class)));
         }
     }
 
     /**
      * Checks if subject class is set and has propper features
-     * @throws \yii\base\Exception
+     * @throws Exception
      * @return boolean
      */
     protected function validateClsSubject()
     {
         if (!$this->clsSubjects) {
-            throw new \yii\base\Exception('Subject classes must be set.');
+            throw new Exception('Subject classes must be set.');
         }
 
         foreach ($this->clsSubjects as $subject) {
 
-            $object = \Yii::createObject($subject);
+            $rfl = new \ReflectionClass($subject);
 
-            if (!$object instanceof MlmSubjectInterface) {
-                throw new \yii\base\Exception(sprintf('Subject class has to implement %s', StringHelper::basename(MlmSubjectInterface::class)));
+            if (!$rfl->implementsInterface(MlmSubjectInterface::class)) {
+                throw new Exception(sprintf('Subject class has to implement %s', StringHelper::basename(MlmSubjectInterface::class)));
             }
         }
-
     }
 
     /**
      * Checks if reward rules are set properly
-     * @throws \yii\base\Exception
+     * @throws Exception
      * @return boolean
      */
     protected function validateRules()
     {
         if ($this->limitRules < array_sum($this->rules)) {
-            throw new \yii\base\Exception('Rules overflow.');
+            throw new Exception('Rules overflow.');
         }
 
         ksort($this->rules);
@@ -329,7 +416,7 @@ class Mlm extends \yii\base\Component
         for ($i = 1; $i < count($this->rules); $i++) {
 
             if (!ArrayHelper::keyExists($i, $this->rules)) {
-                throw new \yii\base\Exception(sprintf('Rule lvl %s missing.', $i));
+                throw new Exception(sprintf('Rule lvl %s missing.', $i));
             }
         }
 

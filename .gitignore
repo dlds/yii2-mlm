@@ -1,7 +1,17 @@
-assets/*
-!assets/.gitignore
-protected/runtime/*
-!protected/runtime/.gitignore
-protected/data/*.db
-themes/classic/views/
-/nbproject/
+# vendor files
+vendor
+
+# app files
+*-local.php
+
+# codeception files
+tests/_output/*
+tests/_output/*
+tests/_output/*
+tests/_output/*
+tests/_output/*
+tests/_output/*
+tests/_output/*
+tests/_output/*
+tests/_output/*
+tests/_output/*

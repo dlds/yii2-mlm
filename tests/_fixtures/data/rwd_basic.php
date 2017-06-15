@@ -1,0 +1,6 @@
+<?php
+
+/**
+ * Basic rewards
+ */
+return [];
