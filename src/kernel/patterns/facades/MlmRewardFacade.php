@@ -45,6 +45,8 @@ abstract class MlmRewardFacade
      */
     public static function generateAll(MlmSubjectInterface $subject)
     {
+        Debug::debug('---');
+
         Debug::debug(sprintf('Generating at %s', time()));
 
         Mlm::pocket()->clear();
