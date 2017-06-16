@@ -23,7 +23,7 @@ class MlmValueHelper
      */
     public static function roundUp($value, $precision)
     {
-        $fig = (int)str_pad('1', $precision, '0');
+        $fig = (int)str_pad('1', ++$precision, '0');
         return (ceil($value * $fig) / $fig);
     }
 
@@ -38,7 +38,7 @@ class MlmValueHelper
      */
     public static function roundDown($value, $precision)
     {
-        $fig = (int)str_pad('1', $precision, '0');
+        $fig = (int)str_pad('1', ++$precision, '0');
         return (floor($value * $fig) / $fig);
     }
 }

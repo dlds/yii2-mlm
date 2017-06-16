@@ -17,11 +17,6 @@ interface MlmCompositeItemInterface
 {
 
     /**
-     * Retrieves item index
-     */
-    public function index();
-
-    /**
      * Retrieves item value
      */
     public function value();

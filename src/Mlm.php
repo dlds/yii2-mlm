@@ -8,6 +8,7 @@
 
 namespace dlds\mlm;
 
+use Codeception\Util\Debug;
 use dlds\mlm\helpers\MlmSubjectFacade;
 use dlds\mlm\helpers\MlmValueHelper;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
@@ -170,10 +171,23 @@ class Mlm extends \yii\base\Component
         // 1. approve pending commissions
         // 2. create investment commissions
         // 3. withdraw locked commisison
-        die('MLM autorun done');
     }
 
     // <editor-fold defaultstate="collapsed" desc="Mlm Reward Methods">
+
+    /**
+     * Runs generating of all types of rewards
+     * @param MlmSubjectInterface $subject
+     * @return bool
+     */
+    public function verifyRewards(MlmSubjectInterface $subject)
+    {
+        if (!$this->isActive) {
+            return false;
+        }
+
+        return MlmRewardFacade::generateAll($subject);
+    }
 
     /**
      * Runs generating of all types of rewards
@@ -236,6 +250,15 @@ class Mlm extends \yii\base\Component
         $alias = ArrayHelper::getValue(static::instance()->alsStatuses, $status);
 
         return $alias ? $alias : $status;
+    }
+
+    /**
+     * Retrieves participant class name
+     * @return string
+     */
+    public static function clsParticipant()
+    {
+        return static::instance()->clsParticipant;
     }
 
     /**
@@ -332,6 +355,7 @@ class Mlm extends \yii\base\Component
      */
     protected function validateClsParticipant()
     {
+        Debug::debug($this->clsParticipant);
         if (!$this->clsParticipant) {
             throw new Exception('Participant class must be set.');
         }

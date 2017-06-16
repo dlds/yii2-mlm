@@ -29,12 +29,24 @@ use yii\base\Exception;
 abstract class MlmRewardFacade
 {
     /**
+     * Verifies all rewards for given subject and approves or denies each of them
+     * @param MlmSubjectInterface $subject
+     * @return bool
+     */
+    public static function verifyAll(MlmSubjectInterface $subject)
+    {
+        // TODO: implement rewards verification
+    }
+
+    /**
      * Generates all allowed rewards for given subject
      * @param MlmSubjectInterface $subject
      * @return bool
      */
     public static function generateAll(MlmSubjectInterface $subject)
     {
+        Debug::debug(sprintf('Generating at %s', time()));
+
         Mlm::pocket()->clear();
 
         $size = Mlm::pocket()->size();
@@ -77,8 +89,13 @@ abstract class MlmRewardFacade
     public static function generateBasic(MlmSubjectInterface $subject)
     {
         if (!$subject->__mlmCanRewardByBasic($subject)) {
+
+            Debug::debug(sprintf('Prevented BASIC at %s', time()));
+
             return false;
         }
+
+        Debug::debug(sprintf('Generating BASIC at %s', time()));
 
         $builder = MlmRewardBasicBuilder::instance($subject);
 
@@ -96,8 +113,13 @@ abstract class MlmRewardFacade
     public static function generateExtra(MlmSubjectInterface $subject)
     {
         if (!$subject->__mlmCanRewardByExtra($subject)) {
+
+            Debug::debug(sprintf('Prevented EXTRA at %s', time()));
+
             return false;
         }
+
+        Debug::debug(sprintf('Generating EXTRA at %s', time()));
 
         $builder = MlmRewardExtraBuilder::instance($subject);
 
@@ -116,8 +138,13 @@ abstract class MlmRewardFacade
     public static function generateCustom(MlmSubjectInterface $subject)
     {
         if (!$subject->__mlmCanRewardByCustom($subject)) {
+
+            Debug::debug(sprintf('Prevented CUSTOM at %s', time()));
+
             return false;
         }
+
+        Debug::debug(sprintf('Generating CUSTOM at %s', time()));
 
         $builder = MlmRewardCustomBuilder::instance($subject);
 

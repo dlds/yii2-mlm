@@ -1,6 +1,6 @@
 <?php
 
-namespace dlds\mlm\tests\helpers;
+namespace dlds\mlm\tests\unit\kernel\patterns\facades;
 
 
 use dlds\mlm\helpers\MlmRuleHelper;

@@ -1,6 +1,6 @@
 <?php
 
-namespace dlds\mlm\tests\helpers;
+namespace dlds\mlm\tests\unit\kernel\patterns\facades;
 
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
 use dlds\mlm\kernel\patterns\facades\MlmParticipantFacade;

@@ -35,15 +35,7 @@ class MlmPocketItem implements MlmCompositeItemInterface
     // <editor-fold defaultstate="collapsed" desc="MlmCompositeItemInterface methods">
 
     /**
-     * @return MlmRewardInterface
-     */
-    public function index()
-    {
-        return $this->_rwd->primaryKey;
-    }
-
-    /**
-     * @return MlmRewardInterface
+     * @inheritdoc
      */
     public function value()
     {
@@ -51,11 +43,11 @@ class MlmPocketItem implements MlmCompositeItemInterface
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function attributes($refresh = false)
     {
-        return $this->_rwd->__mlmAttributes($refresh);
+        return $this->value()->__mlmAttributes($refresh);
     }
     // </editor-fold>
 

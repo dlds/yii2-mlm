@@ -78,6 +78,7 @@ abstract class MlmRewardHelper
      * Retrieves custom reward value according to given subject
      * ---
      * @param MlmSubjectInterface $subject
+     * @param MlmParticipantInterface $rewarded
      * @return float
      */
     public static function valCustom(MlmSubjectInterface $subject, MlmParticipantInterface $rewarded)

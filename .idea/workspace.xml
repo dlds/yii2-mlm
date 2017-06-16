@@ -2,64 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f159345f-4359-4bbc-b154-49ddca3dcfef" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/php-test-framework.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/php.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/bootstrap.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/data/schema.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/helpers/MathHelper.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/models/Participant.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/models/Subject.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/models/rewards/RwdBasic.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/models/rewards/RwdCustom.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/models/rewards/RwdExtra.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/docs/rwd_basic.puml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/helpers/MlmParticipantHelper.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/helpers/MlmRewardHelper.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/helpers/MlmRuleHelper.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/helpers/MlmValueHelper.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/MlmPocket.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/MlmPocketItem.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/exceptions/MlmInvalidRewardClass.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/exceptions/MlmRewardBuilderError.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/interfaces/MlmParticipantInterface.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/interfaces/MlmRewardInterface.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/interfaces/MlmSubjectInterface.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/interfaces/queries/MlmRewardQueryInterface.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/patterns/builders/MlmRewardBasicBuilder.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/patterns/builders/MlmRewardCustomBuilder.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/patterns/builders/MlmRewardExtraBuilder.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/patterns/builders/directors/MlmRewardDirector.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/patterns/builders/interfaces/MlmRewardBuilderInterface.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/patterns/composites/interfaces/MlmCompositeInterface.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/patterns/composites/interfaces/MlmCompositeItemInterface.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/patterns/facades/MlmParticipantFacade.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/patterns/facades/MlmRewardFacade.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/patterns/facades/MlmSubjectFacade.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/traits/MlmParticipantTrait.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/traits/MlmRewardBasicTrait.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/traits/MlmRewardCustomTrait.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/traits/MlmRewardExtraTrait.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kernel/traits/MlmSubjectTrait.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/_fixtures/ParticipantFixture.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/_fixtures/RwdBasicFixture.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/_fixtures/RwdCustomFixture.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/_fixtures/SubjectFixture.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/_fixtures/data/participant.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/_fixtures/data/rwd_basic.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/_fixtures/data/subject.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmSubjectFacadeTest.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/yii" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/helpers/MlmParticipantHelper.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/helpers/MlmRewardSourceHelper.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/interfaces/MlmParticipantInterface.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/interfaces/MlmRewardInterface.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/interfaces/MlmSubjectInterface.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/interfaces/queries/MlmRewardQueryInterface.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/functional/MlmTest.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/unit/helpers/MlmParticipantHelperTest.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/unit/helpers/MlmRewardHelperTest.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/unit/helpers/MlmRuleHelperTest.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/unit/helpers/MlmValueHelperTest.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/unit/kernel/MlmPocketTest.php" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/acceptance.suite.yml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/acceptance/_bootstrap.php" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Mlm.php" afterPath="$PROJECT_DIR$/src/Mlm.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/helpers/MlmRewardHelper.php" afterPath="$PROJECT_DIR$/src/helpers/MlmRewardHelper.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/helpers/MlmValueHelper.php" afterPath="$PROJECT_DIR$/src/helpers/MlmValueHelper.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/kernel/MlmPocketItem.php" afterPath="$PROJECT_DIR$/src/kernel/MlmPocketItem.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/kernel/patterns/composites/interfaces/MlmCompositeItemInterface.php" afterPath="$PROJECT_DIR$/src/kernel/patterns/composites/interfaces/MlmCompositeItemInterface.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/kernel/patterns/facades/MlmRewardFacade.php" afterPath="$PROJECT_DIR$/src/kernel/patterns/facades/MlmRewardFacade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/kernel/traits/MlmSubjectTrait.php" afterPath="$PROJECT_DIR$/src/kernel/traits/MlmSubjectTrait.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/_support/_generated/FunctionalTesterActions.php" afterPath="$PROJECT_DIR$/tests/_support/_generated/FunctionalTesterActions.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/unit/MlmTest.php" afterPath="$PROJECT_DIR$/tests/unit/MlmTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmParticipantFacadeTest.php" afterPath="$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmParticipantFacadeTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmRuleFacadeTest.php" afterPath="$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmRuleFacadeTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmSubjectFacadeTest.php" afterPath="$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmSubjectFacadeTest.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -126,67 +89,28 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MlmRewardHelper.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/helpers/MlmRewardHelper.php">
+      <file leaf-file-name="Mlm.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Mlm.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="58" column="80" lean-forward="false" selection-start-line="58" selection-start-column="80" selection-end-line="58" selection-end-column="80" />
+            <state relative-caret-position="450">
+              <caret line="202" column="36" lean-forward="true" selection-start-line="202" selection-start-column="36" selection-end-line="202" selection-end-column="36" />
               <folding>
-                <element signature="e#206#233#0#PHP" expanded="true" />
+                <element signature="e#176#203#0#PHP" expanded="true" />
+                <element signature="e#5077#5137#0#PHP" expanded="true" />
+                <element signature="e#7604#7674#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/config/main.php">
+      <file leaf-file-name="MlmSubjectTrait.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/kernel/traits/MlmSubjectTrait.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="43" column="2" lean-forward="true" selection-start-line="43" selection-start-column="2" selection-end-line="43" selection-end-column="2" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MlmSubjectInterface.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/kernel/interfaces/MlmSubjectInterface.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="37" column="48" lean-forward="false" selection-start-line="37" selection-start-column="48" selection-end-line="37" selection-end-column="48" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MlmRewardFacade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/kernel/patterns/facades/MlmRewardFacade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="489">
-              <caret line="157" column="31" lean-forward="false" selection-start-line="157" selection-start-column="31" selection-end-line="157" selection-end-column="31" />
+            <state relative-caret-position="685">
+              <caret line="151" column="8" lean-forward="false" selection-start-line="151" selection-start-column="8" selection-end-line="151" selection-end-column="8" />
               <folding>
-                <element signature="e#7#175#0#PHP" expanded="true" />
-                <element signature="e#222#249#0#PHP" expanded="true" />
+                <element signature="e#212#239#0#PHP" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MlmTest.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/tests/unit/MlmTest.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="772">
-              <caret line="472" column="33" lean-forward="false" selection-start-line="472" selection-start-column="33" selection-end-line="472" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="subject.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/_fixtures/data/subject.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="19" column="36" lean-forward="true" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -194,42 +118,21 @@
       <file leaf-file-name="Subject.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/Subject.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="740">
-              <caret line="103" column="22" lean-forward="false" selection-start-line="103" selection-start-column="22" selection-end-line="103" selection-end-column="22" />
+            <state relative-caret-position="399">
+              <caret line="65" column="0" lean-forward="true" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
               <folding>
                 <element signature="e#209#251#0#PHP" expanded="true" />
+                <element signature="e#1753#1829#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MlmRewardBasicBuilder.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/kernel/patterns/builders/MlmRewardBasicBuilder.php">
+      <file leaf-file-name="MlmTest.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/functional/MlmTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="402">
-              <caret line="107" column="37" lean-forward="false" selection-start-line="107" selection-start-column="37" selection-end-line="107" selection-end-column="37" />
-              <folding>
-                <element signature="e#7#175#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="participant.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/_fixtures/data/participant.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="569">
-              <caret line="135" column="47" lean-forward="false" selection-start-line="135" selection-start-column="40" selection-end-line="135" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MlmParticipantInterface.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/kernel/interfaces/MlmParticipantInterface.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="32" column="20" lean-forward="true" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
+            <state relative-caret-position="653">
+              <caret line="224" column="9" lean-forward="true" selection-start-line="224" selection-start-column="9" selection-end-line="224" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -239,15 +142,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>c</find>
-      <find>call</find>
-      <find>call_</find>
-      <find>s</find>
-      <find>stati</find>
-      <find>static</find>
-      <find>static f</find>
-      <find>static fun</find>
-      <find>static func</find>
       <find>static function</find>
       <find>static function __m</find>
       <find>static function __mlm</find>
@@ -260,7 +154,6 @@
       <find>clas</find>
       <find>class Rwd</find>
       <find>class RwdC</find>
-      <find>class RwdCu</find>
       <find>1211</find>
       <find>$_14</find>
       <find>13</find>
@@ -269,14 +162,18 @@
       <find>var_</find>
       <find>create</find>
       <find>$participant</find>
+      <find>Basic</find>
+      <find>textCon</find>
+      <find>class RwdCu</find>
+      <find>namespace dlds\mlm\tests\helpers;</find>
+      <find>131311</find>
+      <find>Rule</find>
+      <find>Reward</find>
+      <find>Up</find>
+      <find>MlmTest</find>
+      <find>MlmPocket</find>
     </findStrings>
     <replaceStrings>
-      <replace>dlds\mlm\app\models\</replace>
-      <replace>dlds\mlm\app\</replace>
-      <replace>$root</replace>
-      <replace>first</replace>
-      <replace>12</replace>
-      <replace>1211</replace>
       <replace>13</replace>
       <replace>131</replace>
       <replace>1312</replace>
@@ -297,10 +194,16 @@
       <replace>Subject ID</replace>
       <replace>subject_type</replace>
       <replace>mlm</replace>
-      <replace>Custom</replace>
-      <replace>Extra</replace>
       <replace>14</replace>
       <replace>$profiteer</replace>
+      <replace>Extra</replace>
+      <replace>namespace dlds\mlm\tests\unit\kernel\patterns\facades;</replace>
+      <replace>Custom</replace>
+      <replace>ValueR</replace>
+      <replace>Rule</replace>
+      <replace>Down</replace>
+      <replace>MlmPocketTest</replace>
+      <replace>MlmPocketItem</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/vendor</dir>
@@ -308,6 +211,7 @@
       <dir>$PROJECT_DIR$/tests</dir>
       <dir>$PROJECT_DIR$/src</dir>
       <dir>$PROJECT_DIR$</dir>
+      <dir>$PROJECT_DIR$/tests/unit/kernel/patterns/facades</dir>
     </dirStrings>
   </component>
   <component name="FrameworkCommandLineHistory">
@@ -331,16 +235,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/kernel/patterns/factories/MlmRewardFactory.php" />
-        <option value="$PROJECT_DIR$/src/kernel/patterns/factories/MlmRewardBasicFactory.php" />
-        <option value="$PROJECT_DIR$/tests/_fixtures/SubjectFixture.php" />
-        <option value="$PROJECT_DIR$/src/kernel/patterns/singletons/MlmPocket.php" />
-        <option value="$PROJECT_DIR$/src/kernel/patterns/composites/MlmCompositeItem.php" />
-        <option value="$PROJECT_DIR$/src/kernel/exceptions/MlmRewardCreationError.php" />
-        <option value="$PROJECT_DIR$/tests/_fixtures/data/rwd_basic.php" />
-        <option value="$PROJECT_DIR$/tests/_fixtures/RwdBasicFixture.php" />
-        <option value="$PROJECT_DIR$/src/kernel/patterns/composites/interfaces/MlmCompositeItemInterface.php" />
-        <option value="$PROJECT_DIR$/src/kernel/MlmPocketItem.php" />
         <option value="$PROJECT_DIR$/src/kernel/traits/MlmExtraBasicTrait.php" />
         <option value="$PROJECT_DIR$/app/data/schema.sql" />
         <option value="$PROJECT_DIR$/app/models/rewards/RwdExtra.php" />
@@ -369,19 +263,29 @@
         <option value="$PROJECT_DIR$/src/kernel/patterns/composites/interfaces/MlmCompositeInterface.php" />
         <option value="$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmSubjectFacadeTest.php" />
         <option value="$PROJECT_DIR$/tests/_fixtures/data/participant.php" />
-        <option value="$PROJECT_DIR$/src/helpers/MlmValueHelper.php" />
         <option value="$PROJECT_DIR$/src/kernel/patterns/builders/MlmRewardBasicBuilder.php" />
         <option value="$PROJECT_DIR$/tests/_fixtures/data/subject.php" />
         <option value="$PROJECT_DIR$/app/config/main-local.php" />
-        <option value="$PROJECT_DIR$/src/Mlm.php" />
-        <option value="$PROJECT_DIR$/src/kernel/patterns/facades/MlmRewardFacade.php" />
-        <option value="$PROJECT_DIR$/src/kernel/traits/MlmSubjectTrait.php" />
         <option value="$PROJECT_DIR$/src/kernel/traits/MlmParticipantTrait.php" />
         <option value="$PROJECT_DIR$/src/kernel/interfaces/MlmParticipantInterface.php" />
         <option value="$PROJECT_DIR$/src/kernel/interfaces/MlmSubjectInterface.php" />
         <option value="$PROJECT_DIR$/app/models/Subject.php" />
-        <option value="$PROJECT_DIR$/src/helpers/MlmRewardHelper.php" />
+        <option value="$PROJECT_DIR$/src/helpers/MlmValueHelper.php" />
         <option value="$PROJECT_DIR$/tests/unit/MlmTest.php" />
+        <option value="$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmParticipantFacadeTest.php" />
+        <option value="$PROJECT_DIR$/src/helpers/MlmRewardHelper.php" />
+        <option value="$PROJECT_DIR$/tests/unit/helpers/MlmRewardHelperTest.php" />
+        <option value="$PROJECT_DIR$/tests/unit/helpers/MlmRuleHelperTest.php" />
+        <option value="$PROJECT_DIR$/tests/unit/helpers/MlmValueHelperTest.php" />
+        <option value="$PROJECT_DIR$/tests/unit/helpers/MlmParticipantHelperTest.php" />
+        <option value="$PROJECT_DIR$/tests/unit/kernel/MlmPocketItemTest.php" />
+        <option value="$PROJECT_DIR$/src/kernel/patterns/composites/interfaces/MlmCompositeItemInterface.php" />
+        <option value="$PROJECT_DIR$/src/kernel/MlmPocketItem.php" />
+        <option value="$PROJECT_DIR$/tests/unit/kernel/MlmPocketTest.php" />
+        <option value="$PROJECT_DIR$/src/Mlm.php" />
+        <option value="$PROJECT_DIR$/tests/functional/MlmTest.php" />
+        <option value="$PROJECT_DIR$/src/kernel/traits/MlmSubjectTrait.php" />
+        <option value="$PROJECT_DIR$/src/kernel/patterns/facades/MlmRewardFacade.php" />
       </list>
     </option>
   </component>
@@ -536,12 +440,56 @@
               <option name="myItemId" value="kernel" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yii2-mlm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yii2-mlm" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tests" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="unit" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kernel" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="patterns" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="facades" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yii2-mlm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yii2-mlm" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tests" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="unit" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="helpers" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -631,7 +579,55 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="helpers" />
+              <option name="myItemId" value="kernel" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yii2-mlm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yii2-mlm" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kernel" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="interfaces" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yii2-mlm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yii2-mlm" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kernel" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="interfaces" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="queries" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -716,7 +712,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="editing.templates" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
-    <property name="SearchEverywhereHistoryKey" value="MlmRewardF&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/facades/MlmRewardFacade.php&#10;subject.php&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/subject.php&#10;MlmTes&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/unit/MlmTest.php&#10;BasicBui&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardBasicBuilder.php&#10;ParticipantI&#9;null&#9;null&#10;participant.php&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/participant.php&#10;MlmRewardH&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/helpers/MlmRewardHelper.php&#10;Subject&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/app/models/Subject.php&#10;SubjecTra&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmSubjectTrait.php&#10;Mlm&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/Mlm.php&#10;partic&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/participant.php&#10;subject&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/subject.php&#10;Mlm.&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/Mlm.php&#10;SubjectTra&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmSubjectTrait.php&#10;MlmSubjectFacadeT&#9;null&#9;null&#10;Pocket&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/MlmPocket.php&#10;SubjectT&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmSubjectTrait.php&#10;CustomTra&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;parti&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/participant.php&#10;MlmT&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/unit/MlmTest.php&#10;ExtraBu&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardExtraBuilder.php&#10;CustomBu&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardCustomBuilder.php&#10;RwdCus&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/app/models/rewards/RwdCustom.php&#10;CustomB&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardCustomBuilder.php&#10;ExtraB&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardExtraBuilder.php&#10;BasicTra&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardBasicTrait.php&#10;ExtraBuil&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardExtraBuilder.php&#10;MlmRewardCustomBui&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardExtraBuilder.php&#10;MlmRewardExtraB&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardExtraBuilder.php&#10;CustomTr&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;ExtraTra&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardExtraTrait.php&#10;BasicTr&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardBasicTrait.php&#10;RewardF&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/facades/MlmRewardFacade.php&#10;RwdB&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/app/models/rewards/RwdBasic.php&#10;RwdCustom&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/app/models/rewards/RwdCustom.php&#10;CustomTrai&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;RewardI&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/interfaces/MlmRewardInterface.php&#10;MlmBasic&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardBasicBuilder.php&#10;Rwd&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/app/models/rewards/RwdCustom.php&#10;RewardCustom&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;ParticipantTr&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmParticipantTrait.php&#10;Trait&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;CustomT&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;ExtraTr&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardExtraTrait.php&#10;BasicT&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardBasicTrait.php&#10;MlmTest&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/unit/MlmTest.php&#10;MlmSu&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/facades/MlmSubjectFacade.php&#10;MlmRewardCustom&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;SubjectIn&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/interfaces/MlmSubjectInterface.php&#10;RwdE&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/app/models/rewards/RwdExtra.php" />
+    <property name="SearchEverywhereHistoryKey" value="Subject&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/app/models/Subject.php&#10;Mlm.php&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/Mlm.php&#10;MlmPOcketT&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/unit/kernel/MlmPocketTest.php&#10;PocketI&#9;null&#9;null&#10;par&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/participant.php&#10;su&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/subject.php&#10;Mlm&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/Mlm.php&#10;MlmRewardF&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/facades/MlmRewardFacade.php&#10;subject.php&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/subject.php&#10;MlmTes&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/unit/MlmTest.php&#10;BasicBui&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardBasicBuilder.php&#10;ParticipantI&#9;null&#9;null&#10;participant.php&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/participant.php&#10;MlmRewardH&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/helpers/MlmRewardHelper.php&#10;SubjecTra&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmSubjectTrait.php&#10;partic&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/participant.php&#10;subject&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/subject.php&#10;Mlm.&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/Mlm.php&#10;SubjectTra&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmSubjectTrait.php&#10;MlmSubjectFacadeT&#9;null&#9;null&#10;Pocket&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/MlmPocket.php&#10;SubjectT&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmSubjectTrait.php&#10;CustomTra&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;parti&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/_fixtures/data/participant.php&#10;MlmT&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/tests/unit/MlmTest.php&#10;ExtraBu&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardExtraBuilder.php&#10;CustomBu&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardCustomBuilder.php&#10;RwdCus&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/app/models/rewards/RwdCustom.php&#10;CustomB&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardCustomBuilder.php&#10;ExtraB&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardExtraBuilder.php&#10;BasicTra&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardBasicTrait.php&#10;ExtraBuil&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardExtraBuilder.php&#10;MlmRewardCustomBui&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardExtraBuilder.php&#10;MlmRewardExtraB&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardExtraBuilder.php&#10;CustomTr&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;ExtraTra&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardExtraTrait.php&#10;BasicTr&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardBasicTrait.php&#10;RewardF&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/facades/MlmRewardFacade.php&#10;RwdB&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/app/models/rewards/RwdBasic.php&#10;RwdCustom&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/app/models/rewards/RwdCustom.php&#10;CustomTrai&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;RewardI&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/interfaces/MlmRewardInterface.php&#10;MlmBasic&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/patterns/builders/MlmRewardBasicBuilder.php&#10;Rwd&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/app/models/rewards/RwdCustom.php&#10;RewardCustom&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;ParticipantTr&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmParticipantTrait.php&#10;Trait&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;CustomT&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardCustomTrait.php&#10;ExtraTr&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardExtraTrait.php&#10;BasicT&#9;FILE&#9;file:///Volumes/Macintosh HD/Users/Svobik7/Development/_vendors/yii2/yii2-mlm/src/kernel/traits/MlmRewardBasicTrait.php" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
@@ -729,11 +725,11 @@
       <recent name="$PROJECT_DIR$/src/kernel/patterns/builders/interfaces" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tests/unit/kernel" />
+      <recent name="$PROJECT_DIR$/tests/unit/helpers" />
+      <recent name="$PROJECT_DIR$/tests/functional" />
       <recent name="$PROJECT_DIR$/src/helpers" />
       <recent name="$PROJECT_DIR$/tests/_fixtures" />
-      <recent name="$PROJECT_DIR$/src/kernel/traits" />
-      <recent name="$PROJECT_DIR$/tests/_fixtures/data" />
-      <recent name="$PROJECT_DIR$/tests/unit/helpers" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -840,12 +836,12 @@
       <workItem from="1497336794485" duration="14573000" />
       <workItem from="1497376008340" duration="808000" />
       <workItem from="1497428327402" duration="25908000" />
-      <workItem from="1497533280349" duration="13636000" />
+      <workItem from="1497533280349" duration="22462000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="95503000" />
+    <option name="totallyTimeSpent" value="104329000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1053" extended-state="6" />
@@ -883,102 +879,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/kernel/patterns/facades/MlmParticipantFacade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="39" column="15" lean-forward="true" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/helpers/MlmParticipantHelper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="15" column="28" lean-forward="false" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/rewards/RwdBasic.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="65" column="0" lean-forward="true" selection-start-line="65" selection-start-column="0" selection-end-line="76" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/_fixtures/RwdCustomFixture.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="22" column="37" lean-forward="false" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/kernel/traits/MlmRewardExtraTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="29" column="4" lean-forward="false" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/Core/Core_c.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="269" column="19" lean-forward="true" selection-start-line="269" selection-start-column="19" selection-end-line="269" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/yiisoft/yii2/base/Exception.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="17" column="32" lean-forward="true" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/kernel/exceptions/MlmRewardBuilderError.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="54" column="49" lean-forward="false" selection-start-line="54" selection-start-column="49" selection-end-line="54" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/kernel/interfaces/MlmRewardInterface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/kernel/traits/MlmRewardBasicTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="36" column="29" lean-forward="false" selection-start-line="36" selection-start-column="29" selection-end-line="36" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/config/main-local.php.dist">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="2" lean-forward="true" selection-start-line="19" selection-start-column="2" selection-end-line="19" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/composer.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="27" lean-forward="true" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/yii">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1049,30 +949,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kernel/MlmPocket.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="505">
-          <caret line="125" column="48" lean-forward="false" selection-start-line="125" selection-start-column="48" selection-end-line="125" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmRuleFacadeTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="55" column="19" lean-forward="true" selection-start-line="55" selection-start-column="19" selection-end-line="55" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmParticipantFacadeTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/unit/_bootstrap.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1093,14 +969,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="475">
           <caret line="50" column="57" lean-forward="false" selection-start-line="50" selection-start-column="57" selection-end-line="50" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/helpers/MlmValueHelper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="14" column="7" lean-forward="true" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
           <folding />
         </state>
       </provider>
@@ -1153,14 +1021,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/helpers/MlmRuleHelper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="21" column="27" lean-forward="false" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/kernel/patterns/builders/directors/MlmRewardDirector.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="599">
@@ -1185,24 +1045,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Mlm.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="184" column="8" lean-forward="false" selection-start-line="184" selection-start-column="8" selection-end-line="184" selection-end-column="8" />
-          <folding>
-            <element signature="e#4755#4815#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/kernel/traits/MlmSubjectTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="83" column="18" lean-forward="true" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/kernel/patterns/builders/MlmRewardBasicBuilder.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="402">
@@ -1213,42 +1055,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kernel/interfaces/MlmSubjectInterface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="37" column="48" lean-forward="false" selection-start-line="37" selection-start-column="48" selection-end-line="37" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/kernel/traits/MlmParticipantTrait.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="251">
           <caret line="75" column="0" lean-forward="true" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/kernel/interfaces/MlmParticipantInterface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="32" column="20" lean-forward="true" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/_fixtures/data/subject.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="19" column="36" lean-forward="true" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/_fixtures/data/participant.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="569">
-          <caret line="135" column="47" lean-forward="false" selection-start-line="135" selection-start-column="40" selection-end-line="135" selection-end-column="47" />
           <folding />
         </state>
       </provider>
@@ -1264,25 +1074,235 @@
     <entry file="file://$PROJECT_DIR$/app/config/main.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
-          <caret line="43" column="2" lean-forward="true" selection-start-line="43" selection-start-column="2" selection-end-line="43" selection-end-column="2" />
+          <caret line="43" column="2" lean-forward="false" selection-start-line="43" selection-start-column="2" selection-end-line="43" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kernel/interfaces/MlmParticipantInterface.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="421">
+          <caret line="32" column="20" lean-forward="false" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/helpers/MlmValueHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="25" column="52" lean-forward="true" selection-start-line="25" selection-start-column="52" selection-end-line="25" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/phpunit/phpunit/src/Framework/TestCase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="562" column="9" lean-forward="true" selection-start-line="562" selection-start-column="9" selection-end-line="562" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/unit/MlmTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="788">
+          <caret line="141" column="39" lean-forward="true" selection-start-line="141" selection-start-column="39" selection-end-line="141" selection-end-column="39" />
+          <folding>
+            <element signature="e#39#75#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/_fixtures/data/subject.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="8" column="34" lean-forward="false" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/_fixtures/data/participant.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="715">
+          <caret line="88" column="22" lean-forward="false" selection-start-line="88" selection-start-column="20" selection-end-line="88" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/yiisoft/yii2/base/InvalidValueException.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/helpers/MlmRewardHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="725">
+          <caret line="97" column="82" lean-forward="false" selection-start-line="97" selection-start-column="60" selection-end-line="97" selection-end-column="82" />
+          <folding>
+            <element signature="e#206#233#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/helpers/MlmRuleHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/unit/helpers/MlmValueHelperTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="47" column="65" lean-forward="false" selection-start-line="47" selection-start-column="65" selection-end-line="47" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/unit/helpers/MlmParticipantHelperTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="36" column="5" lean-forward="false" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="5" />
+          <folding>
+            <element signature="e#217#253#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kernel/MlmPocket.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="654">
+          <caret line="106" column="0" lean-forward="false" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/unit/kernel/MlmPocketItemTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="30" lean-forward="false" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kernel/interfaces/MlmRewardInterface.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="453">
+          <caret line="57" column="28" lean-forward="true" selection-start-line="57" selection-start-column="28" selection-end-line="57" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kernel/patterns/composites/interfaces/MlmCompositeItemInterface.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="28" column="1" lean-forward="true" selection-start-line="28" selection-start-column="1" selection-end-line="28" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kernel/MlmPocketItem.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="40" column="5" lean-forward="true" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
+          <folding>
+            <element signature="e#205#255#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmParticipantFacadeTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="35" column="39" lean-forward="false" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
+          <folding>
+            <element signature="e#63#118#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/unit/helpers/MlmRuleHelperTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="39" column="31" lean-forward="true" selection-start-line="39" selection-start-column="31" selection-end-line="39" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/unit/kernel/patterns/facades/MlmRuleFacadeTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="34" column="20" lean-forward="false" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/unit/helpers/MlmRewardHelperTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1304">
+          <caret line="144" column="82" lean-forward="false" selection-start-line="144" selection-start-column="82" selection-end-line="144" selection-end-column="82" />
+          <folding>
+            <element signature="e#7#175#0#PHP" expanded="true" />
+            <element signature="e#217#243#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/unit/kernel/MlmPocketTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="39" column="37" lean-forward="false" selection-start-line="39" selection-start-column="37" selection-end-line="39" selection-end-column="37" />
+          <folding>
+            <element signature="e#39#65#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kernel/interfaces/MlmSubjectInterface.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="569">
+          <caret line="61" column="20" lean-forward="false" selection-start-line="61" selection-start-column="20" selection-end-line="61" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/Subject.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="740">
-          <caret line="103" column="22" lean-forward="false" selection-start-line="103" selection-start-column="22" selection-end-line="103" selection-end-column="22" />
+        <state relative-caret-position="399">
+          <caret line="65" column="0" lean-forward="true" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
           <folding>
             <element signature="e#209#251#0#PHP" expanded="true" />
+            <element signature="e#1753#1829#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kernel/traits/MlmSubjectTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="685">
+          <caret line="151" column="8" lean-forward="false" selection-start-line="151" selection-start-column="8" selection-end-line="151" selection-end-column="8" />
+          <folding>
+            <element signature="e#212#239#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/functional/MlmTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="653">
+          <caret line="224" column="9" lean-forward="true" selection-start-line="224" selection-start-column="9" selection-end-line="224" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/kernel/patterns/facades/MlmRewardFacade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="489">
-          <caret line="157" column="31" lean-forward="false" selection-start-line="157" selection-start-column="31" selection-end-line="157" selection-end-column="31" />
+        <state relative-caret-position="333">
+          <caret line="37" column="47" lean-forward="false" selection-start-line="37" selection-start-column="47" selection-end-line="37" selection-end-column="47" />
           <folding>
             <element signature="e#7#175#0#PHP" expanded="true" />
             <element signature="e#222#249#0#PHP" expanded="true" />
@@ -1290,21 +1310,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/helpers/MlmRewardHelper.php">
+    <entry file="file://$PROJECT_DIR$/src/Mlm.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="58" column="80" lean-forward="false" selection-start-line="58" selection-start-column="80" selection-end-line="58" selection-end-column="80" />
+        <state relative-caret-position="450">
+          <caret line="202" column="36" lean-forward="true" selection-start-line="202" selection-start-column="36" selection-end-line="202" selection-end-column="36" />
           <folding>
-            <element signature="e#206#233#0#PHP" expanded="true" />
+            <element signature="e#176#203#0#PHP" expanded="true" />
+            <element signature="e#5077#5137#0#PHP" expanded="true" />
+            <element signature="e#7604#7674#0#PHP" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/unit/MlmTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="772">
-          <caret line="472" column="33" lean-forward="false" selection-start-line="472" selection-start-column="33" selection-end-line="472" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>

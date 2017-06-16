@@ -9,10 +9,15 @@
 
 namespace dlds\mlm\kernel\traits;
 
+use Codeception\Util\Debug;
 use dlds\mlm\app\helpers\MathHelper;
+use dlds\mlm\app\models\rewards\RwdBasic;
+use dlds\mlm\app\models\rewards\RwdCustom;
+use dlds\mlm\app\models\rewards\RwdExtra;
 use dlds\mlm\app\models\Subject;
 use dlds\mlm\helpers\MlmParticipantHelper;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
+use dlds\mlm\kernel\interfaces\queries\MlmRewardQueryInterface;
 use yii\helpers\StringHelper;
 
 /**
@@ -36,6 +41,33 @@ trait MlmSubjectTrait
         }
 
         return $this->amount;
+    }
+
+    /**
+     * Retrieves basic rewards query
+     * @return MlmRewardQueryInterface
+     */
+    public function getRwdBasic()
+    {
+        return $this->hasMany(RwdBasic::className(), ['subject_id' => 'id'])->where(['subject_type' => $this->__mlmType()]);
+    }
+
+    /**
+     * Retrieves extra rewards query
+     * @return MlmRewardQueryInterface
+     */
+    public function getRwdExtra()
+    {
+        return $this->hasMany(RwdExtra::className(), [1 => 0]);
+    }
+
+    /**
+     * Retrieves custom rewards query
+     * @return MlmRewardQueryInterface
+     */
+    public function getRwdCustom()
+    {
+        return $this->hasOne(RwdCustom::className(), ['subject_id' => 'id'])->where(['subject_type' => $this->__mlmType()]);
     }
 
     // <editor-fold defaultstate="collapsed" desc="MlmSubjectInterface methods">
@@ -101,7 +133,7 @@ trait MlmSubjectTrait
      */
     public function __mlmCanRewardByBasic()
     {
-        return $this->__mlmAmountBasic();
+        return !$this->getRwdBasic()->count() && $this->__mlmAmountBasic();
     }
 
     /**
@@ -117,7 +149,7 @@ trait MlmSubjectTrait
      */
     public function __mlmCanRewardByCustom()
     {
-        return true;
+        return !$this->getRwdCustom()->count();
     }
 
     /**
