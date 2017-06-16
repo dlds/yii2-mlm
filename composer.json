@@ -20,8 +20,8 @@
     }
   ],
   "require": {
-    "yiisoft/yii2": "^2.0.11",
-    "dlds/yii2-nested-sets": "^1.3.1"
+    "yiisoft/yii2": "~2.0.12",
+    "dlds/yii2-nested-sets": "~1.3.1"
   },
   "require-dev": {
     "codeception/codeception": "^2.3.3",
