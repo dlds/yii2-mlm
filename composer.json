@@ -33,7 +33,6 @@
       "dlds\\mlm\\": "src",
       "dlds\\mlm\\app\\": "app",
       "dlds\\mlm\\tests\\": "tests"
-    },
-    "exclude-from-files": ["shim.php"]
+    }
   }
 }
