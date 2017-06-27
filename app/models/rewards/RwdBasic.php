@@ -120,4 +120,13 @@ class RwdBasic extends ActiveRecord implements MlmRewardInterface
     {
         return $this->hasMany(Participant::className(), ['id' => 'usr_rewarded_id'])->viaTable('rwd_extra', ['rwd_basic_id' => 'id']);
     }
+
+    /**
+     * @inheritdoc
+     * @return RwdBasicQuery
+     */
+    public static function find()
+    {
+        return new RwdBasicQuery(get_called_class());
+    }
 }

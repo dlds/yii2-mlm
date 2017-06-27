@@ -25,6 +25,15 @@ class MlmRuleHelper
     }
 
     /**
+     * Retrieves rules limit
+     * @return float
+     */
+    public static function limit()
+    {
+        return Mlm::instance()->limitRules;
+    }
+
+    /**
      * Retrieves rule value
      * ---
      * If all following is true than sum of all following rules until max rule and current rule is retrieved

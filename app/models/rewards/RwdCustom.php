@@ -98,4 +98,13 @@ class RwdCustom extends ActiveRecord implements MlmRewardInterface
     {
         return $this->hasOne(Participant::className(), ['id' => 'usr_rewarded_id']);
     }
+
+    /**
+     * @inheritdoc
+     * @return RwdCustomQuery
+     */
+    public static function find()
+    {
+        return new RwdCustomQuery(get_called_class());
+    }
 }

@@ -21,20 +21,6 @@ trait MlmParticipantTrait
     /**
      * @inheritdoc
      */
-    public static function find()
-    {
-        $query = parent::find();
-
-        $query->attachBehaviors([
-            NestedSetsQueryBehavior::className(),
-        ]);
-
-        return $query;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function behaviors()
     {
         $behaviors = parent::behaviors();

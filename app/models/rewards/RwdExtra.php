@@ -90,4 +90,13 @@ class RwdExtra extends \yii\db\ActiveRecord implements MlmRewardInterface
     {
         return $this->hasOne(Participant::className(), ['id' => 'usr_rewarded_id']);
     }
+
+    /**
+     * @inheritdoc
+     * @return RwdExtraQuery
+     */
+    public static function find()
+    {
+        return new RwdExtraQuery(get_called_class());
+    }
 }

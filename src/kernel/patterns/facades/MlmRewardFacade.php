@@ -28,6 +28,11 @@ use yii\base\Exception;
  */
 abstract class MlmRewardFacade
 {
+    const GEN_ALL = 0;
+    const GEN_CUSTOM = 5;
+    const GEN_BASIC = 10;
+    const GEN_EXTRA = 20;
+
     /**
      * Verifies all rewards for given subject and approves or denies each of them
      * @param MlmSubjectInterface $subject
@@ -41,7 +46,7 @@ abstract class MlmRewardFacade
     /**
      * Generates all allowed rewards for given subject
      * @param MlmSubjectInterface $subject
-     * @return bool
+     * @return integer
      */
     public static function generateAll(MlmSubjectInterface $subject)
     {

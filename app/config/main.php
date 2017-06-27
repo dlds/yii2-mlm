@@ -26,6 +26,7 @@ return [
             'clsRewardCustom' => RwdCustom::className(),
             'clsSubjects' => [
                 Subject::__mlmTypeKey() => Subject::className(),
+                //RwdBasic::__mlmTypeKey() => RwdBasic::className(),
             ],
             // rules sum is 50%
             'rules' => [
@@ -35,6 +36,8 @@ return [
                 4 => 4,
                 5 => 1,
             ],
+            // rules sum limit
+            'limitRules' => 50,
             // pending delay is 1 min
             'delayPending' => 60,
             // rewarding is active

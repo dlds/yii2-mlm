@@ -18,6 +18,7 @@ use dlds\mlm\app\models\Subject;
 use dlds\mlm\helpers\MlmParticipantHelper;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
 use dlds\mlm\kernel\interfaces\queries\MlmRewardQueryInterface;
+use yii\db\ActiveQuery;
 use yii\helpers\StringHelper;
 
 /**
@@ -49,7 +50,7 @@ trait MlmSubjectTrait
      */
     public function getRwdBasic()
     {
-        return $this->hasMany(RwdBasic::className(), ['subject_id' => 'id'])->where(['subject_type' => $this->__mlmType()]);
+        return $this->hasMany(RwdBasic::className(), ['subject_id' => 'id'])->onCondition([RwdBasic::tableName() . '.subject_type' => $this->__mlmType()]);
     }
 
     /**
@@ -67,7 +68,7 @@ trait MlmSubjectTrait
      */
     public function getRwdCustom()
     {
-        return $this->hasOne(RwdCustom::className(), ['subject_id' => 'id'])->where(['subject_type' => $this->__mlmType()]);
+        return $this->hasOne(RwdCustom::className(), ['subject_id' => 'id'])->andOnCondition([RwdCustom::tableName() . '.subject_type' => $this->__mlmType()]);
     }
 
     // <editor-fold defaultstate="collapsed" desc="MlmSubjectInterface methods">

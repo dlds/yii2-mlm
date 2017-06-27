@@ -72,6 +72,15 @@ class Subject extends ActiveRecord implements MlmSubjectInterface
         return $this->hasOne(Participant::className(), ['id' => 'participant_id']);
     }
 
+    /**
+     * @inheritdoc
+     * @return SubjectQuery
+     */
+    public static function find()
+    {
+        return new SubjectQuery(get_called_class());
+    }
+
     // <editor-fold defaultstate="collapsed" desc="MlmSubjectInterface methods">
 
     /**

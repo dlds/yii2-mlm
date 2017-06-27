@@ -66,6 +66,15 @@ class Participant extends ActiveRecord implements MlmParticipantInterface
         ];
     }
 
+    /**
+     * @inheritdoc
+     * @return ParticipantQuery
+     */
+    public static function find()
+    {
+        return new ParticipantQuery(get_called_class());
+    }
+
     // <editor-fold defaultstate="collapsed" desc="Relations methods">
 
     /**

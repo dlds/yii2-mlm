@@ -227,6 +227,20 @@ class MlmTest extends \Codeception\Test\Unit
     }
 
     /**
+     * Tests autorun generation / verification
+     */
+    public function testAutorun()
+    {
+        $mlm = Mlm::instance();
+
+        verify($mlm->autorun(2))->equals([0, 10]);
+        verify($mlm->autorun(2))->equals([0, 8]);
+
+        verify($mlm->autorun(2))->equals([0, 0]);
+        verify($mlm->autorun())->equals([0, 0]);
+    }
+
+    /**
      * Retrieves expected rewards values
      * @param $i
      * @return mixed

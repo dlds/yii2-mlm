@@ -59,7 +59,7 @@ abstract class MlmRewardHelper
             throw new InvalidValueException('Percentile cannot be greater then 1');
         }
 
-        return Mlm::round($subject->__mlmAmountBasic() * $percentile);
+        return Mlm::calc($subject->__mlmAmountBasic(), $percentile);
     }
 
     /**

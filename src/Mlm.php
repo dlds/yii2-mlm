@@ -9,14 +9,18 @@
 namespace dlds\mlm;
 
 use Codeception\Util\Debug;
-use dlds\mlm\helpers\MlmSubjectFacade;
 use dlds\mlm\helpers\MlmValueHelper;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
 use dlds\mlm\kernel\interfaces\MlmRewardInterface;
 use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
+use dlds\mlm\kernel\interfaces\queries\MlmParticipantQueryInterface;
+use dlds\mlm\kernel\interfaces\queries\MlmRewardQueryInterface;
+use dlds\mlm\kernel\interfaces\queries\MlmSubjectQueryInterface;
 use dlds\mlm\kernel\MlmPocket;
 use dlds\mlm\kernel\patterns\facades\MlmParticipantFacade;
 use dlds\mlm\kernel\patterns\facades\MlmRewardFacade;
+use dlds\mlm\kernel\patterns\facades\MlmSubjectFacade;
+use phpDocumentor\Reflection\Types\Integer;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
@@ -150,6 +154,7 @@ class Mlm extends \yii\base\Component
         // validates rewards classes
         $this->validateClsRewardBasic();
         $this->validateClsRewardExtra();
+        $this->validateClsRewardCustom();
 
         // validates rewards generation rules
         $this->validateRules();
@@ -164,13 +169,21 @@ class Mlm extends \yii\base\Component
     }
 
     /**
-     * Automatically runs regularly actions (cron shortcutł)
+     * Automatically runs regularly actions (cron shortcut)
+     * @param integer $limit
      */
-    public function autorun()
+    public function autorun($limit = 10)
     {
-        // 1. approve pending commissions
-        // 2. create investment commissions
-        // 3. withdraw locked commisison
+        $result = [0, 0];
+
+        // 1. verify rewards
+
+        // 2. create rewards
+        foreach ($this->clsSubjects as $cls) {
+            $result[1] += $this->createMultipleRewards(call_user_func([$cls, 'find']), $limit);
+        }
+
+        return $result;
     }
 
     // <editor-fold defaultstate="collapsed" desc="Mlm Reward Methods">
@@ -190,9 +203,9 @@ class Mlm extends \yii\base\Component
     }
 
     /**
-     * Runs generating of all types of rewards
+     * Runs generating of all types of rewards for single subject
      * @param MlmSubjectInterface $subject
-     * @return bool
+     * @return integer
      */
     public function createRewards(MlmSubjectInterface $subject)
     {
@@ -201,6 +214,52 @@ class Mlm extends \yii\base\Component
         }
 
         return MlmRewardFacade::generateAll($subject);
+    }
+
+    /**
+     * Runs generating of all types of rewards for multiple subjects
+     * @param MlmSubjectQueryInterface $query
+     * @param integer $limit
+     * @return integer
+     */
+    public function createMultipleRewards(MlmSubjectQueryInterface $query, $limit = 10)
+    {
+        if ($limit) {
+            $query->limit($limit);
+        }
+
+        $subjects = $query->__mlmExpectingRewards()->all();
+
+        Debug::debug('---');
+        Debug::debug(sprintf('Found %s subjects expecting rewards', count($subjects)));
+
+        if (!$subjects) {
+            return false;
+        }
+
+        $total = 0;
+
+        foreach ($subjects as $sbj) {
+            $total += $this->createRewards($sbj);
+        }
+
+        return $total;
+    }
+
+    /**
+     * Calculates value from given amount and percentile
+     * ---
+     * Uses MLM::round() method to round decimals
+     * ---
+     * @see Mlm::round()
+     * ---
+     * @param $amount
+     * @param $percentile
+     * @return float
+     */
+    public static function calc($amount, $percentile)
+    {
+        return static::round($amount * $percentile);
     }
 
     /**
@@ -355,20 +414,28 @@ class Mlm extends \yii\base\Component
      */
     protected function validateClsParticipant()
     {
-        Debug::debug($this->clsParticipant);
         if (!$this->clsParticipant) {
             throw new Exception('Participant class must be set.');
         }
 
-        $rfl = new \ReflectionClass($this->clsParticipant);
+        $rfl1 = new \ReflectionClass($this->clsParticipant);
 
-        if (!$rfl->implementsInterface(MlmParticipantInterface::class)) {
+        if (!$rfl1->implementsInterface(MlmParticipantInterface::class)) {
             throw new Exception(sprintf('Participant class has to implement %s', StringHelper::basename(MlmParticipantInterface::class)));
         }
+
+        $query = call_user_func([$this->clsParticipant, 'find']);
+
+        $rfl2 = new \ReflectionClass($query);
+
+        if (!$rfl2->implementsInterface(MlmParticipantQueryInterface::class)) {
+            throw new Exception(sprintf('Participant class has to implement %s', StringHelper::basename(MlmParticipantQueryInterface::class)));
+        }
+
     }
 
     /**
-     * Checks if reward basic class is set and has propper features
+     * Checks if reward basic class is set and has all features
      * @throws Exception
      * @return boolean
      */
@@ -383,23 +450,65 @@ class Mlm extends \yii\base\Component
         if (!$rfl->implementsInterface(MlmRewardInterface::class)) {
             throw new Exception(sprintf('Reward Basic class has to implement %s', StringHelper::basename(MlmRewardInterface::class)));
         }
+
+        $query = call_user_func([$this->clsRewardBasic, 'find']);
+
+        $rfl2 = new \ReflectionClass($query);
+
+        if (!$rfl2->implementsInterface(MlmRewardQueryInterface::class)) {
+            throw new Exception(sprintf('Reward Basic Query class has to implement %s', StringHelper::basename(MlmRewardQueryInterface::class)));
+        }
     }
 
     /**
-     * Checks if reward extra class is set and has propper features
+     * Checks if reward extra class is set and has all features
      * @throws Exception
      * @return boolean
      */
     protected function validateClsRewardExtra()
     {
         if (!$this->clsRewardExtra) {
-            throw new Exception('Participant class must be set.');
+            throw new Exception('Reward Extra class must be set.');
         }
 
-        $rfl = new \ReflectionClass($this->clsRewardExtra);
+        $rfl1 = new \ReflectionClass($this->clsRewardExtra);
 
-        if (!$rfl->implementsInterface(MlmRewardInterface::class)) {
-            throw new Exception(sprintf('Participant class has to implement %s', StringHelper::basename(MlmRewardInterface::class)));
+        if (!$rfl1->implementsInterface(MlmRewardInterface::class)) {
+            throw new Exception(sprintf('Reward Extra class has to implement %s', StringHelper::basename(MlmRewardInterface::class)));
+        }
+
+        $query = call_user_func([$this->clsRewardExtra, 'find']);
+
+        $rfl2 = new \ReflectionClass($query);
+
+        if (!$rfl2->implementsInterface(MlmRewardQueryInterface::class)) {
+            throw new Exception(sprintf('Reward Extra Query class has to implement %s', StringHelper::basename(MlmRewardQueryInterface::class)));
+        }
+    }
+
+    /**
+     * Checks if reward custom class is set and has all features
+     * @throws Exception
+     * @return boolean
+     */
+    protected function validateClsRewardCustom()
+    {
+        if (!$this->clsRewardCustom) {
+            throw new Exception('RewardCustom class must be set.');
+        }
+
+        $rfl1 = new \ReflectionClass($this->clsRewardCustom);
+
+        if (!$rfl1->implementsInterface(MlmRewardInterface::class)) {
+            throw new Exception(sprintf('Reward Custom class has to implement %s', StringHelper::basename(MlmRewardInterface::class)));
+        }
+
+        $query = call_user_func([$this->clsRewardCustom, 'find']);
+
+        $rfl2 = new \ReflectionClass($query);
+
+        if (!$rfl2->implementsInterface(MlmRewardQueryInterface::class)) {
+            throw new Exception(sprintf('Reward Custom Query class has to implement %s', StringHelper::basename(MlmRewardQueryInterface::class)));
         }
     }
 
@@ -416,10 +525,18 @@ class Mlm extends \yii\base\Component
 
         foreach ($this->clsSubjects as $subject) {
 
-            $rfl = new \ReflectionClass($subject);
+            $rfl1 = new \ReflectionClass($subject);
 
-            if (!$rfl->implementsInterface(MlmSubjectInterface::class)) {
+            if (!$rfl1->implementsInterface(MlmSubjectInterface::class)) {
                 throw new Exception(sprintf('Subject class has to implement %s', StringHelper::basename(MlmSubjectInterface::class)));
+            }
+
+            $query = call_user_func([$subject, 'find']);
+
+            $rfl2 = new \ReflectionClass($query);
+
+            if (!$rfl2->implementsInterface(MlmSubjectQueryInterface::class)) {
+                throw new Exception(sprintf('Subject Query class has to implement %s', StringHelper::basename(MlmSubjectQueryInterface::class)));
             }
         }
     }
