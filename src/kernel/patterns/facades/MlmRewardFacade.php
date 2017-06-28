@@ -12,7 +12,9 @@ namespace dlds\mlm\kernel\patterns\facades;
 use Codeception\Util\Debug;
 use dlds\mlm\kernel\exceptions\MlmRewardBuilderError;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
+use dlds\mlm\kernel\interfaces\MlmRewardInterface;
 use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
+use dlds\mlm\kernel\interfaces\queries\MlmRewardQueryInterface;
 use dlds\mlm\kernel\MlmPocketItem;
 use dlds\mlm\kernel\patterns\builders\directors\MlmRewardDirector;
 use dlds\mlm\kernel\patterns\builders\interfaces\MlmRewardBuilderInterface;
@@ -21,6 +23,7 @@ use dlds\mlm\kernel\patterns\builders\MlmRewardCustomBuilder;
 use dlds\mlm\kernel\patterns\builders\MlmRewardExtraBuilder;
 use dlds\mlm\Mlm;
 use yii\base\Exception;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class MlmRewardFacade
@@ -34,13 +37,61 @@ abstract class MlmRewardFacade
     const GEN_EXTRA = 20;
 
     /**
-     * Verifies all rewards for given subject and approves or denies each of them
-     * @param MlmSubjectInterface $subject
-     * @return bool
+     * Approves all rewards found by given query
+     * when it is expecting approval
+     * @param MlmRewardQueryInterface $q
+     * @return integer
      */
-    public static function verifyAll(MlmSubjectInterface $subject)
+    public static function approveAll(MlmRewardQueryInterface $q, $delay)
     {
-        // TODO: implement rewards verification
+        Mlm::trace($q->createCommand()->rawSql);
+
+        $rewards = $q->all();
+
+        $total = 0;
+
+        foreach ($rewards as $rwd) {
+
+            Mlm::trace(sprintf('Approving %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()));
+
+            if (!$rwd->__mlmExpectingApproval($delay) || !$rwd->__mlmApprove()->__mlmSave()) {
+                Mlm::trace(sprintf('FAILED approval %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()));
+                continue;
+            }
+
+            $total += 1;
+        }
+
+        return $total;
+    }
+
+    /**
+     * Denies all rewards found by given query
+     * when it is expecting approval
+     * @param MlmRewardQueryInterface $q
+     * @return integer
+     */
+    public static function denyAll(MlmRewardQueryInterface $q, $delay)
+    {
+        Mlm::trace($q->createCommand()->rawSql);
+
+        $rewards = $q->all();
+
+        $total = 0;
+
+        foreach ($rewards as $rwd) {
+
+            Mlm::trace(sprintf('Denying %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()));
+
+            if (!$rwd->__mlmExpectingDeny($delay) || !$rwd->__mlmDeny()->__mlmSave()) {
+                Mlm::trace(sprintf('FAILED deny %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()));
+                continue;
+            }
+
+            $total += 1;
+        }
+
+        return $total;
     }
 
     /**
@@ -50,15 +101,13 @@ abstract class MlmRewardFacade
      */
     public static function generateAll(MlmSubjectInterface $subject)
     {
-        Debug::debug('---');
-
-        Debug::debug(sprintf('Generating at %s', time()));
+        Mlm::trace(sprintf('Generating for %s [%s] at %s', get_class($subject), $subject->__mlmPrimaryKey(), time()), true);
 
         Mlm::pocket()->clear();
 
         $size = Mlm::pocket()->size();
 
-        foreach (static::procedures() as $procedure) {
+        foreach (static::generatorProcedures() as $procedure) {
 
             $transaction = \Yii::$app->db->beginTransaction();
 
@@ -72,14 +121,14 @@ abstract class MlmRewardFacade
 
                 $transaction->rollBack();
 
-                Debug::debug($e->getErrors(true));
+                Mlm::trace($e->getErrors(true));
                 \Yii::error($e->getErrors(true));
 
             } catch (Exception $e) {
 
                 $transaction->rollBack();
 
-                Debug::debug($e->getMessage());
+                Mlm::trace($e->getMessage());
                 \Yii::error($e->getMessage());
             }
         }
@@ -97,12 +146,12 @@ abstract class MlmRewardFacade
     {
         if (!$subject->__mlmCanRewardByBasic($subject)) {
 
-            Debug::debug(sprintf('Prevented BASIC at %s', time()));
+            Mlm::trace(sprintf('Prevented BASIC at %s', time()));
 
             return false;
         }
 
-        Debug::debug(sprintf('Generating BASIC at %s', time()));
+        Mlm::trace(sprintf('Generating BASIC at %s', time()));
 
         $builder = MlmRewardBasicBuilder::instance($subject);
 
@@ -121,12 +170,12 @@ abstract class MlmRewardFacade
     {
         if (!$subject->__mlmCanRewardByExtra($subject)) {
 
-            Debug::debug(sprintf('Prevented EXTRA at %s', time()));
+            Mlm::trace(sprintf('Prevented EXTRA at %s', time()));
 
             return false;
         }
 
-        Debug::debug(sprintf('Generating EXTRA at %s', time()));
+        Mlm::trace(sprintf('Generating EXTRA at %s', time()));
 
         $builder = MlmRewardExtraBuilder::instance($subject);
 
@@ -146,12 +195,12 @@ abstract class MlmRewardFacade
     {
         if (!$subject->__mlmCanRewardByCustom($subject)) {
 
-            Debug::debug(sprintf('Prevented CUSTOM at %s', time()));
+            Mlm::trace(sprintf('Prevented CUSTOM at %s', time()));
 
             return false;
         }
 
-        Debug::debug(sprintf('Generating CUSTOM at %s', time()));
+        Mlm::trace(sprintf('Generating CUSTOM at %s', time()));
 
         $builder = MlmRewardCustomBuilder::instance($subject);
 
@@ -203,7 +252,7 @@ abstract class MlmRewardFacade
     /**
      * @return array
      */
-    protected static function procedures()
+    protected static function generatorProcedures()
     {
         return [
             function ($subject) {

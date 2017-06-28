@@ -40,6 +40,14 @@ trait MlmRewardCustomTrait
     /**
      * @inheritdoc
      */
+    public function __mlmPrimaryKey()
+    {
+        return $this->primaryKey;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function __mlmRewarded(MlmParticipantInterface $participant = null)
     {
         if (null !== $participant) {
@@ -117,6 +125,22 @@ trait MlmRewardCustomTrait
     /**
      * @inheritdoc
      */
+    public function __mlmExpectingApproval($delay = null)
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmExpectingDeny($delay = null)
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function __mlmAttributes($refresh = false)
     {
         if ($refresh) {
@@ -132,6 +156,28 @@ trait MlmRewardCustomTrait
             'is_locked',
             'approved_at',
         ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmApprove()
+    {
+        $this->status = 'approved';
+        $this->approved_at = time();
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmDeny()
+    {
+        $this->status = 'denied';
+        $this->approved_at = null;
+
+        return $this;
     }
 
     // </editor-fold>

@@ -9,8 +9,10 @@
 
 namespace dlds\mlm\kernel\traits;
 
+use dlds\mlm\app\models\rewards\RwdBasic;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
 use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
+use dlds\mlm\Mlm;
 
 /**
  * Trait MlmRewardExtraTrait
@@ -18,6 +20,14 @@ use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
  */
 trait MlmRewardExtraTrait
 {
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubject()
+    {
+        return $this->hasOne(Mlm::clsSubject($this->subject_type), ['id' => 'subject_id']);
+    }
+
     // <editor-fold defaultstate="collapsed" desc="MlmRewardInterface methods">
 
     /**
@@ -26,6 +36,14 @@ trait MlmRewardExtraTrait
     public function __mlmSave()
     {
         return $this->save();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmPrimaryKey()
+    {
+        return $this->primaryKey;
     }
 
     /**
@@ -46,10 +64,12 @@ trait MlmRewardExtraTrait
     public function __mlmSubject(MlmSubjectInterface $subject = null)
     {
         if (null !== $subject) {
-            $this->rwd_basic_id = $subject->__mlmPrimaryKey();
+            $this->subject_id = $subject->__mlmPrimaryKey();
+            $this->subject_type = $subject->__mlmType();
+
         }
 
-        return $this->rwdBasic;
+        return $this->subject;
     }
 
     /**
@@ -107,6 +127,22 @@ trait MlmRewardExtraTrait
     /**
      * @inheritdoc
      */
+    public function __mlmExpectingApproval($delay = null)
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmExpectingDeny($delay = null)
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function __mlmAttributes($refresh = false)
     {
         if ($refresh) {
@@ -115,12 +151,35 @@ trait MlmRewardExtraTrait
 
         return $this->getAttributes([
             'usr_rewarded_id',
-            'rwd_basic_id',
+            'subject_id',
+            'subject_type',
             'value',
             'status',
             'is_locked',
             'approved_at',
         ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmApprove()
+    {
+        $this->status = 'approved';
+        $this->approved_at = time();
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmDeny()
+    {
+        $this->status = 'denied';
+        $this->approved_at = null;
+
+        return $this;
     }
 
     // </editor-fold>

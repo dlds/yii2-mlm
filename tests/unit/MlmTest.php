@@ -104,6 +104,12 @@ class MlmTest extends \Codeception\Test\Unit
         verify($third)->notNull();
         verify($third)->isInstanceOf(MlmParticipantInterface::class);
         verify($third->__mlmPrimaryKey())->equals(12);
+
+        $third = Mlm::participant(12);
+
+        verify($third)->notNull();
+        verify($third)->isInstanceOf(MlmParticipantInterface::class);
+        verify($third->__mlmPrimaryKey())->equals(12);
     }
 
     /**

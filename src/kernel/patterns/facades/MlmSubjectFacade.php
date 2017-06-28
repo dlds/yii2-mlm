@@ -9,6 +9,7 @@
 
 namespace dlds\mlm\kernel\patterns\facades;
 
+use dlds\mlm\app\models\Participant;
 use dlds\mlm\helpers\MlmRuleHelper;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
 use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
@@ -45,7 +46,11 @@ abstract class MlmSubjectFacade
      */
     public static function profiteersExtra(MlmSubjectInterface $subject)
     {
-        return [];
+        // 1211, 131311
+        return [
+            Participant::findOne(1211),
+            Participant::findOne(131311),
+        ];
     }
 
     /**

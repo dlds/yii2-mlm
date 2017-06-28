@@ -11,6 +11,12 @@ interface MlmRewardInterface
     public function __mlmSave();
 
     /**
+     * Retrieves reward primary key
+     * @return integer
+     */
+    public function __mlmPrimaryKey();
+
+    /**
      * Attaches and retrieves rewarded participant record
      * ---
      * New participant should be set only if is not null.
@@ -81,6 +87,26 @@ interface MlmRewardInterface
     public function __mlmIsFinal($state = null);
 
     /**
+     * Indicates if reward is expecting approval
+     * ---
+     * Default MLM delay is given and should be counted
+     * ---
+     * @param integer $delay
+     * @return mixed
+     */
+    public function __mlmExpectingApproval($delay = null);
+
+    /**
+     * Indicates if reward is expecting to be denied
+     * ---
+     * Default MLM delay is given and should be counted
+     * ---
+     * @param integer $delay
+     * @return mixed
+     */
+    public function __mlmExpectingDeny($delay = null);
+
+    /**
      * Loads and retrieves mlm specific attributes
      * ---
      * When refresh is true the DB callback should be processed.
@@ -90,4 +116,15 @@ interface MlmRewardInterface
      */
     public function __mlmAttributes($refresh = false);
 
+    /**
+     * Approves reward
+     * @return MlmRewardInterface
+     */
+    public function __mlmApprove();
+
+    /**
+     * Denies reward
+     * @return MlmRewardInterface
+     */
+    public function __mlmDeny();
 }

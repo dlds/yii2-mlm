@@ -58,7 +58,7 @@ class Mlm extends \yii\base\Component
     public $limitRules = 100;
 
     /**
-     * @var int approce/deny delay in seconds
+     * @var int approve/deny delay in seconds
      */
     public $delayPending = 3600;
 
@@ -171,12 +171,16 @@ class Mlm extends \yii\base\Component
     /**
      * Automatically runs regularly actions (cron shortcut)
      * @param integer $limit
+     * @return array
      */
     public function autorun($limit = 10)
     {
         $result = [0, 0];
 
         // 1. verify rewards
+        foreach (static::clsRewards() as $cls) {
+            $result[0] += $this->verifyMultipleRewards(call_user_func([$cls, 'find']), $limit);
+        }
 
         // 2. create rewards
         foreach ($this->clsSubjects as $cls) {
@@ -189,9 +193,9 @@ class Mlm extends \yii\base\Component
     // <editor-fold defaultstate="collapsed" desc="Mlm Reward Methods">
 
     /**
-     * Runs generating of all types of rewards
+     * Runs verifying of all rewards assigned to given subject
      * @param MlmSubjectInterface $subject
-     * @return bool
+     * @return integer|bool
      */
     public function verifyRewards(MlmSubjectInterface $subject)
     {
@@ -199,7 +203,46 @@ class Mlm extends \yii\base\Component
             return false;
         }
 
-        return MlmRewardFacade::generateAll($subject);
+        $total = 0;
+
+        foreach (static::clsRewards() as $cls) {
+
+            $query = call_user_func([$cls, 'find']);
+            $query->__mlmSubject($subject);
+
+            $total += $this->verifyMultipleRewards($query, false);
+        }
+
+        return $total;
+    }
+
+    /**
+     * Runs verification of rewards based on given query
+     * @param MlmRewardQueryInterface $query
+     * @param integer $limit
+     * @return integer
+     */
+    public function verifyMultipleRewards(MlmRewardQueryInterface $query, $limit = 10)
+    {
+        $total = 0;
+
+        if ($limit) {
+            $query->limit($limit);
+        }
+
+        $toApprove = clone $query;
+        $toDeny = clone $query;
+
+        $toApprove->__mlmExpectingApproval(static::delay());
+        $toDeny->__mlmExpectingDeny(static::delay());
+
+        static::trace(sprintf('Multiple approval - found %s rewards (%s) expecting approve', $toApprove->count(), StringHelper::basename(get_class($query))), '===');
+        $total += MlmRewardFacade::approveAll($toApprove, static::delay());
+
+        static::trace(sprintf('Multiple deny - found %s rewards (%s) expecting deny', $toDeny->count(), StringHelper::basename(get_class($query))), '===');
+        $total += MlmRewardFacade::denyAll($toDeny, static::delay());
+
+        return $total;
     }
 
     /**
@@ -230,8 +273,7 @@ class Mlm extends \yii\base\Component
 
         $subjects = $query->__mlmExpectingRewards()->all();
 
-        Debug::debug('---');
-        Debug::debug(sprintf('Found %s subjects expecting rewards', count($subjects)));
+        static::trace(sprintf('Multiple generating - found %s subjects (%s) expecting rewards', count($subjects), StringHelper::basename(get_class($query))), '===');
 
         if (!$subjects) {
             return false;
@@ -297,6 +339,15 @@ class Mlm extends \yii\base\Component
     }
 
     /**
+     * Retrieves approve/deny delay
+     * @return int
+     */
+    public static function delay()
+    {
+        return static::instance()->delayPending;
+    }
+
+    /**
      * Retrieves reward status alias
      * ---
      * Given status will be retrieved when status alias is not found.
@@ -328,6 +379,19 @@ class Mlm extends \yii\base\Component
     public static function clsSubject($key)
     {
         return ArrayHelper::getValue(static::instance()->clsSubjects, $key);
+    }
+
+    /**
+     * Retrieves classes of all rewards kinds
+     * @return array
+     */
+    public static function clsRewards()
+    {
+        return [
+            static::clsRewardBasic(),
+            static::clsRewardExtra(),
+            static::clsRewardCustom(),
+        ];
     }
 
     /**
@@ -565,5 +629,26 @@ class Mlm extends \yii\base\Component
     }
 
     // </editor-fold>
+
+    /**
+     * Trace and debug given message
+     * @param string $message
+     * @param boolean|string $separator
+     * @return boolean
+     */
+    public static function trace($message, $separator = false)
+    {
+        if (!YII_DEBUG) {
+            \Yii::trace($message);
+            return true;
+        }
+
+        if ($separator) {
+            Debug::debug((true === $separator) ? '---' : $separator);
+        }
+
+        Debug::debug($message);
+        return true;
+    }
 
 }

@@ -21,9 +21,15 @@ use yii\db\ActiveRecord;
 /**
  * Class ParticipantQuery
  * @package dlds\mlm\app\models
+ * @see RwdExtra
  */
 class RwdExtraQuery extends ActiveQuery implements MlmRewardQueryInterface
 {
+    /**
+     * @inheritdoc
+     * @param MlmParticipantInterface $participant
+     * @return $this
+     */
     public function __mlmProfiteer(MlmParticipantInterface $participant)
     {
         $this->andWhere(['usr_rewarded_id' => $participant->__mlmPrimaryKey()]);
@@ -31,6 +37,12 @@ class RwdExtraQuery extends ActiveQuery implements MlmRewardQueryInterface
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     * @param int $id
+     * @param null $type
+     * @return $this
+     */
     public function __mlmSource($id, $type = null)
     {
         $this->andWhere(['subject_id' => $id]);
@@ -42,28 +54,97 @@ class RwdExtraQuery extends ActiveQuery implements MlmRewardQueryInterface
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     * @param bool $state
+     * @return $this
+     */
+    public function __mlmPending($state = true)
+    {
+        $operand = $state ? '=' : '<>';
+
+        $this->andWhere([$operand, 'status', 'pending']);
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     * @param bool $state
+     * @return $this
+     */
     public function __mlmApproved($state = true)
     {
         $operand = $state ? '=' : '<>';
 
         $this->andWhere([$operand, 'status', 'approved']);
+
+        return $this;
     }
 
+    /**
+     * @inheritdoc
+     * @param bool $state
+     * @return $this
+     */
+    public function __mlmDenied($state = true)
+    {
+        $operand = $state ? '=' : '<>';
+
+        $this->andWhere([$operand, 'status', 'denied']);
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     * @param bool $state
+     * @return $this
+     */
+    public function __mlmPaid($state = true)
+    {
+        $operand = $state ? '=' : '<>';
+
+        $this->andWhere([$operand, 'status', 'paid']);
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     * @param bool $state
+     * @return $this
+     */
     public function __mlmLocked($state = true)
     {
         $operand = $state ? '=' : '<>';
 
         $this->andWhere([$operand, 'status', 1]);
+
+        return $this;
     }
 
+    /**
+     * @inheritdoc
+     * @param bool $state
+     * @return $this
+     */
     public function __mlmFinal($state = true)
     {
         $operand = $state ? '=' : '<>';
 
         $this->andWhere([$operand, 'status', 1]);
+
+        return $this;
     }
 
-    public function __mlmAge($value = 3600, $operator = self::OP_OLDER)
+    /**
+     * @inheritdoc
+     * @param int $value
+     * @param string $operator
+     * @return $this
+     */
+    public function __mlmAge($value, $operator = self::OP_OLDER)
     {
         $birth = time() - $value;
 
@@ -72,4 +153,39 @@ class RwdExtraQuery extends ActiveQuery implements MlmRewardQueryInterface
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     * @param integer|null $delay
+     * @return $this
+     */
+    public function __mlmExpectingApproval($delay = null)
+    {
+        $this->__mlmAge($delay);
+
+        $this->joinWith(['usrRewarded' => function ($q) {
+            $q->__mlmEligibleToExtraRewards(true);
+        }]);
+
+        $this->__mlmPending(true);
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     * @param integer|null $delay
+     * @return $this
+     */
+    public function __mlmExpectingDeny($delay = null)
+    {
+        $this->__mlmAge($delay);
+
+        $this->joinWith(['usrRewarded' => function ($q) {
+            $q->__mlmEligibleToExtraRewards(false);
+        }]);
+
+        $this->__mlmPending(true);
+
+        return $this;
+    }
 }

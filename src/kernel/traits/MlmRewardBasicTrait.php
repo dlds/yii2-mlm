@@ -9,9 +9,12 @@
 
 namespace dlds\mlm\kernel\traits;
 
+use dlds\mlm\app\models\rewards\RwdBasic;
+use dlds\mlm\app\models\rewards\RwdExtra;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
 use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
 use dlds\mlm\Mlm;
+use yii\helpers\StringHelper;
 
 /**
  * Trait MlmRewardBasicTrait
@@ -27,7 +30,23 @@ trait MlmRewardBasicTrait
         return $this->hasOne(Mlm::clsSubject($this->subject_type), ['id' => 'subject_id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRwdExtras()
+    {
+        return $this->hasMany(RwdExtra::className(), ['subject_id' => 'id'])->andOnCondition([RwdExtra::tableName() . '.subject_type' => $this->__mlmType()]);
+    }
+
     // <editor-fold defaultstate="collapsed" desc="MlmRewardInterface methods">
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmPrimaryKey()
+    {
+        return $this->primaryKey;
+    }
 
     /**
      * @inheritdoc
@@ -125,6 +144,44 @@ trait MlmRewardBasicTrait
     /**
      * @inheritdoc
      */
+    public function __mlmExpectingApproval($delay = null)
+    {
+        if ((time() - $this->created_at) < $delay) {
+            return false;
+        }
+
+        /** @var MlmParticipantInterface $rewarded */
+        $rewarded = $this->__mlmRewarded();
+
+        if (!$rewarded->__mlmEligibleToBasicRewards()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmExpectingDeny($delay = null)
+    {
+        if ((time() - $this->created_at) < $delay) {
+            return false;
+        }
+
+        /** @var MlmParticipantInterface $rewarded */
+        $rewarded = $this->__mlmRewarded();
+
+        if ($rewarded->__mlmEligibleToBasicRewards()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function __mlmAttributes($refresh = false)
     {
         if ($refresh) {
@@ -142,6 +199,120 @@ trait MlmRewardBasicTrait
             'is_final',
             'approved_at',
         ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmApprove()
+    {
+        $this->status = 'approved';
+        $this->approved_at = time();
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmDeny()
+    {
+        $this->status = 'denied';
+        $this->approved_at = null;
+
+        return $this;
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="MlmSubjectInterface methods">
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmParticipant()
+    {
+        return $this->usrRewarded;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmType()
+    {
+        return static::__mlmTypeKey();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmAmountBasic()
+    {
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmAmountExtra(MlmParticipantInterface $profiteer)
+    {
+        if ($profiteer->__mlmPrimaryKey() == 1211) {
+            return 0.10 * $this->value;
+        }
+
+        if ($profiteer->__mlmPrimaryKey() == 131311) {
+            return 0.20 * $this->value;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmAmountCustom(MlmParticipantInterface $profiteer)
+    {
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmOwnPercentile(MlmParticipantInterface $profiteer, $lvl)
+    {
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmCanRewardByBasic()
+    {
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmCanRewardByExtra()
+    {
+        return !$this->is_final && !$this->getRwdExtras()->count();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmCanRewardByCustom()
+    {
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function __mlmTypeKey()
+    {
+        return strtolower(StringHelper::basename(RwdBasic::className()));
     }
 
     // </editor-fold>

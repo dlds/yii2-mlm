@@ -33,11 +33,10 @@ use yii\db\ActiveRecord;
  * @property integer $updated_at
  *
  * @property Participant $usrRewarded
- * @property Participant[] $usrRewardeds
  * @property RwdExtra[] $rwdExtras
  * @property MlmSubjectInterface $subject
  */
-class RwdBasic extends ActiveRecord implements MlmRewardInterface
+class RwdBasic extends ActiveRecord implements MlmRewardInterface, MlmSubjectInterface
 {
     use MlmRewardBasicTrait;
 
@@ -103,22 +102,6 @@ class RwdBasic extends ActiveRecord implements MlmRewardInterface
     public function getUsrRewarded()
     {
         return $this->hasOne(Participant::className(), ['id' => 'usr_rewarded_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRwdExtras()
-    {
-        return $this->hasMany(RwdExtra::className(), ['rwd_basic_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUsrRewardeds()
-    {
-        return $this->hasMany(Participant::className(), ['id' => 'usr_rewarded_id'])->viaTable('rwd_extra', ['rwd_basic_id' => 'id']);
     }
 
     /**

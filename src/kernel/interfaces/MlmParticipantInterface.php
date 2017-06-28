@@ -64,6 +64,24 @@ interface MlmParticipantInterface
     public function __mlmIsDescendantOf(MlmParticipantInterface $ancestor);
 
     /**
+     * Indicates if participant is eligible to get basic rewards
+     * @return mixed
+     */
+    public function __mlmEligibleToBasicRewards();
+
+    /**
+     * Indicates if participant is eligible to get extra rewards
+     * @return mixed
+     */
+    public function __mlmEligibleToExtraRewards();
+
+    /**
+     * Indicates if participant is eligible to get custom rewards
+     * @return mixed
+     */
+    public function __mlmEligibleToCustomRewards();
+
+    /**
      * Retrieves multi level marketing participant based on give primary key
      * @param int $pk
      * @return MlmParticipantInterface

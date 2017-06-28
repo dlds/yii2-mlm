@@ -41,8 +41,46 @@ class ParticipantQuery extends ActiveQuery implements MlmParticipantQueryInterfa
         ]);
     }
 
+    // <editor-fold defaultstate="collapsed" desc="MlmParticipantQueryInterface methods">
     public function __mlmIsMain()
     {
         return $this->andWhere(['id' => 1]);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmEligibleToBasicRewards($state = true)
+    {
+        $operator = $state ? 'NOT IN' : 'IN';
+
+        $this->andWhere([$operator, Participant::tableName() . '.id', Participant::PK_BASIC_NOT_ELIGIBLE]);
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmEligibleToExtraRewards($state = true)
+    {
+        $operator = $state ? 'IN' : 'NOT IN';
+
+        $this->andWhere([$operator, Participant::tableName() . '.id', Participant::PK_EXTRA_ELIGIBLE]);
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmEligibleToCustomRewards($state = true)
+    {
+        $operator = $state ? 'NOT IN' : 'IN';
+
+        $this->andWhere([$operator, Participant::tableName() . '.id', Participant::PK_CUSTOM_NOT_ELIGIBLE]);
+
+        return $this;
+    }
+    // </editor-fold>
 }

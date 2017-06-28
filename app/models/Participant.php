@@ -35,6 +35,15 @@ class Participant extends ActiveRecord implements MlmParticipantInterface
     use MlmParticipantTrait;
 
     /**
+     * Primary keys of eligible participants
+     */
+    const PK_EXTRA_ELIGIBLE = [1211, 131311];
+    // not eligible
+    const PK_BASIC_NOT_ELIGIBLE = [131, 1311, 1312, 141, 14131];
+    const PK_CUSTOM_NOT_ELIGIBLE = [11, 13, 131, 1311, 1312, 14];
+
+
+    /**
      * @inheritdoc
      */
     public static function tableName()

@@ -10,6 +10,7 @@
 namespace dlds\mlm\kernel\traits;
 
 use Codeception\Util\Debug;
+use dlds\mlm\app\models\Participant;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
 use dlds\nestedsets\NestedSetsBehavior;
 use dlds\nestedsets\NestedSetsQueryBehavior;
@@ -114,6 +115,30 @@ trait MlmParticipantTrait
     public static function __mlmParticipant($pk)
     {
         return static::findOne($pk);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmEligibleToBasicRewards()
+    {
+        return !ArrayHelper::isIn($this->__mlmPrimaryKey(), Participant::PK_BASIC_NOT_ELIGIBLE);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmEligibleToExtraRewards()
+    {
+        return ArrayHelper::isIn($this->__mlmPrimaryKey(), Participant::PK_EXTRA_ELIGIBLE);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmEligibleToCustomRewards()
+    {
+        return !ArrayHelper::isIn($this->__mlmPrimaryKey(), Participant::PK_CUSTOM_NOT_ELIGIBLE);
     }
 
     /**

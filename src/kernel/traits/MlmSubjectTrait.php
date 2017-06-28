@@ -54,15 +54,6 @@ trait MlmSubjectTrait
     }
 
     /**
-     * Retrieves extra rewards query
-     * @return MlmRewardQueryInterface
-     */
-    public function getRwdExtra()
-    {
-        return $this->hasMany(RwdExtra::className(), [1 => 0]);
-    }
-
-    /**
      * Retrieves custom rewards query
      * @return MlmRewardQueryInterface
      */

@@ -17,6 +17,9 @@ use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
  */
 interface MlmRewardQueryInterface
 {
+    /**
+     * Operators
+     */
     const OP_YOUNGER = '>=';
     const OP_OLDER = '<=';
 
@@ -36,6 +39,16 @@ interface MlmRewardQueryInterface
     public function __mlmSource($id, $type = null);
 
     /**
+     * Queries rewards based on given pending state
+     * ---
+     * When state is true only pending rewards should be retrieved
+     * ---
+     * @param boolean $state
+     * @return MlmRewardQueryInterface
+     */
+    public function __mlmPending($state = true);
+
+    /**
      * Queries rewards based on given approved state
      * ---
      * When state is true only approved rewards should be retrieved
@@ -44,6 +57,26 @@ interface MlmRewardQueryInterface
      * @return MlmRewardQueryInterface
      */
     public function __mlmApproved($state = true);
+
+    /**
+     * Queries rewards based on given denied state
+     * ---
+     * When state is true only denied rewards should be retrieved
+     * ---
+     * @param boolean $state
+     * @return MlmRewardQueryInterface
+     */
+    public function __mlmDenied($state = true);
+
+    /**
+     * Queries rewards based on given paid state
+     * ---
+     * When state is true only paid rewards should be retrieved
+     * ---
+     * @param boolean $state
+     * @return MlmRewardQueryInterface
+     */
+    public function __mlmPaid($state = true);
 
     /**
      * Queries rewards based on given locked state
@@ -75,6 +108,19 @@ interface MlmRewardQueryInterface
      * @param string $operator
      * @return MlmRewardQueryInterface
      */
-    public function __mlmAge($value = 3600, $operator = self::OP_OLDER);
+    public function __mlmAge($value, $operator = self::OP_OLDER);
 
+    /**
+     * Queries only rewards expecting to be approved
+     * @param integer|null $delay
+     * @return mixed
+     */
+    public function __mlmExpectingApproval($delay = null);
+
+    /**
+     * Queries only rewards expecting to be denied
+     * @param integer|null $delay
+     * @return mixed
+     */
+    public function __mlmExpectingDeny($delay = null);
 }

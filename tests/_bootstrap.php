@@ -6,6 +6,7 @@ date_default_timezone_set("Europe/Prague");
 // codeception backward compatibility fix (disable codeception/codeception/shim.php file to be loaded)
 $GLOBALS['__composer_autoload_files']['1a296e41175bbbdf647d8b8ed1f41f41'] = true;
 
+defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'test');
 
 // include main application bootstrap

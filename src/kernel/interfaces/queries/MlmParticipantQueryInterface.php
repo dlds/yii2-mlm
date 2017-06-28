@@ -20,4 +20,34 @@ interface MlmParticipantQueryInterface
      * @return MlmParticipantQueryInterface
      */
     public function __mlmIsMain();
+
+    /**
+     * Indicates if participant is eligible to get basic rewards
+     * ---
+     * When state is true only eligible participants should be retrieved
+     * ---
+     * @param boolean $state
+     * @return mixed
+     */
+    public function __mlmEligibleToBasicRewards($state = true);
+
+    /**
+     * Indicates if participant is eligible to get extra rewards
+     * ---
+     * When state is true only eligible participants should be retrieved
+     * ---
+     * @param boolean $state
+     * @return mixed
+     */
+    public function __mlmEligibleToExtraRewards($state = true);
+
+    /**
+     * Indicates if participant is eligible to get custom rewards
+     * ---
+     * When state is true only eligible participants should be retrieved
+     * ---
+     * @param boolean $state
+     * @return mixed
+     */
+    public function __mlmEligibleToCustomRewards($state = true);
 }
