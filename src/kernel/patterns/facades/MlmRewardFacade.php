@@ -144,7 +144,7 @@ abstract class MlmRewardFacade
      */
     public static function generateBasic(MlmSubjectInterface $subject)
     {
-        if (!$subject->__mlmCanRewardByBasic($subject)) {
+        if (!$subject->__mlmCanRewardByBasic()) {
 
             Mlm::trace(sprintf('Prevented BASIC at %s', time()));
 
@@ -168,7 +168,7 @@ abstract class MlmRewardFacade
      */
     public static function generateExtra(MlmSubjectInterface $subject)
     {
-        if (!$subject->__mlmCanRewardByExtra($subject)) {
+        if (!$subject->__mlmCanRewardByExtra()) {
 
             Mlm::trace(sprintf('Prevented EXTRA at %s', time()));
 
@@ -193,7 +193,7 @@ abstract class MlmRewardFacade
      */
     public static function generateCustom(MlmSubjectInterface $subject)
     {
-        if (!$subject->__mlmCanRewardByCustom($subject)) {
+        if (!$subject->__mlmCanRewardByCustom()) {
 
             Mlm::trace(sprintf('Prevented CUSTOM at %s', time()));
 
