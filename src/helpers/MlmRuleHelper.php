@@ -26,10 +26,15 @@ class MlmRuleHelper
 
     /**
      * Retrieves rules limit
+     * @param float $asPercentile
      * @return float
      */
-    public static function limit()
+    public static function limit($asPercentile = false)
     {
+        if ($asPercentile) {
+            return Mlm::instance()->limitRules / 100;
+        }
+
         return Mlm::instance()->limitRules;
     }
 

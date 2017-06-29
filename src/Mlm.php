@@ -118,7 +118,12 @@ class Mlm extends \yii\base\Component
     /**
      * @var bool
      */
-    public $isActive = true;
+    public $isCreatingActive = true;
+
+    /**
+     * @var bool
+     */
+    public $isVerifyingActive = true;
 
     /**
      * @var string
@@ -179,11 +184,13 @@ class Mlm extends \yii\base\Component
 
         // 1. verify rewards
         foreach (static::clsRewards() as $cls) {
+            static::trace(sprintf('Autorun VERIFY for subjects of kind %s', StringHelper::basename($cls)), '===');
             $result[0] += $this->verifyMultipleRewards(call_user_func([$cls, 'find']), $limit);
         }
 
         // 2. create rewards
         foreach ($this->clsSubjects as $cls) {
+            static::trace(sprintf('Autorun CREATE for subjects of kind %s', StringHelper::basename($cls)), '===');
             $result[1] += $this->createMultipleRewards(call_user_func([$cls, 'find']), $limit);
         }
 
@@ -199,7 +206,7 @@ class Mlm extends \yii\base\Component
      */
     public function verifyRewards(MlmSubjectInterface $subject)
     {
-        if (!$this->isActive) {
+        if (!$this->isVerifyingActive) {
             return false;
         }
 
@@ -224,6 +231,10 @@ class Mlm extends \yii\base\Component
      */
     public function verifyMultipleRewards(MlmRewardQueryInterface $query, $limit = 10)
     {
+        if (!$this->isVerifyingActive) {
+            return false;
+        }
+
         $total = 0;
 
         if ($limit) {
@@ -252,7 +263,7 @@ class Mlm extends \yii\base\Component
      */
     public function createRewards(MlmSubjectInterface $subject)
     {
-        if (!$this->isActive) {
+        if (!$this->isCreatingActive) {
             return false;
         }
 
@@ -267,6 +278,10 @@ class Mlm extends \yii\base\Component
      */
     public function createMultipleRewards(MlmSubjectQueryInterface $query, $limit = 10)
     {
+        if (!$this->isCreatingActive) {
+            return false;
+        }
+
         if ($limit) {
             $query->limit($limit);
         }

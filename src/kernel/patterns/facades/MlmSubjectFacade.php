@@ -29,13 +29,13 @@ abstract class MlmSubjectFacade
      */
     public static function profiteersBasic(MlmSubjectInterface $subject)
     {
-        $owner = $subject->__mlmParticipant();
+        $profiteers = $subject->__mlmBasicProfiteers();
 
-        if (!$owner) {
-            return [];
+        if (!is_array($profiteers)) {
+            $profiteers = [$profiteers];
         }
 
-        return $owner->__mlmAllAncestors(MlmRuleHelper::maxLvl());
+        return $profiteers;
     }
 
     /**
@@ -46,11 +46,13 @@ abstract class MlmSubjectFacade
      */
     public static function profiteersExtra(MlmSubjectInterface $subject)
     {
-        // 1211, 131311
-        return [
-            Participant::findOne(1211),
-            Participant::findOne(131311),
-        ];
+        $profiteers = $subject->__mlmExtraProfiteers();
+
+        if (!is_array($profiteers)) {
+            $profiteers = [$profiteers];
+        }
+
+        return $profiteers;
     }
 
     /**
@@ -61,6 +63,12 @@ abstract class MlmSubjectFacade
      */
     public static function profiteersCustom(MlmSubjectInterface $subject)
     {
-        return [$subject->__mlmParticipant()];
+        $profiteers = $subject->__mlmCustomProfiteers();
+
+        if (!is_array($profiteers)) {
+            $profiteers = [$profiteers];
+        }
+
+        return $profiteers;
     }
 }

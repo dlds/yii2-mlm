@@ -48,6 +48,27 @@ interface MlmSubjectInterface
     public function __mlmAmountCustom(MlmParticipantInterface $profiteer);
 
     /**
+     * Retrieves basic rewards profiteers of given suject
+     * ---
+     * @return MlmParticipantInterface[]
+     */
+    public function __mlmBasicProfiteers();
+
+    /**
+     * Retrieves extra rewards profiteers of given suject
+     * ---
+     * @return MlmParticipantInterface[]
+     */
+    public function __mlmExtraProfiteers();
+
+    /**
+     * Retrieves custom rewards profiteers of given suject
+     * ---
+     * @return MlmParticipantInterface[]
+     */
+    public function __mlmCustomProfiteers();
+
+    /**
      * Retrieves own basic reward percentile for specific profiteer and level
      * @param MlmParticipantInterface $profiteer
      * @param $lvl
