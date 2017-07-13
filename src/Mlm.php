@@ -184,13 +184,13 @@ class Mlm extends \yii\base\Component
 
         // 1. verify rewards
         foreach (static::clsRewards() as $cls) {
-            static::trace(sprintf('Autorun VERIFY for subjects of kind %s', StringHelper::basename($cls)), '===');
+            static::trace(sprintf('[AUTORUN] VERIFY %s', StringHelper::basename($cls)), '=== === ===');
             $result[0] += $this->verifyMultipleRewards(call_user_func([$cls, 'find']), $limit);
         }
 
         // 2. create rewards
         foreach ($this->clsSubjects as $cls) {
-            static::trace(sprintf('Autorun CREATE for subjects of kind %s', StringHelper::basename($cls)), '===');
+            static::trace(sprintf('[AUTORUN] CREATE %s', StringHelper::basename($cls)), '=== === ===');
             $result[1] += $this->createMultipleRewards(call_user_func([$cls, 'find']), $limit);
         }
 
@@ -247,10 +247,10 @@ class Mlm extends \yii\base\Component
         $toApprove->__mlmExpectingApproval(static::delay());
         $toDeny->__mlmExpectingDeny(static::delay());
 
-        static::trace(sprintf('Multiple approval - found %s rewards (%s) expecting approve', $toApprove->count(), StringHelper::basename(get_class($query))), '===');
+        static::trace(sprintf('[VERIFY MULTIPLE] %s of %s for APPROVE', $toApprove->count(), StringHelper::basename(get_class($query))), '---');
         $total += MlmRewardFacade::approveAll($toApprove, static::delay());
 
-        static::trace(sprintf('Multiple deny - found %s rewards (%s) expecting deny', $toDeny->count(), StringHelper::basename(get_class($query))), '===');
+        static::trace(sprintf('[VERIFY MULTIPLE] %s of %s for DENY', $toDeny->count(), StringHelper::basename(get_class($query))), '---');
         $total += MlmRewardFacade::denyAll($toDeny, static::delay());
 
         return $total;
@@ -288,7 +288,7 @@ class Mlm extends \yii\base\Component
 
         $subjects = $query->__mlmExpectingRewards()->all();
 
-        static::trace(sprintf('Multiple generating - found %s subjects (%s) expecting rewards', count($subjects), StringHelper::basename(get_class($query))), '===');
+        static::trace(sprintf('[CREATE MULTIPLE] %s of %s for REWARD', count($subjects), StringHelper::basename(get_class($query))), '===');
 
         if (!$subjects) {
             return false;

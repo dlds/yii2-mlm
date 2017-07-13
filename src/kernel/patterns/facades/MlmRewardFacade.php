@@ -24,6 +24,7 @@ use dlds\mlm\kernel\patterns\builders\MlmRewardExtraBuilder;
 use dlds\mlm\Mlm;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
+use yii\helpers\StringHelper;
 
 /**
  * Class MlmRewardFacade
@@ -101,7 +102,7 @@ abstract class MlmRewardFacade
      */
     public static function generateAll(MlmSubjectInterface $subject)
     {
-        Mlm::trace(sprintf('Generating for %s [%s] at %s', get_class($subject), $subject->__mlmPrimaryKey(), time()), true);
+        Mlm::trace(sprintf('[GENERATE ALL] for %s [%s] at %s', StringHelper::basename(get_class($subject)), $subject->__mlmPrimaryKey(), time()), true);
 
         Mlm::pocket()->clear();
 
@@ -146,12 +147,12 @@ abstract class MlmRewardFacade
     {
         if (!$subject->__mlmCanRewardByBasic()) {
 
-            Mlm::trace(sprintf('Prevented BASIC at %s', time()));
+            Mlm::trace(sprintf('[GENERATE BASIC] was PREVENTED for [%s] at %s', $subject->__mlmPrimaryKey(), time()));
 
             return false;
         }
 
-        Mlm::trace(sprintf('Generating BASIC at %s', time()));
+        Mlm::trace(sprintf('[GENERATE BASIC] was STARTED for [%s] at %s', $subject->__mlmPrimaryKey(), time()));
 
         $builder = MlmRewardBasicBuilder::instance($subject);
 
@@ -170,12 +171,12 @@ abstract class MlmRewardFacade
     {
         if (!$subject->__mlmCanRewardByExtra()) {
 
-            Mlm::trace(sprintf('Prevented EXTRA at %s', time()));
+            Mlm::trace(sprintf('[GENERATE EXTRA] was PREVENTED for [%s] at %s', $subject->__mlmPrimaryKey(), time()));
 
             return false;
         }
 
-        Mlm::trace(sprintf('Generating EXTRA at %s', time()));
+        Mlm::trace(sprintf('[GENERATE EXTRA] was STARTED for [%s] at %s', $subject->__mlmPrimaryKey(), time()));
 
         $builder = MlmRewardExtraBuilder::instance($subject);
 
@@ -195,12 +196,12 @@ abstract class MlmRewardFacade
     {
         if (!$subject->__mlmCanRewardByCustom()) {
 
-            Mlm::trace(sprintf('Prevented CUSTOM at %s', time()));
+            Mlm::trace(sprintf('[GENERATE CUSTOM] was PREVENTED for [%s] at %s', $subject->__mlmPrimaryKey(), time()));
 
             return false;
         }
 
-        Mlm::trace(sprintf('Generating CUSTOM at %s', time()));
+        Mlm::trace(sprintf('[GENERATE CUSTOM] was STARTED for [%s] at %s', $subject->__mlmPrimaryKey(), time()));
 
         $builder = MlmRewardCustomBuilder::instance($subject);
 
@@ -233,15 +234,16 @@ abstract class MlmRewardFacade
             $result = $director->build($builder, $p);
 
             if (!$result->__mlmValue() && Mlm::cfgSkipWorthless()) {
-                \Yii::info(['Reward has been skipped due its worthless', $result->__mlmAttributes()], Mlm::cfgKey());
+                Mlm::trace(['[GENERATE] was SKIPPED', $result->__mlmAttributes()]);
                 continue;
             }
 
             if (!$result || !$result->__mlmSave()) {
+                Mlm::trace(['[GENERATE] was FAILED', $result->__mlmAttributes()]);
                 throw MlmRewardBuilderError::factory($builder, 'Not able to save builder result.');
             }
 
-            \Yii::trace(['Reward has been sucessfully created', $result->__mlmAttributes()], Mlm::cfgKey());
+            Mlm::trace(['[GENERATE] was SUCCESSFULL', $result->__mlmAttributes()]);
 
             $pocket->add(new MlmPocketItem($result));
         }
