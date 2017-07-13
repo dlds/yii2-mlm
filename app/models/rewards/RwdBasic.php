@@ -104,6 +104,40 @@ class RwdBasic extends ActiveRecord implements MlmRewardInterface, MlmSubjectInt
         return $this->hasOne(Participant::className(), ['id' => 'usr_rewarded_id']);
     }
 
+    // <editor-fold defaultstate="collapsed" desc="MlmSubjectInterface methods">
+
+    /**
+     * Retrieves basic rewards profiteers of given suject
+     * ---
+     * @return MlmParticipantInterface[]
+     */
+    public function __mlmBasicProfiteers()
+    {
+        return [];
+    }
+
+    /**
+     * Retrieves extra rewards profiteers of given suject
+     * ---
+     * @return MlmParticipantInterface[]
+     */
+    public function __mlmExtraProfiteers()
+    {
+        return [];
+    }
+
+    /**
+     * Retrieves custom rewards profiteers of given suject
+     * ---
+     * @return MlmParticipantInterface[]
+     */
+    public function __mlmCustomProfiteers()
+    {
+        return [];
+    }
+    // </editor-fold>
+
+
     /**
      * @inheritdoc
      * @return RwdBasicQuery

@@ -10,11 +10,11 @@
 namespace dlds\mlm\app\models;
 
 use dlds\mlm\helpers\MlmParticipantHelper;
+use dlds\mlm\helpers\MlmRuleHelper;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
 use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
 use dlds\mlm\kernel\traits\MlmSubjectTrait;
 use yii\db\ActiveRecord;
-use yii\helpers\StringHelper;
 
 /**
  * This is the model class for table "subject".
@@ -114,6 +114,38 @@ class Subject extends ActiveRecord implements MlmSubjectInterface
         }
 
         return 0;
+    }
+
+    /**
+     * Retrieves basic rewards profiteers of given suject
+     * ---
+     * @return MlmParticipantInterface[]
+     */
+    public function __mlmBasicProfiteers()
+    {
+        $owner = $this->participant;
+
+        return $owner->ancestors(MlmRuleHelper::maxLvl())->all();
+    }
+
+    /**
+     * Retrieves extra rewards profiteers of given suject
+     * ---
+     * @return MlmParticipantInterface[]
+     */
+    public function __mlmExtraProfiteers()
+    {
+        return [];
+    }
+
+    /**
+     * Retrieves custom rewards profiteers of given suject
+     * ---
+     * @return MlmParticipantInterface[]
+     */
+    public function __mlmCustomProfiteers()
+    {
+        return $this->participant;
     }
 
     // </editor-fold>

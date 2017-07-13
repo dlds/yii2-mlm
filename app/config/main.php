@@ -40,8 +40,10 @@ return [
             'limitRules' => 50,
             // pending delay is 1 hour
             'delayPending' => 3600,
-            // rewarding is active
-            'isActive' => true,
+            // rewards creating is active
+            'isCreatingActive' => true,
+            // rewards verifying is active
+            'isVerifyingActive' => true,
         ],
     ],
 ];
