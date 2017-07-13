@@ -56,7 +56,11 @@ abstract class MlmRewardFacade
             Mlm::trace(sprintf('Approving %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()));
 
             if (!$rwd->__mlmExpectingApproval($delay) || !$rwd->__mlmApprove()->__mlmSave()) {
-                Mlm::trace(sprintf('FAILED approval %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()));
+                Mlm::trace([
+                    sprintf('FAILED approval %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()),
+                    $rwd->getAttributes(),
+                    $rwd->getErrors(),
+                ]);
                 continue;
             }
 
@@ -85,7 +89,11 @@ abstract class MlmRewardFacade
             Mlm::trace(sprintf('Denying %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()));
 
             if (!$rwd->__mlmExpectingDeny($delay) || !$rwd->__mlmDeny()->__mlmSave()) {
-                Mlm::trace(sprintf('FAILED deny %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()));
+                Mlm::trace([
+                    sprintf('FAILED deny %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()),
+                    $rwd->getAttributes(),
+                    $rwd->getErrors(),
+                ]);
                 continue;
             }
 

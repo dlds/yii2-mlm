@@ -19,8 +19,6 @@ use dlds\mlm\kernel\interfaces\queries\MlmSubjectQueryInterface;
 use dlds\mlm\kernel\MlmPocket;
 use dlds\mlm\kernel\patterns\facades\MlmParticipantFacade;
 use dlds\mlm\kernel\patterns\facades\MlmRewardFacade;
-use dlds\mlm\kernel\patterns\facades\MlmSubjectFacade;
-use phpDocumentor\Reflection\Types\Integer;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
@@ -653,17 +651,20 @@ class Mlm extends \yii\base\Component
      */
     public static function trace($message, $separator = false)
     {
-        if (!YII_DEBUG) {
-            \Yii::trace($message);
+        if ($separator) {
+            var_dump((true === $separator) ? '---' : $separator);
+        }
+
+        var_dump($message);
+
+        if (YII_DEBUG) {
+            if ($separator) {
+                Debug::debug((true === $separator) ? '---' : $separator);
+            }
+
+            Debug::debug($message);
             return true;
         }
-
-        if ($separator) {
-            Debug::debug((true === $separator) ? '---' : $separator);
-        }
-
-        Debug::debug($message);
-        return true;
     }
 
 }
