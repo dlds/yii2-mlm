@@ -651,11 +651,13 @@ class Mlm extends \yii\base\Component
      */
     public static function trace($message, $separator = false)
     {
+        /*
         if ($separator) {
             var_dump((true === $separator) ? '---' : $separator);
         }
 
         var_dump($message);
+        */
 
         if (YII_DEBUG) {
             if ($separator) {
