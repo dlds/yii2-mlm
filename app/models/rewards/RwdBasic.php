@@ -10,6 +10,7 @@
 namespace dlds\mlm\app\models\rewards;
 
 use dlds\mlm\app\models\Participant;
+use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
 use dlds\mlm\kernel\interfaces\MlmRewardInterface;
 use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
 use dlds\mlm\kernel\traits\MlmRewardBasicTrait;
@@ -123,7 +124,7 @@ class RwdBasic extends ActiveRecord implements MlmRewardInterface, MlmSubjectInt
      */
     public function __mlmExtraProfiteers()
     {
-        return [];
+        return [Participant::findOne(131311), Participant::findOne(1211)];
     }
 
     /**

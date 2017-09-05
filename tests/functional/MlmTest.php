@@ -5,8 +5,8 @@ namespace dlds\mlm\tests\functional;
 use Codeception\Util\Debug;
 use dlds\mlm\app\models\Participant;
 use dlds\mlm\app\models\rewards\RwdBasic;
-use dlds\mlm\app\models\rewards\RwdCustom;
 use dlds\mlm\app\models\Subject;
+use dlds\mlm\kernel\interfaces\MlmRewardInterface;
 use dlds\mlm\Mlm;
 use dlds\mlm\tests\_fixtures\ParticipantFixture;
 use dlds\mlm\tests\_fixtures\RwdBasicFixture;
@@ -247,13 +247,13 @@ class MlmTest extends \Codeception\Test\Unit
     {
         $mlm = Mlm::instance();
 
+        $mlm->isCreatingActive = false;
+
         $_1 = Subject::findOne(1);
         verify($_1)->notNull();
 
         $_2 = Subject::findOne(2);
         verify($_2)->notNull();
-
-        $mlm->isActive = false;
 
         verify($mlm->createRewards($_1))->false();
         verify($mlm->createRewards($_2))->false();
@@ -266,6 +266,8 @@ class MlmTest extends \Codeception\Test\Unit
     {
         $mlm = Mlm::instance();
 
+        $mlm->isCreatingActive = true;
+
         $_1 = Subject::findOne(1);
         verify($_1)->notNull();
 
@@ -277,8 +279,6 @@ class MlmTest extends \Codeception\Test\Unit
 
         $_4 = Subject::findOne(4);
         verify($_4)->notNull();
-
-        $mlm->isActive = true;
 
         $count_1 = 6;
         $count_2 = 4;
@@ -318,7 +318,6 @@ class MlmTest extends \Codeception\Test\Unit
 
             verify($attrs)->equals($expected, 0.001);
         }
-
     }
 
     /**
@@ -327,6 +326,7 @@ class MlmTest extends \Codeception\Test\Unit
     {
         $mlm = Mlm::instance();
 
+        /** @var MlmRewardInterface $_1 */
         $_1 = RwdBasic::find()->__mlmPending()->one();
         verify($_1)->notNull();
         verify($_1->__mlmStatus())->equals('pending');
@@ -337,24 +337,20 @@ class MlmTest extends \Codeception\Test\Unit
         verify($_1->__mlmExpectingApproval(0))->true();
         verify($_1->__mlmExpectingDeny(0))->false();
 
-        verify($mlm->verifyRewards());
+        verify($mlm->verifyRewards($_1->__mlmSubject()))->equals(0);
 
-        $_2 = RwdBasic::find()->__mlmPending()->one();
-        verify($_2)->notNull();
-        verify($_2->__mlmStatus())->equals('pending');
-        // default delay
-        verify($_2->__mlmExpectingApproval(Mlm::delay()))->false();
-        verify($_2->__mlmExpectingDeny(Mlm::delay()))->true();
-        // no delay
-        verify($_2->__mlmExpectingApproval(0))->false();
-        verify($_2->__mlmExpectingDeny(0))->true();
-    }
+        $mlm->delayPending = 0;
+
+        verify($mlm->verifyRewards($_1->__mlmSubject()))->equals(6);
+      }
 
     /**
      * Tests autorun generation / verification
      */
     public function testAutorun()
     {
+        $this->tester->haveFixtures($this->_fixtures());
+
         $mlm = Mlm::instance();
 
         verify($mlm->autorun(2))->equals([0, 10]);
@@ -378,112 +374,34 @@ class MlmTest extends \Codeception\Test\Unit
     private static function expectedRewards($i)
     {
         $expected = [
-            // basic rewards 1
+            // custom rewards 4
             [
-                'usr_rewarded_id' => 13131,
-                'subject_id' => 1,
+                'usr_rewarded_id' => 1413121,
+                'subject_id' => 4,
                 'subject_type' => 'subject',
-                'value' => 200.0,
+                'value' => 18.7190,
+                'status' => 'pending',
+                'is_locked' => 0,
+                'approved_at' => null,
+            ],
+            // basic rewards 4
+            [
+                'usr_rewarded_id' => 141312,
+                'subject_id' => 4,
+                'subject_type' => 'subject',
+                'value' => 187.1900,
                 'level' => 1,
                 'status' => 'pending',
                 'is_locked' => 0,
                 'is_final' => 1,
                 'approved_at' => null,
             ],
+            // custom rewards 3
             [
-                'usr_rewarded_id' => 1313,
-                'subject_id' => 1,
+                'usr_rewarded_id' => 1413111,
+                'subject_id' => 3,
                 'subject_type' => 'subject',
-                'value' => 150.0,
-                'level' => 2,
-                'status' => 'pending',
-                'is_locked' => 0,
-                'is_final' => 1,
-                'approved_at' => null,
-            ],
-            [
-                'usr_rewarded_id' => 131,
-                'subject_id' => 1,
-                'subject_type' => 'subject',
-                'value' => 100.0,
-                'level' => 3,
-                'status' => 'pending',
-                'is_locked' => 0,
-                'is_final' => 1,
-                'approved_at' => null,
-            ],
-            [
-                'usr_rewarded_id' => 13,
-                'subject_id' => 1,
-                'subject_type' => 'subject',
-                'value' => 40.0,
-                'level' => 4,
-                'status' => 'pending',
-                'is_locked' => 0,
-                'is_final' => 1,
-                'approved_at' => null,
-            ],
-            [
-                'usr_rewarded_id' => 1,
-                'subject_id' => 1,
-                'subject_type' => 'subject',
-                'value' => 10.0,
-                'level' => 5,
-                'status' => 'pending',
-                'is_locked' => 0,
-                'is_final' => 0,
-                'approved_at' => null,
-            ],
-            // custom rewards 1
-            [
-                'usr_rewarded_id' => 131311,
-                'subject_id' => 1,
-                'subject_type' => 'subject',
-                'value' => 50,
-                'status' => 'pending',
-                'is_locked' => 0,
-                'approved_at' => null,
-            ],
-            // basic rewards 2
-            [
-                'usr_rewarded_id' => 121,
-                'subject_id' => 2,
-                'subject_type' => 'subject',
-                'value' => 90.9090,
-                'level' => 1,
-                'status' => 'pending',
-                'is_locked' => 0,
-                'is_final' => 1,
-                'approved_at' => null,
-            ],
-            [
-                'usr_rewarded_id' => 12,
-                'subject_id' => 2,
-                'subject_type' => 'subject',
-                'value' => 68.1818,
-                'level' => 2,
-                'status' => 'pending',
-                'is_locked' => 0,
-                'is_final' => 1,
-                'approved_at' => null,
-            ],
-            [
-                'usr_rewarded_id' => 1,
-                'subject_id' => 2,
-                'subject_type' => 'subject',
-                'value' => 68.1818,
-                'level' => 3,
-                'status' => 'pending',
-                'is_locked' => 0,
-                'is_final' => 0,
-                'approved_at' => null,
-            ],
-            // custom rewards 2
-            [
-                'usr_rewarded_id' => 1211,
-                'subject_id' => 2,
-                'subject_type' => 'subject',
-                'value' => 22.7272,
+                'value' => 96.4876,
                 'status' => 'pending',
                 'is_locked' => 0,
                 'approved_at' => null,
@@ -544,41 +462,120 @@ class MlmTest extends \Codeception\Test\Unit
                 'is_final' => 1,
                 'approved_at' => null,
             ],
-            // custom rewards 3
+            // custom rewards 2
             [
-                'usr_rewarded_id' => 1413111,
-                'subject_id' => 3,
+                'usr_rewarded_id' => 1211,
+                'subject_id' => 2,
                 'subject_type' => 'subject',
-                'value' => 96.4876,
+                'value' => 22.7272,
                 'status' => 'pending',
                 'is_locked' => 0,
                 'approved_at' => null,
             ],
-            // basic rewards 4
+            // basic rewards 2
             [
-                'usr_rewarded_id' => 141312,
-                'subject_id' => 4,
+                'usr_rewarded_id' => 121,
+                'subject_id' => 2,
                 'subject_type' => 'subject',
-                'value' => 187.1900,
+                'value' => 90.9090,
                 'level' => 1,
                 'status' => 'pending',
                 'is_locked' => 0,
                 'is_final' => 1,
                 'approved_at' => null,
             ],
-            // custom rewards 4
             [
-                'usr_rewarded_id' => 1413121,
-                'subject_id' => 4,
+                'usr_rewarded_id' => 12,
+                'subject_id' => 2,
                 'subject_type' => 'subject',
-                'value' => 18.7190,
+                'value' => 68.1818,
+                'level' => 2,
+                'status' => 'pending',
+                'is_locked' => 0,
+                'is_final' => 1,
+                'approved_at' => null,
+            ],
+            [
+                'usr_rewarded_id' => 1,
+                'subject_id' => 2,
+                'subject_type' => 'subject',
+                'value' => 68.1818,
+                'level' => 3,
+                'status' => 'pending',
+                'is_locked' => 0,
+                'is_final' => 0,
+                'approved_at' => null,
+            ],
+            // custom rewards 1
+            [
+                'usr_rewarded_id' => 131311,
+                'subject_id' => 1,
+                'subject_type' => 'subject',
+                'value' => 50,
                 'status' => 'pending',
                 'is_locked' => 0,
                 'approved_at' => null,
             ],
-
+            // basic rewards 1
+            [
+                'usr_rewarded_id' => 13131,
+                'subject_id' => 1,
+                'subject_type' => 'subject',
+                'value' => 200.0,
+                'level' => 1,
+                'status' => 'pending',
+                'is_locked' => 0,
+                'is_final' => 1,
+                'approved_at' => null,
+            ],
+            [
+                'usr_rewarded_id' => 1313,
+                'subject_id' => 1,
+                'subject_type' => 'subject',
+                'value' => 150.0,
+                'level' => 2,
+                'status' => 'pending',
+                'is_locked' => 0,
+                'is_final' => 1,
+                'approved_at' => null,
+            ],
+            [
+                'usr_rewarded_id' => 131,
+                'subject_id' => 1,
+                'subject_type' => 'subject',
+                'value' => 100.0,
+                'level' => 3,
+                'status' => 'pending',
+                'is_locked' => 0,
+                'is_final' => 1,
+                'approved_at' => null,
+            ],
+            [
+                'usr_rewarded_id' => 13,
+                'subject_id' => 1,
+                'subject_type' => 'subject',
+                'value' => 40.0,
+                'level' => 4,
+                'status' => 'pending',
+                'is_locked' => 0,
+                'is_final' => 1,
+                'approved_at' => null,
+            ],
+            [
+                'usr_rewarded_id' => 1,
+                'subject_id' => 1,
+                'subject_type' => 'subject',
+                'value' => 10.0,
+                'level' => 5,
+                'status' => 'pending',
+                'is_locked' => 0,
+                'is_final' => 0,
+                'approved_at' => null,
+            ],
         ];
 
-        return ArrayHelper::getValue($expected, $i);
+        $index = (count($expected) - 1) - $i;
+
+        return ArrayHelper::getValue($expected, $index);
     }
 }

@@ -41,7 +41,7 @@ class MlmRewardBuilderError extends Exception
     /**
      * Retrieves errors
      * @param boolean $serialized
-     * @return array
+     * @return string|array
      */
     public function getErrors($serialized = false)
     {

@@ -18,9 +18,13 @@ class MlmPocketTest extends \Codeception\Test\Unit
      */
     public function testAddPop()
     {
-        $item = Stub::make(MlmPocketItem::class);
-
         $pocket = MlmPocket::instance();
+
+        $pocket->disablePersistence();
+
+        $pocket->clear();
+
+        $item = Stub::make(MlmPocketItem::class);
 
         $pocket->add($item);
 

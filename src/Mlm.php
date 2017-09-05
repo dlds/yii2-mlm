@@ -188,7 +188,7 @@ class Mlm extends \yii\base\Component
 
         // 2. create rewards
         foreach ($this->clsSubjects as $cls) {
-            static::trace(sprintf('[AUTORUN] CREATE %s', StringHelper::basename($cls)), '=== === ===');
+            static::trace(sprintf('[AUTORUN] CREATE rewards for %s', StringHelper::basename($cls)), '=== === ===');
             $result[1] += $this->createMultipleRewards(call_user_func([$cls, 'find']), $limit);
         }
 
@@ -212,8 +212,9 @@ class Mlm extends \yii\base\Component
 
         foreach (static::clsRewards() as $cls) {
 
+            /** @var MlmRewardQueryInterface $query */
             $query = call_user_func([$cls, 'find']);
-            $query->__mlmSubject($subject);
+            $query->__mlmSource($subject->__mlmPrimaryKey(), $subject->__mlmType());
 
             $total += $this->verifyMultipleRewards($query, false);
         }
