@@ -21,6 +21,7 @@ use dlds\mlm\kernel\patterns\facades\MlmParticipantFacade;
 use dlds\mlm\kernel\patterns\facades\MlmRewardFacade;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Console;
 use yii\helpers\StringHelper;
 
 /**
@@ -240,7 +241,10 @@ class Mlm extends \yii\base\Component
             $query->limit($limit);
         }
 
+        /** @var MlmRewardQueryInterface $toApprove */
         $toApprove = clone $query;
+
+        /** @var MlmRewardQueryInterface $toDeny */
         $toDeny = clone $query;
 
         $toApprove->__mlmExpectingApproval(static::delay());
@@ -652,22 +656,57 @@ class Mlm extends \yii\base\Component
      */
     public static function trace($message, $separator = false)
     {
-        /*
+        $message = [$message];
+
         if ($separator) {
-            var_dump((true === $separator) ? '---' : $separator);
+
+            $separator = (true === $separator) ? '--- --- ---' : $separator;
+            array_unshift($message, $separator);
         }
 
-        var_dump($message);
-        */
+
+        $logConsole = function ($message) {
+            \Yii::$app->controller->stdout(print_r($message, true) . "\n", Console::FG_PURPLE);
+        };
+
+        $logDebug = function ($message) {
+            Debug::debug($message);
+        };
+
+        if (!empty(\Yii::$app) && !empty(\Yii::$app->controller) && \Yii::$app->controller->interactive) {
+
+            return static::doTrace($message, $logConsole);
+        }
 
         if (YII_DEBUG) {
-            if ($separator) {
-                Debug::debug((true === $separator) ? '---' : $separator);
+
+            return static::doTrace($message, $logDebug);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $message
+     * @param \Closure $callback
+     * @return mixed
+     */
+    protected static function doTrace($messages, \Closure $callback)
+    {
+        if (!is_array($messages)) {
+            $messages = [$messages];
+        }
+
+        foreach ($messages as $msg) {
+
+            if (!$msg) {
+                continue;
             }
 
-            Debug::debug($message);
-            return true;
+            call_user_func($callback, $msg);
         }
+
+        return true;
     }
 
 }
