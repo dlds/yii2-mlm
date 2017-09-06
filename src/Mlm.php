@@ -673,7 +673,7 @@ class Mlm extends \yii\base\Component
             Debug::debug($message);
         };
 
-        if (!empty(\Yii::$app) && !empty(\Yii::$app->controller) && \Yii::$app->controller->interactive) {
+        if (!empty(\Yii::$app) && !empty(\Yii::$app->controller) && !empty(\Yii::$app->controller->interactive) && \Yii::$app->controller->interactive) {
 
             return static::doTrace($message, $logConsole);
         }
