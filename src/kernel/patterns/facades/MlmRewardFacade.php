@@ -12,7 +12,6 @@ namespace dlds\mlm\kernel\patterns\facades;
 use Codeception\Util\Debug;
 use dlds\mlm\kernel\exceptions\MlmRewardBuilderError;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
-use dlds\mlm\kernel\interfaces\MlmRewardInterface;
 use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
 use dlds\mlm\kernel\interfaces\queries\MlmRewardQueryInterface;
 use dlds\mlm\kernel\MlmPocketItem;
@@ -110,7 +109,8 @@ abstract class MlmRewardFacade
      */
     public static function generateAll(MlmSubjectInterface $subject)
     {
-        Mlm::trace(sprintf('[GENERATE ALL] for %s [%s] at %s', StringHelper::basename(get_class($subject)), $subject->__mlmPrimaryKey(), time()), true);
+        Mlm::trace(sprintf('[GENERATE ALL] for %s [%s] at %s', StringHelper::basename(get_class($subject)),
+            $subject->__mlmPrimaryKey(), time()), true);
 
         Mlm::pocket()->clear();
 
@@ -118,8 +118,12 @@ abstract class MlmRewardFacade
 
         foreach (static::generatorProcedures() as $procedure) {
 
-            $transaction = \Yii::$app->db->beginTransaction();
+            $transaction = \Yii::$app->db->getTransaction();
 
+            if (!$transaction) {
+                $transaction = \Yii::$app->db->beginTransaction();
+            }
+            
             try {
 
                 call_user_func($procedure, $subject);
