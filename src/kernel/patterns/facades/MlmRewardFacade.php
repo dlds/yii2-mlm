@@ -118,12 +118,8 @@ abstract class MlmRewardFacade
 
         foreach (static::generatorProcedures() as $procedure) {
 
-            $transaction = \Yii::$app->db->getTransaction();
+            $transaction = \Yii::$app->db->beginTransaction();
 
-            if (!$transaction) {
-                $transaction = \Yii::$app->db->beginTransaction();
-            }
-            
             try {
 
                 call_user_func($procedure, $subject);
