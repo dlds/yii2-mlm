@@ -138,6 +138,16 @@ class RwdBasic extends ActiveRecord implements MlmRewardInterface, MlmSubjectInt
     {
         return [];
     }
+
+    /**
+     * @return bool
+     */
+    public function __mlmCanApproveRewards()
+    {
+        return true;
+    }
+
+
     // </editor-fold>
 
 

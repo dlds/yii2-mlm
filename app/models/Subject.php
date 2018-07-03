@@ -148,5 +148,14 @@ class Subject extends ActiveRecord implements MlmSubjectInterface
         return $this->participant;
     }
 
+    /**
+     * @return bool|mixed
+     */
+    public function __mlmCanApproveRewards()
+    {
+        return true;
+    }
+
+
     // </editor-fold>
 }

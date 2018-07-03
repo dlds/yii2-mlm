@@ -95,6 +95,12 @@ interface MlmSubjectInterface
     public function __mlmCanRewardByCustom();
 
     /**
+     * Indicates if rewards can be approved
+     * @return boolean
+     */
+    public function __mlmCanApproveRewards();
+
+    /**
      * Retrieves subject type key
      * @return string
      */
