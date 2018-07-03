@@ -9,11 +9,9 @@
 
 namespace dlds\mlm\kernel\traits;
 
-use Codeception\Util\Debug;
 use dlds\mlm\app\models\Participant;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
 use dlds\nestedsets\NestedSetsBehavior;
-use dlds\nestedsets\NestedSetsQueryBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
@@ -120,9 +118,23 @@ trait MlmParticipantTrait
     /**
      * @inheritdoc
      */
-    public function __mlmEligibleToBasicRewards()
+    public function __mlmEligibleToLevel()
     {
-        return !ArrayHelper::isIn($this->__mlmPrimaryKey(), Participant::PK_BASIC_NOT_ELIGIBLE);
+        return $this->eligible_to_level;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __mlmEligibleToBasicRewards($onLevel = null)
+    {
+        $isEligible = !ArrayHelper::isIn($this->__mlmPrimaryKey(), Participant::PK_BASIC_NOT_ELIGIBLE);
+
+        if ($onLevel > 0) {
+            $isEligible = $isEligible && ($this->__mlmEligibleToLevel() >= $onLevel);
+        }
+
+        return $isEligible;
     }
 
     /**

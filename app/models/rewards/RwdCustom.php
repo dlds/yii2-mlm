@@ -25,6 +25,7 @@ use yii\db\ActiveRecord;
  * @property string $subject_type
  * @property double $value
  * @property string $status
+ * @property string $status_reason
  * @property string $note
  * @property integer $is_locked
  * @property integer $approved_at
@@ -54,7 +55,7 @@ class RwdCustom extends ActiveRecord implements MlmRewardInterface
         return [
             [['usr_rewarded_id', 'value', 'is_locked'], 'required'],
             [['usr_rewarded_id', 'subject_id', 'is_locked', 'approved_at', 'created_at', 'updated_at'], 'integer'],
-            [['subject_type', 'status', 'note'], 'string'],
+            [['subject_type', 'status', 'status_reason', 'note'], 'string'],
             [['value'], 'number'],
             [['subject_id', 'subject_type'], 'unique', 'targetAttribute' => ['subject_id', 'subject_type'], 'skipOnError' => true, 'message' => 'The combination of Subject ID and Subject Type has already been taken.'],
             [['usr_rewarded_id'], 'exist', 'skipOnError' => true, 'targetClass' => Participant::className(), 'targetAttribute' => ['usr_rewarded_id' => 'id']],
@@ -85,6 +86,7 @@ class RwdCustom extends ActiveRecord implements MlmRewardInterface
             'subject_type' => 'Subject Type',
             'value' => 'Value',
             'status' => 'Status',
+            'status_reason' => 'Status Reason',
             'is_locked' => 'Is Locked',
             'note' => 'Note',
             'approved_at' => 'Approved At',

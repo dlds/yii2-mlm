@@ -67,6 +67,16 @@ interface MlmRewardInterface
     public function __mlmStatus($status = null);
 
     /**
+     * Sets and retrieves reward status reason
+     * ---
+     * New reason should be set only if is not null.
+     * ---
+     * @param string $reason
+     * @return string
+     */
+    public function __mlmStatusReason($reason = null);
+
+    /**
      * Sets and retrieves IS LOCKED state
      * ---
      * New state should be set only if is not null.

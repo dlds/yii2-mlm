@@ -107,6 +107,19 @@ trait MlmRewardExtraTrait
     /**
      * @inheritdoc
      */
+    public function __mlmStatusReason($reason = null)
+    {
+        if (null !== $reason) {
+            $this->status_reason = $reason;
+        }
+
+        return $this->status_reason;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
     public function __mlmIsLocked($state = null)
     {
         if (null !== $state) {
@@ -155,6 +168,7 @@ trait MlmRewardExtraTrait
             'subject_type',
             'value',
             'status',
+            'status_reason',
             'is_locked',
             'approved_at',
         ]);

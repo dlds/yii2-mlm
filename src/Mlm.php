@@ -39,6 +39,13 @@ class Mlm extends \yii\base\Component
     const RW_STATUS_PENDING = 'pending';
     const RW_STATUS_APPROVED = 'approved';
     const RW_STATUS_DENIED = 'denied';
+    const RW_STATUS_MISSED = 'missed';
+
+    /**
+     * Rewards status reasons
+     */
+    const RWS_REASON_NOT_ELIGIBLE = 'not_eligible';
+    const RWS_REASON_SUBJECT_STORNO = 'subject_storno';
 
     /**
      * Value rounding
@@ -123,6 +130,14 @@ class Mlm extends \yii\base\Component
      * @var bool
      */
     public $isVerifyingActive = true;
+
+    /**
+     * @var bool when activated every reward creation will invoke participant level eligibility check
+     * ---
+     * When participant is not eligible to take rewards from specific level that reward will be created
+     * with as denied and status reason will be set to 'NOT_ELIGIBLE'
+     */
+    public $isLevelRestrictionAllowed = false;
 
     /**
      * @var string

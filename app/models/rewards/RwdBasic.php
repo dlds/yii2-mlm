@@ -27,6 +27,7 @@ use yii\db\ActiveRecord;
  * @property double $value
  * @property integer $level
  * @property string $status
+ * @property string $status_reason
  * @property integer $is_locked
  * @property integer $is_final
  * @property integer $approved_at
@@ -57,7 +58,7 @@ class RwdBasic extends ActiveRecord implements MlmRewardInterface, MlmSubjectInt
         return [
             [['usr_rewarded_id', 'subject_id', 'subject_type', 'value', 'level'], 'required'],
             [['usr_rewarded_id', 'subject_id', 'level', 'is_locked', 'is_final', 'approved_at', 'created_at', 'updated_at'], 'integer'],
-            [['subject_type', 'status'], 'string'],
+            [['subject_type', 'status', 'status_reason'], 'string'],
             [['value'], 'number'],
             [['subject_id', 'subject_type', 'level'], 'unique', 'targetAttribute' => ['subject_id', 'subject_type', 'level'], 'message' => 'The combination of Subject ID, Subject Type and Level has already been taken.'],
             [['usr_rewarded_id'], 'exist', 'skipOnError' => true, 'targetClass' => Participant::className(), 'targetAttribute' => ['usr_rewarded_id' => 'id']],
@@ -89,6 +90,7 @@ class RwdBasic extends ActiveRecord implements MlmRewardInterface, MlmSubjectInt
             'value' => 'Value',
             'level' => 'Level',
             'status' => 'Status',
+            'status_reason' => 'Status Reason',
             'is_locked' => 'Is Locked',
             'is_final' => 'Is Final',
             'approved_at' => 'Approved At',

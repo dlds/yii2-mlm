@@ -9,7 +9,6 @@
 
 namespace dlds\mlm\kernel\patterns\builders;
 
-use dlds\mlm\app\models\rewards\RwdBasic;
 use dlds\mlm\helpers\MlmRewardHelper;
 use dlds\mlm\kernel\exceptions\MlmRewardBuilderError;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
@@ -17,7 +16,6 @@ use dlds\mlm\kernel\interfaces\MlmRewardInterface;
 use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
 use dlds\mlm\kernel\patterns\builders\interfaces\MlmRewardBuilderInterface;
 use dlds\mlm\Mlm;
-use yii\base\ErrorException;
 
 /**
  * Class MlmRewardBasicBuilder
@@ -114,7 +112,16 @@ class MlmRewardBasicBuilder implements MlmRewardBuilderInterface
      */
     public function setStatus()
     {
-        $this->_rwd->__mlmStatus(Mlm::alsStatus(Mlm::RW_STATUS_PENDING));
+        $mlm = Mlm::instance();
+
+        // when level restriction is allowed and rewarded participant is not eligible to take reward
+        if ($mlm->isLevelRestrictionAllowed && !$this->_prtc->__mlmEligibleToBasicRewards($this->_rwd->__mlmLevel())) {
+
+            $this->_rwd->__mlmStatusReason(Mlm::RWS_REASON_NOT_ELIGIBLE);
+            return $this->_rwd->__mlmStatus(Mlm::alsStatus(Mlm::RW_STATUS_MISSED));
+        }
+
+        return $this->_rwd->__mlmStatus(Mlm::alsStatus(Mlm::RW_STATUS_PENDING));
     }
 
     /**

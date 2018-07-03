@@ -35,7 +35,8 @@ trait MlmRewardBasicTrait
      */
     public function getRwdExtras()
     {
-        return $this->hasMany(RwdExtra::className(), ['subject_id' => 'id'])->andOnCondition([RwdExtra::tableName() . '.subject_type' => $this->__mlmType()]);
+        return $this->hasMany(RwdExtra::className(),
+            ['subject_id' => 'id'])->andOnCondition([RwdExtra::tableName() . '.subject_type' => $this->__mlmType()]);
     }
 
     // <editor-fold defaultstate="collapsed" desc="MlmRewardInterface methods">
@@ -120,6 +121,18 @@ trait MlmRewardBasicTrait
     /**
      * @inheritdoc
      */
+    public function __mlmStatusReason($reason = null)
+    {
+        if (null !== $reason) {
+            $this->status_reason = $reason;
+        }
+
+        return $this->status_reason;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function __mlmIsLocked($state = null)
     {
         if (null !== $state) {
@@ -195,6 +208,7 @@ trait MlmRewardBasicTrait
             'value',
             'level',
             'status',
+            'status_reason',
             'is_locked',
             'is_final',
             'approved_at',

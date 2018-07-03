@@ -2,6 +2,10 @@
 
 namespace dlds\mlm\kernel\interfaces;
 
+/**
+ * Interface MlmParticipantInterface
+ * @package dlds\mlm\kernel\interfaces
+ */
 interface MlmParticipantInterface
 {
 
@@ -64,20 +68,27 @@ interface MlmParticipantInterface
     public function __mlmIsDescendantOf(MlmParticipantInterface $ancestor);
 
     /**
-     * Indicates if participant is eligible to get basic rewards
-     * @return mixed
+     * Retrieves max level of basic reward the participant is eligible to take
+     * @return int
      */
-    public function __mlmEligibleToBasicRewards();
+    public function __mlmEligibleToLevel();
+
+    /**
+     * Indicates if participant is eligible to get basic rewards
+     * @param int|null $onLevel
+     * @return boolean
+     */
+    public function __mlmEligibleToBasicRewards($onLevel = null);
 
     /**
      * Indicates if participant is eligible to get extra rewards
-     * @return mixed
+     * @return boolean
      */
     public function __mlmEligibleToExtraRewards();
 
     /**
      * Indicates if participant is eligible to get custom rewards
-     * @return mixed
+     * @return boolean
      */
     public function __mlmEligibleToCustomRewards();
 

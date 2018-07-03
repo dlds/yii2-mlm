@@ -23,6 +23,7 @@ use yii\db\ActiveRecord;
  * @property integer $lft
  * @property integer $rgt
  * @property integer $depth
+ * @property integer $eligible_to_level
  *
  * @property RwdBasic[] $rwdBasics
  * @property RwdCustom[] $rwdCustoms
@@ -58,7 +59,7 @@ class Participant extends ActiveRecord implements MlmParticipantInterface
     {
         return [
             [['lft', 'rgt', 'depth'], 'required'],
-            [['lft', 'rgt', 'depth'], 'integer'],
+            [['lft', 'rgt', 'depth', 'eligible_to_level'], 'integer'],
         ];
     }
 
@@ -72,6 +73,7 @@ class Participant extends ActiveRecord implements MlmParticipantInterface
             'lft' => 'Lft',
             'rgt' => 'Rgt',
             'depth' => 'Depth',
+            'eligible_to_level' => 'Eligible To Level',
         ];
     }
 

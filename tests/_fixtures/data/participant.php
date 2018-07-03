@@ -12,6 +12,7 @@ return [
         'lft' => 1,
         'rgt' => 45,
         'depth' => 0,
+        'eligible_to_level' => 5,
     ],
         // --- 1 ---
         [
@@ -23,6 +24,7 @@ return [
             'lft' => 2,
             'rgt' => 3,
             'depth' => 1,
+            'eligible_to_level' => 5,
         ],
         [
             /**
@@ -33,6 +35,7 @@ return [
             'lft' => 4,
             'rgt' => 9,
             'depth' => 1,
+            'eligible_to_level' => 5,
         ],
             // --- 2 ---
             [
@@ -44,6 +47,7 @@ return [
                 'lft' => 5,
                 'rgt' => 8,
                 'depth' => 2,
+                'eligible_to_level' => 3,
             ],
                 // --- 3 ---
                 [
@@ -56,6 +60,7 @@ return [
                     'lft' => 6,
                     'rgt' => 7,
                     'depth' => 3,
+                    'eligible_to_level' => 1,
                 ],
         // --- 1 ---
         [
@@ -67,6 +72,7 @@ return [
             'lft' => 10,
             'rgt' => 24,
             'depth' => 1,
+            'eligible_to_level' => 1,
         ],
             // branch 13
             [
@@ -78,6 +84,7 @@ return [
                 'lft' => 11,
                 'rgt' => 23,
                 'depth' => 2,
+                'eligible_to_level' => 2,
             ],
                 // --- 3 ---
                 [
@@ -89,6 +96,7 @@ return [
                     'lft' => 12,
                     'rgt' => 13,
                     'depth' => 3,
+                    'eligible_to_level' => 5,
                 ],
                 [
                     /**
@@ -99,6 +107,7 @@ return [
                     'lft' => 14,
                     'rgt' => 15,
                     'depth' => 3,
+                    'eligible_to_level' => 2,
                 ],
                 [
                     /**
@@ -109,6 +118,7 @@ return [
                     'lft' => 16,
                     'rgt' => 21,
                     'depth' => 3,
+                    'eligible_to_level' => 1,
                 ],
                     // --- 4 ---
                     [
@@ -120,6 +130,7 @@ return [
                         'lft' => 17,
                         'rgt' => 20,
                         'depth' => 4,
+                        'eligible_to_level' => 3,
                     ],
                         // --- 5 ---
                         [
@@ -132,6 +143,7 @@ return [
                             'lft' => 18,
                             'rgt' => 19,
                             'depth' => 5,
+                            'eligible_to_level' => 4,
                         ],
         // --- 1 ---
         [
@@ -143,6 +155,7 @@ return [
             'lft' => 25,
             'rgt' => 44,
             'depth' => 1,
+            'eligible_to_level' => 5,
         ],
             // --- 2 ---
             [
@@ -154,6 +167,7 @@ return [
                 'lft' => 26,
                 'rgt' => 43,
                 'depth' => 2,
+                'eligible_to_level' => 2,
             ],
                 // --- 3 ---
                 [
@@ -165,6 +179,7 @@ return [
                     'lft' => 27,
                     'rgt' => 28,
                     'depth' => 3,
+                    'eligible_to_level' => 3,
                 ],
                 [
                     /**
@@ -175,6 +190,7 @@ return [
                     'lft' => 29,
                     'rgt' => 30,
                     'depth' => 3,
+                    'eligible_to_level' => 3,
                 ],
                 [
                     /**
@@ -185,17 +201,19 @@ return [
                     'lft' => 31,
                     'rgt' => 42,
                     'depth' => 3,
+                    'eligible_to_level' => 3,
                 ],
                     // --- 4 ---
                     [
                         /**
                          * @branch 1413
-                         * @rewards CUSTOM
+                         * @rewards BASIC, CUSTOM
                          */
                         'id' => 14131,
                         'lft' => 32,
                         'rgt' => 41,
                         'depth' => 4,
+                        'eligible_to_level' => 1,
                     ],
                         // --- 5 ---
                         [
@@ -207,6 +225,7 @@ return [
                             'lft' => 33,
                             'rgt' => 36,
                             'depth' => 5,
+                            'eligible_to_level' => 3,
                         ],
                             // --- 6 ---
                             [
@@ -218,6 +237,7 @@ return [
                                 'lft' => 34,
                                 'rgt' => 35,
                                 'depth' => 6,
+                                'eligible_to_level' => 1,
                             ],
                         // --- 5 ---
                         [
@@ -229,6 +249,7 @@ return [
                             'lft' => 37,
                             'rgt' => 40,
                             'depth' => 5,
+                            'eligible_to_level' => 1,
                         ],
                             // --- 6 ---
                             [
@@ -240,5 +261,6 @@ return [
                                 'lft' => 38,
                                 'rgt' => 39,
                                 'depth' => 6,
+                                'eligible_to_level' => 1,
                             ],
 ];
