@@ -29,10 +29,4 @@ interface MlmSubjectQueryInterface
      * @return MlmSubjectQueryInterface
      */
     public function __mlmExpectingRewards();
-
-    /**
-     * Queries only subjects where rewards can be approved
-     * @return mixed
-     */
-    public function __mlmCanApproveRewards($state = true);
 }

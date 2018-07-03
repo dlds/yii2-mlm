@@ -158,31 +158,9 @@ class RwdExtraQuery extends ActiveQuery implements MlmRewardQueryInterface
      * @param integer|null $delay
      * @return $this
      */
-    public function __mlmExpectingApproval($delay = null)
+    public function __mlmExpectingVerification($delay = null)
     {
         $this->__mlmAge($delay);
-
-        $this->joinWith(['usrRewarded' => function ($q) {
-            $q->__mlmEligibleToExtraRewards(true);
-        }]);
-
-        $this->__mlmPending(true);
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     * @param integer|null $delay
-     * @return $this
-     */
-    public function __mlmExpectingDeny($delay = null)
-    {
-        $this->__mlmAge($delay);
-
-        $this->joinWith(['usrRewarded' => function ($q) {
-            $q->__mlmEligibleToExtraRewards(false);
-        }]);
 
         $this->__mlmPending(true);
 

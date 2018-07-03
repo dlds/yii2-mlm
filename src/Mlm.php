@@ -262,14 +262,13 @@ class Mlm extends \yii\base\Component
         /** @var MlmRewardQueryInterface $toDeny */
         $toDeny = clone $query;
 
-        $toApprove->__mlmExpectingApproval(static::delay());
-        $toDeny->__mlmExpectingDeny(static::delay());
+        // TODO: change this behavior - to load all pending with AGE reached
+        // then in RwdBasic->__mlmExpectingApprove / __mlmExpectiingDeny do the job
 
-        static::trace(sprintf('[VERIFY MULTIPLE] %s of %s for APPROVE', $toApprove->count(), StringHelper::basename(get_class($query))), '---');
-        $total += MlmRewardFacade::approveAll($toApprove, static::delay());
+        $toApprove->__mlmExpectingVerification(static::delay());
 
-        static::trace(sprintf('[VERIFY MULTIPLE] %s of %s for DENY', $toDeny->count(), StringHelper::basename(get_class($query))), '---');
-        $total += MlmRewardFacade::denyAll($toDeny, static::delay());
+        static::trace(sprintf('[VERIFY MULTIPLE] %s of %s', $toApprove->count(), StringHelper::basename(get_class($query))), '---');
+        $total += MlmRewardFacade::verifyAll($toApprove, static::delay());
 
         return $total;
     }

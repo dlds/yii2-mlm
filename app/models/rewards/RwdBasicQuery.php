@@ -151,36 +151,15 @@ class RwdBasicQuery extends ActiveQuery implements MlmRewardQueryInterface, MlmS
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     * @param integer|null $delay
-     * @return $this
-     */
-    public function __mlmExpectingApproval($delay = null)
-    {
-        $this->__mlmAge($delay);
-
-        $this->joinWith(['usrRewarded' => function ($q) {
-            $q->__mlmEligibleToBasicRewards(true);
-        }]);
-
-        $this->__mlmPending(true);
-
-        return $this;
-    }
 
     /**
      * @inheritdoc
      * @param integer|null $delay
      * @return $this
      */
-    public function __mlmExpectingDeny($delay = null)
+    public function __mlmExpectingVerification($delay = null)
     {
         $this->__mlmAge($delay);
-
-        $this->joinWith(['usrRewarded' => function ($q) {
-            $q->__mlmEligibleToBasicRewards(false);
-        }]);
 
         $this->__mlmPending(true);
 

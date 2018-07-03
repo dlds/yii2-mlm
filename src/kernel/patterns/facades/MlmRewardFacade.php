@@ -9,9 +9,9 @@
 
 namespace dlds\mlm\kernel\patterns\facades;
 
-use Codeception\Util\Debug;
 use dlds\mlm\kernel\exceptions\MlmRewardBuilderError;
 use dlds\mlm\kernel\interfaces\MlmParticipantInterface;
+use dlds\mlm\kernel\interfaces\MlmRewardInterface;
 use dlds\mlm\kernel\interfaces\MlmSubjectInterface;
 use dlds\mlm\kernel\interfaces\queries\MlmRewardQueryInterface;
 use dlds\mlm\kernel\MlmPocketItem;
@@ -22,7 +22,6 @@ use dlds\mlm\kernel\patterns\builders\MlmRewardCustomBuilder;
 use dlds\mlm\kernel\patterns\builders\MlmRewardExtraBuilder;
 use dlds\mlm\Mlm;
 use yii\base\Exception;
-use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
 
 /**
@@ -42,7 +41,7 @@ abstract class MlmRewardFacade
      * @param MlmRewardQueryInterface $q
      * @return integer
      */
-    public static function approveAll(MlmRewardQueryInterface $q, $delay)
+    public static function verifyAll(MlmRewardQueryInterface $q, $delay)
     {
         Mlm::trace($q->createCommand()->rawSql);
 
@@ -50,46 +49,22 @@ abstract class MlmRewardFacade
 
         $total = 0;
 
+        /** @var MlmRewardInterface $rwd */
         foreach ($rewards as $rwd) {
 
-            Mlm::trace(sprintf('Approving %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()));
+            Mlm::trace(sprintf('Verifying %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()));
 
-            if (!$rwd->__mlmExpectingApproval($delay) || !$rwd->__mlmApprove()->__mlmSave()) {
-                Mlm::trace([
-                    sprintf('FAILED approval %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()),
-                    $rwd->getAttributes(),
-                    $rwd->getErrors(),
-                ]);
-                continue;
+            if ($rwd->__mlmExpectingApproval($delay)) {
+                $rwd->__mlmApprove();
             }
 
-            $total += 1;
-        }
+            if ($rwd->__mlmExpectingDeny($delay)) {
+                $rwd->__mlmDeny();
+            }
 
-        return $total;
-    }
-
-    /**
-     * Denies all rewards found by given query
-     * when it is expecting approval
-     * @param MlmRewardQueryInterface $q
-     * @return integer
-     */
-    public static function denyAll(MlmRewardQueryInterface $q, $delay)
-    {
-        Mlm::trace($q->createCommand()->rawSql);
-
-        $rewards = $q->all();
-
-        $total = 0;
-
-        foreach ($rewards as $rwd) {
-
-            Mlm::trace(sprintf('Denying %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()));
-
-            if (!$rwd->__mlmExpectingDeny($delay) || !$rwd->__mlmDeny()->__mlmSave()) {
+            if (!$rwd->__mlmApprove()->__mlmSave()) {
                 Mlm::trace([
-                    sprintf('FAILED deny %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()),
+                    sprintf('FAILED verification %s [%s]', get_class($rwd), $rwd->__mlmPrimaryKey()),
                     $rwd->getAttributes(),
                     $rwd->getErrors(),
                 ]);

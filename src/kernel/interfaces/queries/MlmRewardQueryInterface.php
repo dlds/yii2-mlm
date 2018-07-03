@@ -115,12 +115,5 @@ interface MlmRewardQueryInterface
      * @param integer|null $delay
      * @return mixed
      */
-    public function __mlmExpectingApproval($delay = null);
-
-    /**
-     * Queries only rewards expecting to be denied
-     * @param integer|null $delay
-     * @return mixed
-     */
-    public function __mlmExpectingDeny($delay = null);
+    public function __mlmExpectingVerification($delay = null);
 }
