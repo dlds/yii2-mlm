@@ -262,9 +262,6 @@ class Mlm extends \yii\base\Component
         /** @var MlmRewardQueryInterface $toDeny */
         $toDeny = clone $query;
 
-        // TODO: change this behavior - to load all pending with AGE reached
-        // then in RwdBasic->__mlmExpectingApprove / __mlmExpectiingDeny do the job
-
         $toApprove->__mlmExpectingVerification(static::delay());
 
         static::trace(sprintf('[VERIFY MULTIPLE] %s of %s', $toApprove->count(), StringHelper::basename(get_class($query))), '---');
